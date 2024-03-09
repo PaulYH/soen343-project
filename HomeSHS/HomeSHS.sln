@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeSHS", "HomeSHS.csproj", "{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeSHS", "HomeSHS.csproj", "{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{556CF618-6A35-42EA-B367-3DC170DB390C} = {556CF618-6A35-42EA-B367-3DC170DB390C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHC", "..\SHC\SHC.csproj", "{556CF618-6A35-42EA-B367-3DC170DB390C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{556CF618-6A35-42EA-B367-3DC170DB390C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{556CF618-6A35-42EA-B367-3DC170DB390C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{556CF618-6A35-42EA-B367-3DC170DB390C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{556CF618-6A35-42EA-B367-3DC170DB390C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
