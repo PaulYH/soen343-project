@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SHC.Entities.Window
+namespace SHC.Enums
 {
-    public class RegularWindow : IWindow
+    public enum UserType
     {
-        public string Name { get; set; }
+        Parent,
+        Child,
+        Guest,
+        Stranger
     }
 }

@@ -8,5 +8,7 @@ namespace SHC.Entities.Window
 {
     public class SmartWindow : IWindow
     {
+        public string Name { get; set; }
+        public bool isOpen { get; set; } = false;
     }
 }

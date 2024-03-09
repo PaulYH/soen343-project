@@ -8,5 +8,6 @@ namespace SHC.Entities.Light
 {
     public interface ILight
     {
+        public string Name { get; set; }
     }
 }

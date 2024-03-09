@@ -8,5 +8,7 @@ namespace SHC.Entities.Light
 {
     public class SmartLight : ILight
     {
+        public string Name { get; set; }
+        public bool isOn { get; set; } = false;
     }
 }

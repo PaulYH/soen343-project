@@ -8,5 +8,6 @@ namespace SHC.Entities.Light
 {
     public class RegularLight : ILight
     {
+        public string Name { get; set; }
     }
 }
