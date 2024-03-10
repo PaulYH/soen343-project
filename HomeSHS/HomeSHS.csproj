@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SHC\SHC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\NewFolder\" />
+  </ItemGroup>
+
 </Project>
