@@ -1,0 +1,73 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Door
+@using SHC.Entities.Light
+@using SHC.Entities.Room
+@using SHC.Entities.Window
+@inject IJSRuntime JsRuntime
+
+<h3>HouseLayoutRender</h3>
+
+<svg id="render-container"
+     width="1500"
+     height="1000"
+     viewBox="0 0 1500 1000">
+        @foreach (var r in renderRooms)
+        {
+            <g>
+                <rect id="@(r.Item1.Name + "-" + r.Item1.Id)"
+                      height="100"
+                      width="100"
+                      style="fill:none; stroke:black; stroke-width:2px"
+                      x="@r.Item2.x"
+                      y="@r.Item2.y"></rect>
+                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
+                      x="@(r.Item2.x + 25)"
+                      y="@(r.Item2.y + 25)">
+                    @r.Item1.Name
+                </text>
+            </g>
+        }
+    
+</svg>
+
+
+@code {
+    int rect1x = 0;
+    int rect1y = 0;
+    int rect2x = 100;
+    int rect2y = 0;
+    string showx = string.Empty;
+    string showy = string.Empty;
+
+    HouseAssembler houseAssembler = new HouseAssembler(); 
+    House house;
+    Entrance houseEntrance;
+    List<(IRoom, (double x, double y))> renderRooms = new List<(IRoom, (double x, double y))>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        renderRooms = houseAssembler.BuildLayoutStructure();
+    }
+
+    public void SetTest()
+    {
+        showx = "hello";
+        showy = "there";
+    }
+
+    /*
+        public async Task<(double, double)> GetPosition(string id)
+        {
+            string response = await JsRuntime.InvokeAsync<string>("GetRoomPosition", id);
+            var result = response.Split(' ');
+            var x = Double.Parse(result[0]);
+            var y = Double.Parse(result[1]);
+
+            showx = result[0];
+            showy = result[1];
+            return (x, y);
+        }
+    */
+    
+}

@@ -4,6 +4,7 @@ namespace SHC.Entities.Room
 {
     public class Backyard : IRoom
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public Wall LeftWall { get; set; }
         public Wall RightWall { get; set; }
