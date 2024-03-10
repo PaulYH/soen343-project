@@ -1,10 +1,35 @@
-﻿<h3>FileUpload</h3>
+﻿@page "/FileUpload"
+<h3>FileUpload</h3>
+
+@using System.IO
+@using Microsoft.AspNetCore.Components.Forms
+
+<Field>
+    <InputFile Multiple OnChange="@OnFileUpload" />
+</Field>
 
 @code {
 
+    async Task OnFileUpload(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            try
+            {
+                using (MemoryStream result = new MemoryStream())
+                {
+                    await file.OpenReadStream().CopyToAsync(result);
+                    // Process the file here - result contains the file content
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+            }
+            finally
+            {
+                this.StateHasChanged();
+            }
+        }
+    }
 }
-
-1- Page has a form that ask for a file from the computer
-
-2- get the file and call the method (Ziad will create) and include the file in the paramter
-
