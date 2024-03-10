@@ -1,36 +1,37 @@
 ﻿@page "/FileUpload"
-<h3>FileUpload</h3>
 
-using 
 @using System.IO
 @using Microsoft.AspNetCore.Components.Forms
+@using SHC.Models @* to import the object*@
 
 <Field>
-    <InputFile Multiple OnChange="@OnFileUpload" />
+    <InputFile OnChange="@OnFileUpload" accept=".csv" />
 </Field>
+<button @onclick="Submit">Submit</button>
 
 @code {
+    private MemoryStream fileContent;
+    private bool fileSelected = false;
 
     async Task OnFileUpload(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles())
+        var file = e.File; // Assuming single file, remove Multiple and handle one file
+        if (file != null)
         {
-            try
-            {
-                using (MemoryStream result = new MemoryStream())
-                {
-                    await file.OpenReadStream().CopyToAsync(result);
-                    // Process the file here - result contains the file content
-                }
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine(exc.Message);
-            }
-            finally
-            {
-                this.StateHasChanged();
-            }
+            fileContent = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(fileContent);
+            fileSelected = true; // Mark as file selected
+        }
+    }
+
+    void Submit()
+    {
+        if (fileSelected && fileContent != null)
+        {
+            fileContent.Position = 0; // Reset the position to read from the beginning
+            FileHomeReader fileHomeReader = new FileHomeReader(); // Adjust the constructor as needed
+            fileHomeReader.readFile(fileContent); // Adapt readFile to accept MemoryStream or Stream
+            fileContent.Dispose(); // Dispose the stream if no longer needed
         }
     }
 }

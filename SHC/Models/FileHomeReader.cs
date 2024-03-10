@@ -20,26 +20,36 @@ namespace SHC.Models
 
         List<IRoom> doors { get; set; } 
 
-      public FileHomeReader(String path)
+      public FileHomeReader()
         {
-            pathDB = path;
+            
         }
-        public void readFile()
+        public void readFile(Stream fileStream)
         {
             try
             {
-                string[] lines = File.ReadAllLines(pathDB);
-
-                foreach (string line in lines)
+                // Reset stream position to ensure reading from the beginning
+                if (fileStream.CanSeek)
                 {
-                    string[] values = line.Split(',');
+                    fileStream.Position = 0;
+                }
 
-                    
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+
+                        // Assuming the CSV format is known and consistent
+                        // Example: Process the values here, e.g., create IRoom objects
+                        // This is where you'd typically parse the values and create room objects or whatever the intended logic is
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
