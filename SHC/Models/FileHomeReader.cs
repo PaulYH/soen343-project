@@ -9,15 +9,14 @@ namespace SHC.Models
 {
     public class FileHomeReader {
 
-        String type;
-        String name;
+        List <String> type;
+        List <String> name;
         String pathDB;
-        String light;
-        String door;
-        String Windwo;
+        List <String> light;
+        List <String> door;
+        List <String> Windwo;
         String line;
-
-
+        
 
         List<IRoom> doors { get; set; } 
 
@@ -35,10 +34,7 @@ namespace SHC.Models
                 {
                     string[] values = line.Split(',');
 
-                    foreach (string value in values)
-                    {
-                        
-                    }
+                    
                 }
             }
             catch (Exception ex)
