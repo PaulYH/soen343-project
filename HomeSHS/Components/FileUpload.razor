@@ -2,10 +2,10 @@
 
 @using System.IO
 @using Microsoft.AspNetCore.Components.Forms
-@using SHC.Models @* to import the object*@
+@using SHC.Models
 
 <Field>
-    <InputFile OnChange="@OnFileUpload" accept=".csv" />
+    <InputFile OnChange="@OnFileUpload" accept=".txt" />
 </Field>
 <button @onclick="Submit">Submit</button>
 
@@ -15,9 +15,10 @@
 
     async Task OnFileUpload(InputFileChangeEventArgs e)
     {
-        var file = e.File; // Assuming single file, remove Multiple and handle one file
+        var file = e.File; // Handle a single file
         if (file != null)
         {
+            fileContent?.Dispose(); // Dispose previous MemoryStream if it exists
             fileContent = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(fileContent);
             fileSelected = true; // Mark as file selected
@@ -28,10 +29,20 @@
     {
         if (fileSelected && fileContent != null)
         {
-            fileContent.Position = 0; // Reset the position to read from the beginning
-            FileHomeReader fileHomeReader = new FileHomeReader(); // Adjust the constructor as needed
-            fileHomeReader.readFile(fileContent); // Adapt readFile to accept MemoryStream or Stream
-            fileContent.Dispose(); // Dispose the stream if no longer needed
+            try
+            {
+                fileContent.Position = 0; // Reset the position to read from the beginning
+                FileHomeReader fileHomeReader = new FileHomeReader();
+                fileHomeReader.readFile(fileContent); // Ensure ReadFile accepts a Stream parameter
+                Console.WriteLine(fileHomeReader);
+                Console.WriteLine("File uploaded successfully!");
+            }
+            finally
+            {
+                fileContent.Dispose(); // Dispose the stream properly
+                fileContent = null; // Ensure the reference is cleared
+                fileSelected = false; // Reset file selection state
+            }
         }
     }
 }
