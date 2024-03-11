@@ -9,8 +9,8 @@ namespace SHC.Models
 {
     public class FileHomeReader {
 
-        public List<String> type { get; set; }
-        public  List<String> name {  get;  set; }
+        public List<string> type { get; set; }
+        public  List<string> name {  get;  set; }
         public List<int> width { get; set; }
         public List<int> height { get; set; }
         public List<int> sLightNum { get; set; }

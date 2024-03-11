@@ -2,12 +2,22 @@ using HomeSHS.Database;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 builder.Services.AddDbContext<SHSDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
