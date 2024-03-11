@@ -1,0 +1,38 @@
+﻿<CascadingValue Value="this">
+    <div class="btn-group" role="group">
+        @foreach (ModuleSettingsTab tab in Tabs)
+        {
+            <button type="button"
+                    class="btn @GetButtonClass(tab)"
+                    @onclick=@(() => ActivateTab(tab))>
+                @tab.Text
+            </button>
+        }
+    </div>
+    @ChildContent
+</CascadingValue>
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public ModuleSettingsTab ActiveTab { get; set; }
+    List<ModuleSettingsTab> Tabs = new List<ModuleSettingsTab>();
+
+    internal void AddPage(ModuleSettingsTab tabPage)
+    {
+        Tabs.Add(tabPage);
+        if (Tabs.Count == 1)
+            ActiveTab = tabPage;
+        StateHasChanged();
+    }
+
+    string GetButtonClass(ModuleSettingsTab tab)
+    {
+        return tab == ActiveTab ? "btn-primary" : "btn-secondary";
+    }
+
+    void ActivateTab(ModuleSettingsTab tab)
+    {
+        ActiveTab = tab;
+    }
+}

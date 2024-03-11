@@ -1,5 +1,21 @@
 ﻿@page "/"
 @using HomeSHS.Components
+@using HomeSHS.Components.SettingsTabs
 
+<div style="display: flex; flex-direction: row; align-items: flex-start;">
+    <div>
+        <SettingsTabControl>
+            <ModuleSettingsTab Text="SHS">
+                <h4>SHS open</h4>
+            </ModuleSettingsTab>
+            <ModuleSettingsTab Text="SHC">
+                <h4>SHC open</h4>
+            </ModuleSettingsTab>
+        </SettingsTabControl>
+    </div>
 
-<HouseLayoutRender />
+    <div>
+        <HouseLayoutRender />
+    </div>
+    
+</div>
