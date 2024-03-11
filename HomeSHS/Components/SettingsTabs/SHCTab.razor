@@ -1,0 +1,31 @@
+﻿<body>
+    <div class="container">
+        <label for="item">Item</label>
+        <select id="item" multiple>
+            <option value="windows">Windows</option>
+            <option value="lights">Lights</option>
+            <option value="doors">Doors</option>
+        </select>
+        <button type="button">Open/Close</button>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="location" value="backyard"> Backyard</label>
+            <label><input type="checkbox" name="location" value="garage"> Garage</label>
+            <label><input type="checkbox" name="location" value="main"> Main</label>
+            <label><input type="checkbox" id="check-all"> All / None</label>
+        </div>
+    </div>
+    <script>
+        // handles the check-all functionality
+        document.getElementById('check-all').addEventListener('change', function () {
+            var checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+    </script>
+</body>
+
+
+@code {
+
+}
