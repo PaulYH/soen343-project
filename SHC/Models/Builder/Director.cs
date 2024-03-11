@@ -26,6 +26,7 @@ namespace SHC.Models.Builder
         {
             for (int i =0; i<roomNum; i++)
             {
+                Console.WriteLine(roomNum);
                 Console.WriteLine("Going in the loop");
                 homeBuilder.buildDoor(rd.rDoorNum[i], rd.sDoorNum[i]);
                 homeBuilder.buildWindow(rd.rWindowNum[i], rd.sWindowNum[i]);

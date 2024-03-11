@@ -26,43 +26,72 @@ namespace SHC.Models.Builder
         private List<IRoom> rooms { get; set; } = new List<IRoom>();
         private House singleHome { get; set; }
 
+        private static Random random = new Random();
+
 
         public void buildWalls() {
 
-            if (doors.Count == 0)
+            List<string> roomSides = new List<string>() { "left", "right", "top", "bottom" };
+
+            List<string> roomSidesForWindows = new List<string>() { "left", "right", "top", "bottom" };
+
+
+
+            foreach (var door in doors)
             {
-                leftWall = new Wall();
+                if (roomSides.Count == 0)
+                    break;
 
-                rightWall = new Wall();
+                var side = roomSides[random.Next(roomSides.Count)];
 
-                topWall = new Wall();
+                switch (side)
+                {
+                    case "left":
+                        leftWall.Doors = door;
+                        break;
+                    case "right":
+                        rightWall.Doors = door;
+                        break;
+                    case "top":
+                        topWall.Doors = door;
+                        break;
+                    case "bottom":
+                        bottomWall.Doors = door;
+                        break;
 
-                bottomWall = new Wall();
+
+                }
+
+                roomSides.Remove(side);
             }
 
-            if (doors.Count == 1)
+            foreach (var window in windows)
             {
-                leftWall = new Wall(doors[0]);
+                if (roomSidesForWindows.Count == 0)
+                    break;
 
-                rightWall = new Wall();
+                var side = roomSidesForWindows[random.Next(roomSidesForWindows.Count)];
 
-                topWall = new Wall();
+                switch (side)
+                {
+                    case "left":
+                        leftWall.Windows = window;
+                        break;
+                    case "right":
+                        rightWall.Windows = window;
+                        break;
+                    case "top":
+                        topWall.Windows = window;
+                        break;
+                    case "bottom":
+                        bottomWall.Windows = window;
+                        break;
 
-                bottomWall = new Wall();
+
+                }
+
+                roomSides.Remove(side);
             }
-
-            if (doors.Count == 2)
-            {
-                leftWall = new Wall(doors[0]);
-
-                rightWall = new Wall(doors[1]);
-
-                topWall = new Wall();
-
-                bottomWall = new Wall();
-            }
-
-            // Distribute the Doors, and Windows on the 4 walls.... 
         }
         public void buildWindow(int rWindowNum, int sWindowNum) {
 
@@ -149,14 +178,21 @@ namespace SHC.Models.Builder
                 default:
                     break;
             }
+            leftWall  = new Wall();
+            rightWall = new Wall();
+            topWall = new Wall();
+            bottomWall  = new Wall();
+             lights = new List<ILight>();
 
-           
+        doors = new List<IDoor>();
+        windows = new List<IWindow>();
 
 
 
-        }
+
+    }
             public void buildHouse() {
-            singleHome = new House();
+            singleHome = new House(rooms);
             
         }
 
