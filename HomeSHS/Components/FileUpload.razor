@@ -3,6 +3,9 @@
 @using System.IO
 @using SHC.Models
 @using Microsoft.AspNetCore.Components.Forms
+@using SHC.Models.Builder;
+@using SHC.Entities;
+
 
 
 <form class="file-upload-form">
@@ -22,8 +25,20 @@
 
 
 @code {
-    private MemoryStream fileContent;
+    FileHomeReader fileHomeReader;
+    MemoryStream fileContent;
     private bool fileSelected = false;
+    HomeBuilder homeBuilder;
+    Director director;
+
+    static House house;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        homeBuilder = new HomeBuilder();
+    }
 
     async Task HandleFileChange(InputFileChangeEventArgs e)
     {
@@ -39,13 +54,17 @@
 
     void Submit()
     {
+
+        Console.WriteLine("Start Submitting");
         if (fileSelected && fileContent != null)
         {
             try
             {
-                fileContent.Position = 0; // Reset the position to read from the beginning
-                FileHomeReader fileHomeReader = new FileHomeReader();
+                fileHomeReader = new FileHomeReader();
+                fileContent.Position = 0; // Reset the position to read from the 
                 fileHomeReader.readFile(fileContent); // Ensure ReadFile accepts a Stream parameter
+                director = new Director(fileHomeReader, homeBuilder);
+
                 Console.WriteLine("File uploaded successfully");
 
             }
@@ -56,5 +75,13 @@
                 fileSelected = false; // Reset file selection state
             }
         }
+        Console.WriteLine("");
+        director.constructHouse();
+        house = homeBuilder.getProduct();
+
+
+
+
+
     }
 }

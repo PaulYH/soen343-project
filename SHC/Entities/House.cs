@@ -13,11 +13,12 @@ namespace SHC.Entities
 
         public int width = 1;
 
-        public int height = 1; 
+        public int height = 1;
 
         public House (List <IRoom> pRooms)
         {
-          // Copy Constructor
+
+            rooms = pRooms;
         }
 
         public House()

@@ -7,34 +7,60 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 namespace SHC.Models.Builder
 {
     public class HomeBuilder : IBuilder
     {
-        private Wall leftWall { get; set; }
-        private Wall rightWall { get; set; }
-        private Wall topWall { get; set; }
-        private Wall bottomWall { get; set; }
-        private List<ILight> lights { get; set; }
+        private Wall leftWall { get; set; } = new Wall();
+        private Wall rightWall { get; set; } = new Wall();
+        private Wall topWall { get; set; } = new Wall();
+        private Wall bottomWall { get; set; } = new Wall();
+        private List<ILight> lights { get; set; } = new List<ILight>();
 
-        private List<IDoor> doors { get; set; } 
-        private List<IWindow> windows { get; set; } 
+        private List<IDoor> doors { get; set; } = new List<IDoor>();
+        private List<IWindow> windows { get; set; } = new List<IWindow>();
 
-        private List <IRoom> rooms { get; set; }
-
+        private List<IRoom> rooms { get; set; } = new List<IRoom>();
         private House singleHome { get; set; }
 
 
         public void buildWalls() {
-            leftWall = new Wall();
 
-            rightWall = new Wall();
+            if (doors.Count == 0)
+            {
+                leftWall = new Wall();
 
-            topWall = new Wall();
+                rightWall = new Wall();
 
-            bottomWall = new Wall();
+                topWall = new Wall();
+
+                bottomWall = new Wall();
+            }
+
+            if (doors.Count == 1)
+            {
+                leftWall = new Wall(doors[0]);
+
+                rightWall = new Wall();
+
+                topWall = new Wall();
+
+                bottomWall = new Wall();
+            }
+
+            if (doors.Count == 2)
+            {
+                leftWall = new Wall(doors[0]);
+
+                rightWall = new Wall(doors[1]);
+
+                topWall = new Wall();
+
+                bottomWall = new Wall();
+            }
 
             // Distribute the Doors, and Windows on the 4 walls.... 
         }
@@ -125,24 +151,20 @@ namespace SHC.Models.Builder
             }
 
            
-            leftWall = null;
-         rightWall = null;
-            topWall = null;
-            bottomWall = null;
-            lights = null;
-            doors = null;
-            windows = null;
+
 
 
         }
             public void buildHouse() {
             singleHome = new House();
-            rooms = null;
+            
         }
 
         public House getProduct()
         {
-            return singleHome;
+            return singleHome = new House (rooms);
+            Console.WriteLine("Mercy");
         }
+        
     }
 }

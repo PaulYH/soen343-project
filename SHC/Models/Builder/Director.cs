@@ -9,15 +9,16 @@ namespace SHC.Models.Builder
 {
     public class Director
     {
-        IBuilder homeBuilder;
+      public IBuilder homeBuilder;
 
-        FileHomeReader rd;
+        public FileHomeReader rd;
         int roomNum;
         public Director (FileHomeReader rd, IBuilder homeBuilder)
         {
             this.rd = rd;
             this.homeBuilder = homeBuilder;
             roomNum = rd.name.Count;
+            Console.WriteLine("Created");
 
         }
 
@@ -25,12 +26,15 @@ namespace SHC.Models.Builder
         {
             for (int i =0; i<roomNum; i++)
             {
+                Console.WriteLine("Going in the loop");
                 homeBuilder.buildDoor(rd.rDoorNum[i], rd.sDoorNum[i]);
                 homeBuilder.buildWindow(rd.rWindowNum[i], rd.sWindowNum[i]);
+                homeBuilder.buildWalls();
                 homeBuilder.buildLight(rd.rLightNum[i], rd.sLightNum[i]);
                 homeBuilder.buildRoom(rd.type[i], rd.name[i]);
             }
             homeBuilder.buildHouse();
+            Console.WriteLine("Home in the builder");
         }
     }
 }
