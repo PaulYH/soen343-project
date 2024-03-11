@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SHC.Services
@@ -31,5 +32,13 @@ namespace SHC.Services
             await _context.SaveChangesAsync();
             return user;
         }
+        public async Task<VirtualUser> Login(LoginRequest request)
+        {
+            var  user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email &&  u.Password == request.Password);
+            return user ?? new VirtualUser();
+
+        }
+
     }
 }
