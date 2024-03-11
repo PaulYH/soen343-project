@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 using SHC.Entities;
 using SHC.Utilities;
 using SHC.Enums;
 using SHC.Services;
+using Microsoft.EntityFrameworkCore;
+using SHC.Data;
 
 
 
@@ -18,9 +19,9 @@ namespace SHC.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController()
         {
-            _userService = userService;
+            _userService = new UserService(new SHSDbContext(new DbContextOptionsBuilder<SHSDbContext>().Options));
         }
         public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
         {

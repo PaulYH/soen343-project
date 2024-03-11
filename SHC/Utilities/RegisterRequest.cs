@@ -9,6 +9,7 @@ namespace SHC.Utilities
 {
     public class RegisterRequest
     {
+        public RegisterRequest() { }
         public UserType UserType { get; set; } = UserType.Guest;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
