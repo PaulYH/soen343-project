@@ -423,4 +423,4 @@ FodyWeavers.xsd
 *.sln.iml
 /server/CMS/appsettings.json
 /server/CMS/appsettings.Development.json
-/HomeSHS/HomeSHS.csproj
+
