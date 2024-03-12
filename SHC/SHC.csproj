@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\Reader\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.16">
@@ -19,5 +25,9 @@
 		</PackageReference>
 	</ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.4.2" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.4.2" />
+  </ItemGroup>
 
 </Project>
