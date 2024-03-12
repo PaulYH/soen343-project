@@ -6,20 +6,32 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SHC.Services;
+using Microsoft.EntityFrameworkCore;
+using SHC.Data;
 
 namespace SHC.Utilities
 {
     public class PermissionsHandler : RegisterRequestHandler
     {
-        private readonly IUserService _userService;
-        public PermissionsHandler(IUserService userService) 
+        IDbContextFactory<UserContext> DbFactory;
+        private readonly UserContext userContext;
+        public PermissionsHandler() 
         {
-            _userService = userService;
+            userContext = DbFactory.CreateDbContext();
         }
         public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
         {
-            // pass to userService
-            return await _userService.HandleRegisterRequest(request);
+            VirtualUser user = new VirtualUser();
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.Email = request.Email;
+            user.UserType = request.UserType;
+
+            userContext.Users.Add(user);
+            await userContext.SaveChangesAsync();
+            return user;
+
+
         }
     }
 }

@@ -1,32 +1,40 @@
 ﻿@page "/signup"
+
 @using Microsoft.AspNetCore.Components.Forms;
 @using SHC.Utilities;
+@using SHC.Services;
+@using SHC.Data
 
+@inject IDbContextFactory<UserContext> DbFactory
 
 <form class="form">
     <span class="signup">Sign Up</span>
-    <input type="email" placeholder="Email address" class="form--input">
-    <input type="password" placeholder="Password" class="form--input">
-    <input type="password" placeholder="Confirm password" class="form--input">
 
-    <div class="form--marketing">
-        <input id="okayToEmail" type="checkbox">
-        <label for="okayToEmail" class="checkbox">
-            I want to join the newsletter
-        </label>
-    </div>
-    <button class="form--submit">
-        Sign up
-    </button>
+    <input placeholder="First Name" class="form--input" @bind-value="request.FirstName">
+    <input placeholder="Last Name" class="form--input" @bind-value="request.LastName">
+    <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
+    <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
+    <input type="password" placeholder="Confirm password" class="form--input" @bind-value="request.PasswordConfirm">
+
+    <button class="form--submit" @onclick="Submit">Sign up</button>
 </form>
+
+
 @code {
+    RegisterRequest request;
+    UserController controller;
 
-
-
-    protected override Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+        var context = DbFactory.CreateDbContext();
+        controller = new UserController();
+        request = new RegisterRequest();
+    }
 
-
-        return base.OnInitializedAsync();
+    async void Submit()
+    {
+        Console.WriteLine("Start Submitting");
+        await controller.HandleRegisterRequest(request);
     }
 }

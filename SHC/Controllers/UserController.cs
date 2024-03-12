@@ -17,11 +17,11 @@ namespace SHC.Controllers
 {
     public class UserController : RegisterRequestHandler
     {
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
 
         public UserController()
         {
-            _userService = new UserService(new SHSDbContext(new DbContextOptionsBuilder<SHSDbContext>().Options));
+            //_userService = userService;
         }
         public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
         {
@@ -40,22 +40,22 @@ namespace SHC.Controllers
             else
             {
                 // pass to PasswordValidationHandler
-                PasswordValidationHandler passwordValidationHandler = new PasswordValidationHandler(_userService);
+                PasswordValidationHandler passwordValidationHandler = new PasswordValidationHandler();
                 return await passwordValidationHandler.HandleRegisterRequest(request);
             }
         }
-        public async Task<VirtualUser> Login(LoginRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException("request is null");
-            }
-            if (request == null) { throw new ArgumentNullException("request is null."); }
-            if (request.Email == null) { throw new ArgumentNullException("Email is null\n"); }
-            if (request.Password == null) { throw new ArgumentNullException("Password is null\n"); }
+        //public async Task<VirtualUser> Login(LoginRequest request)
+        //{
+        //    if (request == null)
+        //    {
+        //        throw new ArgumentNullException("request is null");
+        //    }
+        //    if (request == null) { throw new ArgumentNullException("request is null."); }
+        //    if (request.Email == null) { throw new ArgumentNullException("Email is null\n"); }
+        //    if (request.Password == null) { throw new ArgumentNullException("Password is null\n"); }
 
-            return await _userService.Login(request);
-        }
+        //    return await .Login(request);
+        //}
 
     }
 }

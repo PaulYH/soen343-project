@@ -18,4 +18,5 @@ public class SHSDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
     }
+
 }
