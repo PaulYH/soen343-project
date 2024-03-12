@@ -1,4 +1,6 @@
-﻿using SHC.Entities.Light;
+﻿using SHC.Entities.Door;
+using SHC.Entities.Light;
+using SHC.Entities.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +19,17 @@ namespace SHC.Entities.Room
         public Wall BottomWall { get; set; }
         public List<ILight> Lights { get; set; }
         public List<VirtualUser> Occupants { get; set; }
+
+        /// <summary>
+        /// Delete the following 2 attributes if it is not applicable 
+        /// </summary>
+        /// 
+        ///  public List <IWindow> windows { get; set; }
+
+        ///  public List<IDoor> door { get; set; }
+
+        // Make a copy construcute that accept parameter for all the above attributes
+
+
     }
 }

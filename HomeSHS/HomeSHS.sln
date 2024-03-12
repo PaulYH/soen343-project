@@ -4,11 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeSHS", "HomeSHS.csproj", "{C727F194-4CBF-40DF-A48C-4ACBFDB69A01}"
-	ProjectSection(ProjectDependencies) = postProject
-		{556CF618-6A35-42EA-B367-3DC170DB390C} = {556CF618-6A35-42EA-B367-3DC170DB390C}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHC", "..\SHC\SHC.csproj", "{556CF618-6A35-42EA-B367-3DC170DB390C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C727F194-4CBF-40DF-A48C-4ACBFDB69A01} = {C727F194-4CBF-40DF-A48C-4ACBFDB69A01}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
