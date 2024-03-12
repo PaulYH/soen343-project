@@ -28,7 +28,6 @@
     FileHomeReader fileHomeReader;
     MemoryStream fileContent;
     private bool fileSelected = false;
-    HomeBuilder homeBuilder;
     Director director;
 
     static House house;
@@ -36,8 +35,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        homeBuilder = new HomeBuilder();
     }
 
     async Task HandleFileChange(InputFileChangeEventArgs e)
@@ -54,7 +51,7 @@
 
     void Submit()
     {
-
+        HomeBuilder homeBuilder = new HomeBuilder();
         Console.WriteLine("Start Submitting");
         if (fileSelected && fileContent != null)
         {

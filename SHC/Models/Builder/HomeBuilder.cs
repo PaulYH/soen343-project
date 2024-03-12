@@ -198,7 +198,7 @@ namespace SHC.Models.Builder
 
         public House getProduct()
         {
-            return singleHome = new House (rooms);
+            return singleHome;
             Console.WriteLine("Mercy");
         }
         
