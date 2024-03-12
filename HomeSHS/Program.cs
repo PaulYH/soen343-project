@@ -1,6 +1,7 @@
-using HomeSHS.Database;
+using SHC.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Blazorise;
 using Blazorise.Bootstrap;
