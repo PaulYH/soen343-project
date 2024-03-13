@@ -22,7 +22,7 @@ namespace SHC.Controllers
         {
             _userService = userService;
         }
-        public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
+        public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
             string exceptionToThrow = "";
             if (request == null) { throw new ArgumentNullException("request is null."); }
@@ -34,7 +34,8 @@ namespace SHC.Controllers
 
             if (exceptionToThrow != "")
             {
-                throw new ArgumentNullException(exceptionToThrow);
+                //throw new ArgumentNullException(exceptionToThrow);
+                return "Invalid request: \n" + exceptionToThrow;
             }
             else
             {
@@ -43,14 +44,14 @@ namespace SHC.Controllers
                 return await passwordValidationHandler.HandleRegisterRequest(request);
             }
         }
-        public async Task<VirtualUser> Login(LoginRequest request)
+        public async Task<string> Login(LoginRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException("request is null");
             }
-            if (request == null) { throw new ArgumentNullException("request is null."); }
-            if (request.Email == null) { throw new ArgumentNullException("Email is null\n"); }
+            if (request == null) { return "request is null."; }
+            if (request.Email == null) { return "Email is null\n"; }
             if (request.Password == null) { throw new ArgumentNullException("Password is null\n"); }
 
             return await _userService.Login(request);

@@ -19,7 +19,7 @@ namespace SHC.Utilities
         { 
             _userService = userService;
         }
-        public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
+        public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
             string exceptionToThrow = "";
             if (request.Password != request.PasswordConfirm) { exceptionToThrow += "Passwords do not match.\n"; }
@@ -30,7 +30,8 @@ namespace SHC.Utilities
 
             if (exceptionToThrow != "") 
             {
-                throw new Exception(exceptionToThrow);
+                //throw new Exception(exceptionToThrow);
+                return "Invalid Password: \n" + exceptionToThrow;
             }
             else
             {

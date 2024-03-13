@@ -8,28 +8,27 @@
 
 @inject IUserService userService;
 
-<form class="form">
-    <span class="signup">Sign Up</span>
-
+<span class="signup"><b>Sign Up</b></span>
+<br>
     <input placeholder="First Name" class="form--input" @bind-value="request.FirstName">
     <input placeholder="Last Name" class="form--input" @bind-value="request.LastName">
     <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
     <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
     <input type="password" placeholder="Confirm password" class="form--input" @bind-value="request.PasswordConfirm">
 
-
-
     <button class="form--submit" @onclick="Submit">Sign up</button>
-</form>
 
+    <p>@response </p>
 
 @code {
     RegisterRequest request;
     UserController controller;
+    string response = "";
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        // base.OnInitialized();
+
         controller = new UserController(userService);
         request = new RegisterRequest();
     }
@@ -37,6 +36,9 @@
     async void Submit()
     {
         Console.WriteLine("Start Submitting");
-        await controller.HandleRegisterRequest(request);
+        response = await controller.HandleRegisterRequest(request);
+        request = new RegisterRequest();
+        StateHasChanged();
+        
     }
 }
