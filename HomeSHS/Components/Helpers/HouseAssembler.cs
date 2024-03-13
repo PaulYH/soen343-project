@@ -8,6 +8,7 @@ namespace HomeSHS.Components.Helpers
 {
     public class HouseAssembler
     {
+        SimulationContext simulationContext = SimulationContext.GetInstance();
         private List<(IRoom, (double x, double y))> renderRooms = new List<(IRoom, (double x, double y))>();
         private House house;
         private Entrance? entrance;
@@ -234,6 +235,8 @@ namespace HomeSHS.Components.Helpers
                 }
             };
 
+            result = simulationContext.House;
+
             return result;
         }
 
@@ -290,7 +293,7 @@ namespace HomeSHS.Components.Helpers
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        room.RightWall.Door.SideB = renderRoom.Item1;
+                                        renderRoom.Item1.RightWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -308,7 +311,7 @@ namespace HomeSHS.Components.Helpers
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        room.LeftWall.Door.SideB = renderRoom.Item1;
+                                        renderRoom.Item1.LeftWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -328,7 +331,7 @@ namespace HomeSHS.Components.Helpers
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        room.BottomWall.Door.SideB = renderRoom.Item1;
+                                        renderRoom.Item1.BottomWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -346,7 +349,7 @@ namespace HomeSHS.Components.Helpers
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        room.TopWall.Door.SideB = renderRoom.Item1;
+                                        renderRoom.Item1.TopWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;

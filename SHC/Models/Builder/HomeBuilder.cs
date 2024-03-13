@@ -47,15 +47,19 @@ namespace SHC.Models.Builder
                 switch (side)
                 {
                     case "left":
+                        door.Name = "LeftDoor";
                         leftWall.Door = door;
                         break;
                     case "right":
+                        door.Name = "RightDoor";
                         rightWall.Door = door;
                         break;
                     case "top":
+                        door.Name = "TopDoor";
                         topWall.Door = door;
                         break;
                     case "bottom":
+                        door.Name = "BottomDoor";
                         bottomWall.Door = door;
                         break;
 
@@ -75,70 +79,52 @@ namespace SHC.Models.Builder
                 switch (side)
                 {
                     case "left":
+                        window.Name = "LeftWindow";
                         leftWall.Window = window;
                         break;
                     case "right":
+                        window.Name = "RightWindow";
                         rightWall.Window = window;
                         break;
                     case "top":
+                        window.Name = "TopWindow";
                         topWall.Window = window;
                         break;
                     case "bottom":
+                        window.Name = "BottomWindow";
                         bottomWall.Window = window;
                         break;
-
 
                 }
 
                 roomSides.Remove(side);
             }
         }
-        public void buildWindow(int rWindowNum, int sWindowNum) {
-
-            int totalWindows = sWindowNum + rWindowNum;
+        public void buildWindow(int sWindowNum) {
 
             for (int i =0; i< sWindowNum; i++)
             {
                 windows.Add(new SmartWindow());
             }
-            for (int i = 0; i < rWindowNum; i++)
-            {
-                windows.Add(new RegularWindow());
-
-            }
              // Adding the the windows to the Wall based on the drawings
-
         }
-        public void buildDoor(int rDoorNum, int SDoorNum) {
+        public void buildDoor(int SDoorNum) {
 
             for (int i = 0; i < SDoorNum; i++)
             {
                 doors.Add(new SmartDoor());
             }
-            for (int i = 0; i < rDoorNum; i++)
-            {
-                doors.Add(new RegularDoor());
-
-            }
 
             // Adding the the Doors to the Wall based on the drawings
-
         }
-        public void buildLight(int rLightNum, int sLightNum) {
+        public void buildLight(int sLightNum) {
          
-            
             for (int i = 0; i < sLightNum; i++)
             {
-                lights.Add(new SmartLight());
+                lights.Add(new SmartLight() { Name = $"Light {i}" });
             }
-            for (int i = 0; i < rLightNum; i++)
-            {
-                lights.Add(new RegularLight());
-
-            }
-
         }
-        public void buildRoom(String type, String name)
+        public void buildRoom(int id, String type, String name)
         {
 
             switch (type)
@@ -147,6 +133,7 @@ namespace SHC.Models.Builder
                     {
                         Entrance entrance = new Entrance()
                         {
+                            Id = id,
                             Name = name,
                             LeftWall = leftWall,
                             RightWall = rightWall,
@@ -161,6 +148,7 @@ namespace SHC.Models.Builder
                     {
                         CommonRoom commonRoom = new CommonRoom()
                         {
+                            Id = id,
                             Name = name,
                             LeftWall = leftWall,
                             RightWall = rightWall,
@@ -177,6 +165,7 @@ namespace SHC.Models.Builder
                     {
                         Garage garage = new Garage()
                         {
+                            Id = id,
                             Name = name,
                             LeftWall = leftWall,
                             RightWall = rightWall,
@@ -186,13 +175,12 @@ namespace SHC.Models.Builder
                         };
                         rooms.Add(garage);
                         break;
-                    }
-                        
-                        
+                    }       
                 case "Backyard":
                     {
                         Backyard backyard = new Backyard()
                         {
+                            Id = id,
                             Name = name,
                             LeftWall = leftWall,
                             RightWall = rightWall,

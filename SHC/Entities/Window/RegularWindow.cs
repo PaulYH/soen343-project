@@ -9,5 +9,6 @@ namespace SHC.Entities.Window
     public class RegularWindow : IWindow
     {
         public string Name { get; set; }
+        public bool isBlocked { get; set; } = false;
     }
 }
