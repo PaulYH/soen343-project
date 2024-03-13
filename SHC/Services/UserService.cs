@@ -27,6 +27,7 @@ namespace SHC.Services
             user.LastName = request.LastName;
             user.Email = request.Email;
             user.UserType = request.UserType;
+            user.Password = request.Password;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
