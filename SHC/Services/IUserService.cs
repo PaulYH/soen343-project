@@ -12,7 +12,7 @@ namespace SHC.Services
     {
         Task<string> HandleRegisterRequest(RegisterRequest request);
         Task<(string, VirtualUser)> Login(LoginRequest request);
-
+        Task<IEnumerable<VirtualUser>> GetAllUsers();
 
     }
 }

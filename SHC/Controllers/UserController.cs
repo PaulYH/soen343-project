@@ -54,5 +54,11 @@ namespace SHC.Controllers
             if (error != "") { return (error, null); } else { return await _userService.Login(request); }
 
         }
+
+        public async Task<IEnumerable<VirtualUser>> GetAllUsers()
+        {
+            return await _userService.GetAllUsers();
+        }
+
     }
 }

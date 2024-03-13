@@ -35,9 +35,15 @@ namespace SHC.Services
         }
         public async Task<(string, VirtualUser?)> Login(LoginRequest request)
         {
-            var  user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email &&  u.Password == request.Password);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password);
             if (user == null) { return ("Invalid email or password", null); } else { return ("Login Successful", user); }
+        }
+
+        public async Task<IEnumerable<VirtualUser>> GetAllUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
 
     }
