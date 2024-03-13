@@ -25,12 +25,12 @@ namespace SHC.Controllers
         public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
             string exceptionToThrow = "";
-            if (request == null) { throw new ArgumentNullException("request is null."); }
-            if (request.FirstName == null) { exceptionToThrow += "FirstName is null\n"; }
-            if (request.LastName == null) { exceptionToThrow += "LastName is null\n"; }
-            if (request.Email == null) { exceptionToThrow += "Email is null\n"; }
-            if (request.Password == null) { exceptionToThrow += "Password is null\n"; }
-            if (request.PasswordConfirm == null) { exceptionToThrow += "PasswordConfirm is null\n"; }
+            if (request == null) { return "request is null."; }
+            if (request.FirstName == null || request.FirstName == "") { exceptionToThrow += "FirstName is null\n"; }
+            if (request.LastName == null || request.LastName == "") { exceptionToThrow += "LastName is null\n"; }
+            if (request.Email == null || request.Email == "") { exceptionToThrow += "Email is null\n"; }
+            if (request.Password == null || request.Password == "") { exceptionToThrow += "Password is null\n"; }
+            if (request.PasswordConfirm == null || request.PasswordConfirm == "") { exceptionToThrow += "PasswordConfirm is null\n"; }
 
             if (exceptionToThrow != "")
             {

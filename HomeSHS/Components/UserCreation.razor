@@ -18,7 +18,7 @@
     <input type="password" placeholder="Confirm password" class="form--input" @bind-value="request.PasswordConfirm">
     <label for="cars">Role:</label>
 
-    <Blazorise.Select TValue="int" @bind-value = "type">Role:
+    <Blazorise.Select TValue="int" @bind-SelectedValue= "type">Role:
         <Blazorise.SelectItem Value=0>Parent</Blazorise.SelectItem>
         <Blazorise.SelectItem Value=1>Child</Blazorise.SelectItem>
         <Blazorise.SelectItem Value=2>Guest</Blazorise.SelectItem>
@@ -41,7 +41,12 @@
     {
         controller = new UserController(userService);
         request = new RegisterRequest();
-        switch(type)
+    }
+
+    async void Submit()
+    {
+        Console.WriteLine("Start Submitting");
+        switch (type)
         {
             case 0:
                 request.UserType = UserType.Parent;
@@ -56,11 +61,6 @@
                 request.UserType = UserType.Stranger;
                 break;
         }
-    }
-
-    async void Submit()
-    {
-        Console.WriteLine("Start Submitting");
         response = await controller.HandleRegisterRequest(request);
         request = new RegisterRequest();
         StateHasChanged();
