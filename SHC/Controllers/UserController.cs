@@ -48,8 +48,8 @@ namespace SHC.Controllers
         {
             string error = "";
             if (request == null) { error += "request is null.\n"; return (error, null); }
-            if (request.Email == null) { error += "Email is null\n"; }
-            if (request.Password == null) { error += "Password is null\n"; }
+            if (request.Email == null || request.Email == "") { error += "Email is null\n"; }
+            if (request.Password == null || request.Password == "") { error += "Password is null\n"; }
 
             if (error != "") { return (error, null); } else { return await _userService.Login(request); }
 
