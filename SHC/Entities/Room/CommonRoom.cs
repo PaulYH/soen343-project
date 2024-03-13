@@ -18,15 +18,5 @@ namespace SHC.Entities.Room
         public List<ILight> Lights { get; set; } = new List<ILight>();
         public List<VirtualUser> Occupants { get; set; } = new List<VirtualUser>();
 
-        public CommonRoom(string name, Wall leftWall, Wall rightWall, Wall topWall, Wall bottomWall, List<ILight> lights)
-        {
-            Name = name;
-            LeftWall = leftWall;
-            RightWall = rightWall;
-            TopWall = topWall;
-            BottomWall = bottomWall;
-            Lights = lights;
-
-        }
     }
 }

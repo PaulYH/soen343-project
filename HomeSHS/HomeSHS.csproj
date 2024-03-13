@@ -7,6 +7,13 @@
     <UserSecretsId>f6ff0844-ccd0-432c-8160-a78e5007a8f0</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Components\NewFolder\**" />
+    <Content Remove="Components\NewFolder\**" />
+    <EmbeddedResource Remove="Components\NewFolder\**" />
+    <None Remove="Components\NewFolder\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Blazorise.Bootstrap" Version="1.4.2" />
@@ -27,10 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SHC\SHC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\NewFolder\" />
   </ItemGroup>
 
 </Project>

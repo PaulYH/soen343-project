@@ -11,27 +11,8 @@ namespace SHC.Entities
     public class Wall
     {
         public int Length { get; set; }
-        public IDoor? Doors { get; set; } 
-        public IWindow? Windows { get; set; } 
+        public IDoor? Door { get; set; } 
+        public IWindow? Window { get; set; } 
 
-        public Wall (IDoor door)
-        {
-            Doors = door;
-        }
-        public Wall(IWindow? window)
-        {
-            Windows = window;
-        }
-
-        public Wall(IDoor door, IWindow? window)
-        {
-            Doors = door;
-            Windows = window;
-        }
-
-        public Wall()
-        {
-         
-        }
     }
 }

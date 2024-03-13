@@ -1,15 +1,27 @@
 ﻿@page "/"
 @using HomeSHS.Components
+@using HomeSHS.Components.Helpers
 @using HomeSHS.Components.SettingsTabs
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
 
 <div style="display: flex; flex-direction: row; align-items: flex-start;">
+    
+    @if (simulationContext.House == null)
+    {
+        <div>
+            <FileUpload />
+        </div>
+    }
+    else
+    {
     <div>
         <SettingsTabControl>
             <ModuleSettingsTab Text="SHS">
-                <SHSTab/>
+                <SHSTab />
             </ModuleSettingsTab>
             <ModuleSettingsTab Text="SHC">
-                <SHCTab/>
+                <SHCTab />
             </ModuleSettingsTab>
         </SettingsTabControl>
     </div>
@@ -17,5 +29,21 @@
     <div>
         <HouseLayoutRender />
     </div>
-    
+    }
+
 </div>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.RefreshRequested += RefreshPage;
+    }
+
+    private void RefreshPage()
+    {
+        StateHasChanged();
+    }
+}

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using HomeSHS.Components.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services
     .AddFontAwesomeIcons();
 builder.Services.AddDbContext<SHSDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IPageRefresher, PageRefresher>();
 
 var app = builder.Build();
 

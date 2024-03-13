@@ -1,10 +1,12 @@
 ﻿@page "/FileUpload"
 
 @using System.IO
+@using HomeSHS.Components.Helpers
 @using SHC.Models
 @using Microsoft.AspNetCore.Components.Forms
 @using SHC.Models.Builder;
 @using SHC.Entities;
+@inject IPageRefresher PageRefresher
 
 
 
@@ -76,9 +78,8 @@
         director.constructHouse();
         house = homeBuilder.getProduct();
 
-
-
-
-
+        var simulationContext = SimulationContext.GetInstance();
+        simulationContext.House = house;
+        PageRefresher.CallRequestRefresh();
     }
 }

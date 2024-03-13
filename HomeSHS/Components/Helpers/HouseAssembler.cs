@@ -33,73 +33,54 @@ namespace HomeSHS.Components.Helpers
                         LeftWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new SmartDoor()
-                                {
-                                    Name = "SmartDoor1"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow1"
-                                }
+                                Name = "RegularWindow1"
                             }
+                            
                         },
                         RightWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor2"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow2"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         TopWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor3"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new SmartWindow()
-                                {
-                                    Name = "SmartWindow3"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         BottomWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor4"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow4"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         Lights = new List<ILight>()
@@ -121,73 +102,53 @@ namespace HomeSHS.Components.Helpers
                         LeftWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new SmartDoor()
-                                {
-                                    Name = "SmartDoor1"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow1"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         RightWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor2"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow2"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         TopWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor3"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new SmartWindow()
-                                {
-                                    Name = "SmartWindow3"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         BottomWall = new Wall()
                         {
                             Length = 1,
-                            Doors = new List<IDoor>()
+                            Door = new SmartDoor()
                             {
-                                new RegularDoor()
-                                {
-                                    Name = "RegularDoor4"
-                                }
+                                Name = "SmartDoor1"
                             },
-                            Windows = new List<IWindow>()
+
+                            Window = new RegularWindow()
                             {
-                                new RegularWindow()
-                                {
-                                    Name = "RegularWindow4"
-                                }
+                                Name = "RegularWindow1"
                             }
                         },
                         Lights = new List<ILight>()
@@ -202,94 +163,74 @@ namespace HomeSHS.Components.Helpers
                             }
                         }
                     },
-                                        new CommonRoom()
-                {
-                    Id = 1,
-                    Name = "Room2",
-                    LeftWall = new Wall()
+                    new CommonRoom()
                     {
-                        Length = 1,
-                        Doors = new List<IDoor>()
+                        Id = 3,
+                        Name = "Room2",
+                        LeftWall = new Wall()
                         {
-                            new SmartDoor()
-                            {
-                                Name = "SmartDoor1"
-                            }
+                                Length = 1,
+                                Door = new SmartDoor()
+                                {
+                                    Name = "SmartDoor1"
+                                },
+
+                                Window = new RegularWindow()
+                                {
+                                    Name = "RegularWindow1"
+                                }
                         },
-                        Windows = new List<IWindow>()
+                        RightWall = new Wall()
                         {
-                            new RegularWindow()
-                            {
-                                Name = "RegularWindow1"
-                            }
-                        }
-                    },
-                    RightWall = new Wall()
-                    {
-                        Length = 1,
-                        Doors = new List<IDoor>()
-                        {
-                            new RegularDoor()
-                            {
-                                Name = "RegularDoor2"
-                            }
+                                Length = 1,
+                                Door = new SmartDoor()
+                                {
+                                    Name = "SmartDoor1"
+                                },
+
+                                Window = new RegularWindow()
+                                {
+                                    Name = "RegularWindow1"
+                                }
                         },
-                        Windows = new List<IWindow>()
+                        TopWall = new Wall()
                         {
-                            new RegularWindow()
-                            {
-                                Name = "RegularWindow2"
-                            }
-                        }
-                    },
-                    TopWall = new Wall()
-                    {
-                        Length = 1,
-                        Doors = new List<IDoor>()
-                        {
-                            new RegularDoor()
-                            {
-                                Name = "RegularDoor3"
-                            }
+                                Length = 1,
+                                Door = new SmartDoor()
+                                {
+                                    Name = "SmartDoor1"
+                                },
+
+                                Window = new RegularWindow()
+                                {
+                                    Name = "RegularWindow1"
+                                }
                         },
-                        Windows = new List<IWindow>()
+                        BottomWall = new Wall()
                         {
-                            new SmartWindow()
-                            {
-                                Name = "SmartWindow3"
-                            }
-                        }
-                    },
-                    BottomWall = new Wall()
-                    {
-                        Length = 1,
-                        Doors = new List<IDoor>()
-                        {
-                            new RegularDoor()
-                            {
-                                Name = "RegularDoor4"
-                            }
+                                Length = 1,
+                                Door = new SmartDoor()
+                                {
+                                    Name = "SmartDoor1"
+                                },
+
+                                Window = new RegularWindow()
+                                {
+                                    Name = "RegularWindow1"
+                                }
                         },
-                        Windows = new List<IWindow>()
+                        Lights = new List<ILight>()
                         {
-                            new RegularWindow()
+                            new RegularLight()
                             {
-                                Name = "RegularWindow4"
+                                Name = "RegularLight1"
+                            },
+                            new SmartLight()
+                            {
+                                Name = "SmartLight2"
                             }
-                        }
-                    },
-                    Lights = new List<ILight>()
-                    {
-                        new RegularLight()
-                        {
-                            Name = "RegularLight1"
-                        },
-                        new SmartLight()
-                        {
-                            Name = "SmartLight2"
                         }
                     }
-                }
                 }
             };
 
@@ -311,19 +252,19 @@ namespace HomeSHS.Components.Helpers
                     switch (side)
                     {
                         case "left":
-                            if (CheckWallForDoors(room.LeftWall))
+                            if (CheckWallForDoor(room.LeftWall))
                                 sideWithFreeDoor = side;
                             break;
                         case "right":
-                            if (CheckWallForDoors(room.RightWall))
+                            if (CheckWallForDoor(room.RightWall))
                                 sideWithFreeDoor = side;
                             break;
                         case "top":
-                            if (CheckWallForDoors(room.TopWall))
+                            if (CheckWallForDoor(room.TopWall))
                                 sideWithFreeDoor = side;
                             break;
                         case "bottom":
-                            if (CheckWallForDoors(room.BottomWall))
+                            if (CheckWallForDoor(room.BottomWall))
                                 sideWithFreeDoor = side;
                             break;
                     }
@@ -339,22 +280,17 @@ namespace HomeSHS.Components.Helpers
                             switch (sideWithFreeDoor)
                             {
                                 case "left":
-                                    if (CheckWallForDoors(renderRoom.Item1.RightWall))
+                                    if (CheckWallForDoor(renderRoom.Item1.RightWall))
                                     {
                                         var x = renderRoom.Item2.x + 100;
                                         var y = renderRoom.Item2.y;
                                         var newCoords = (x, y);
-                                        foreach(IDoor door in room.LeftWall.Doors)
-                                        {
-                                            door.SideB = renderRoom.Item1;
-                                        }
+                                        room.LeftWall.Door.SideB = renderRoom.Item1;
+
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        foreach (IDoor door in renderRoom.Item1.RightWall.Doors)
-                                        {
-                                            door.SideB = newRenderRoom.room;
-                                        }
+                                        room.RightWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -363,22 +299,16 @@ namespace HomeSHS.Components.Helpers
                                     }
                                     break;
                                 case "right":
-                                    if (CheckWallForDoors(renderRoom.Item1.LeftWall))
+                                    if (CheckWallForDoor(renderRoom.Item1.LeftWall))
                                     {
                                         var x = renderRoom.Item2.x - 100;
                                         var y = renderRoom.Item2.y;
                                         var newCoords = (x, y);
-                                        foreach (IDoor door in room.RightWall.Doors)
-                                        {
-                                            door.SideB = renderRoom.Item1;
-                                        }
+                                        room.RightWall.Door.SideB = renderRoom.Item1;
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        foreach (IDoor door in renderRoom.Item1.LeftWall.Doors)
-                                        {
-                                            door.SideB = newRenderRoom.room;
-                                        }
+                                        room.LeftWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -389,22 +319,16 @@ namespace HomeSHS.Components.Helpers
                                 case "top":
                                     if (renderRoom.Item1 is Entrance)
                                         break;
-                                    if (CheckWallForDoors(renderRoom.Item1.BottomWall))
+                                    if (CheckWallForDoor(renderRoom.Item1.BottomWall))
                                     {
                                         var x = renderRoom.Item2.x;
                                         var y = renderRoom.Item2.y + 100;
                                         var newCoords = (x, y);
-                                        foreach (IDoor door in room.TopWall.Doors)
-                                        {
-                                            door.SideB = renderRoom.Item1;
-                                        }
+                                        room.TopWall.Door.SideB = renderRoom.Item1;
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        foreach (IDoor door in renderRoom.Item1.BottomWall.Doors)
-                                        {
-                                            door.SideB = newRenderRoom.room;
-                                        }
+                                        room.BottomWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -413,22 +337,16 @@ namespace HomeSHS.Components.Helpers
                                     }
                                     break;
                                 case "bottom":
-                                    if (CheckWallForDoors(renderRoom.Item1.TopWall))
+                                    if (CheckWallForDoor(renderRoom.Item1.TopWall))
                                     {
                                         var x = renderRoom.Item2.x;
                                         var y = renderRoom.Item2.y - 100;
                                         var newCoords = (x, y);
-                                        foreach (IDoor door in room.BottomWall.Doors)
-                                        {
-                                            door.SideB = renderRoom.Item1;
-                                        }
+                                        room.BottomWall.Door.SideB = renderRoom.Item1;
 
                                         var newRenderRoom = (room, newCoords);
 
-                                        foreach (IDoor door in renderRoom.Item1.TopWall.Doors)
-                                        {
-                                            door.SideB = newRenderRoom.room;
-                                        }
+                                        room.TopWall.Door.SideB = renderRoom.Item1;
 
                                         renderRooms.Add(newRenderRoom);
                                         renderRooms[randomIndex] = renderRoom;
@@ -458,13 +376,12 @@ namespace HomeSHS.Components.Helpers
         }
 
 
-        public bool CheckWallForDoors(Wall wall)
+        public bool CheckWallForDoor(Wall wall)
         {
-            foreach (var door in wall.Doors)
-            {
-                if (door.SideB == null)
-                    return true;
-            }
+            if (wall.Door == null)
+                return false;
+            if (wall.Door.SideB == null)
+                return true;
             return false;
         }
     }

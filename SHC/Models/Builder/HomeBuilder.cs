@@ -47,16 +47,16 @@ namespace SHC.Models.Builder
                 switch (side)
                 {
                     case "left":
-                        leftWall.Doors = door;
+                        leftWall.Door = door;
                         break;
                     case "right":
-                        rightWall.Doors = door;
+                        rightWall.Door = door;
                         break;
                     case "top":
-                        topWall.Doors = door;
+                        topWall.Door = door;
                         break;
                     case "bottom":
-                        bottomWall.Doors = door;
+                        bottomWall.Door = door;
                         break;
 
 
@@ -75,16 +75,16 @@ namespace SHC.Models.Builder
                 switch (side)
                 {
                     case "left":
-                        leftWall.Windows = window;
+                        leftWall.Window = window;
                         break;
                     case "right":
-                        rightWall.Windows = window;
+                        rightWall.Window = window;
                         break;
                     case "top":
-                        topWall.Windows = window;
+                        topWall.Window = window;
                         break;
                     case "bottom":
-                        bottomWall.Windows = window;
+                        bottomWall.Window = window;
                         break;
 
 
@@ -145,13 +145,29 @@ namespace SHC.Models.Builder
             {
                 case "Entrance":
                     {
-                        Entrance entrance = new Entrance(name, leftWall, rightWall, topWall, bottomWall, lights);
+                        Entrance entrance = new Entrance()
+                        {
+                            Name = name,
+                            LeftWall = leftWall,
+                            RightWall = rightWall,
+                            TopWall = topWall,
+                            BottomWall = bottomWall,
+                            Lights = lights
+                        };
                         rooms.Add(entrance);
                         break;
                     }
                 case "CommonRoom":
                     {
-                        CommonRoom commonRoom = new CommonRoom(name, leftWall, rightWall, topWall, bottomWall, lights);
+                        CommonRoom commonRoom = new CommonRoom()
+                        {
+                            Name = name,
+                            LeftWall = leftWall,
+                            RightWall = rightWall,
+                            TopWall = topWall,
+                            BottomWall = bottomWall,
+                            Lights = lights
+                        };
                         rooms.Add(commonRoom);
 
                         // code block
@@ -159,40 +175,51 @@ namespace SHC.Models.Builder
                     }
                 case "Garage":
                     {
-                        Garage garage = new Garage(name, leftWall, rightWall, topWall, bottomWall, lights);
+                        Garage garage = new Garage()
+                        {
+                            Name = name,
+                            LeftWall = leftWall,
+                            RightWall = rightWall,
+                            TopWall = topWall,
+                            BottomWall = bottomWall,
+                            Lights = lights
+                        };
                         rooms.Add(garage);
-
-                        // code block
                         break;
                     }
+                        
+                        
                 case "Backyard":
                     {
-                        Backyard backyard = new Backyard(name, leftWall, rightWall, topWall, bottomWall, lights);
+                        Backyard backyard = new Backyard()
+                        {
+                            Name = name,
+                            LeftWall = leftWall,
+                            RightWall = rightWall,
+                            TopWall = topWall,
+                            BottomWall = bottomWall,
+                            Lights = lights
+                        };
                         rooms.Add(backyard);
 
                         // code block
                         break;
                     }
-
-
-                default:
-                    break;
             }
             leftWall  = new Wall();
             rightWall = new Wall();
             topWall = new Wall();
             bottomWall  = new Wall();
-             lights = new List<ILight>();
-
-        doors = new List<IDoor>();
-        windows = new List<IWindow>();
-
-
-
+            lights = new List<ILight>();
+            doors = new List<IDoor>();
+            windows = new List<IWindow>();
 
     }
             public void buildHouse() {
-            singleHome = new House(rooms);
+            singleHome = new House()
+            {
+                Rooms = rooms
+            };
             
         }
 
