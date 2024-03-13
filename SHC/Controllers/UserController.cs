@@ -46,16 +46,13 @@ namespace SHC.Controllers
         }
         public async Task<string> Login(LoginRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException("request is null");
-            }
-            if (request == null) { return "request is null."; }
-            if (request.Email == null) { return "Email is null\n"; }
-            if (request.Password == null) { throw new ArgumentNullException("Password is null\n"); }
+            string error = "";
+            if (request == null) { error += "request is null.\n"; }
+            if (request.Email == null) { error += "Email is null\n"; }
+            if (request.Password == null) { error += "Password is null\n"; }
 
-            return await _userService.Login(request);
+            if (error != "") { return error; } else { return await _userService.Login(request); }
+
         }
-
     }
 }
