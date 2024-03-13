@@ -33,13 +33,11 @@ namespace SHC.Services
             await _context.SaveChangesAsync();
             return "User Creation Successful!";
         }
-        public async Task<string> Login(LoginRequest request)
+        public async Task<(string, VirtualUser?)> Login(LoginRequest request)
         {
             var  user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email &&  u.Password == request.Password);
-            if (user == null) { return "Invalid email or password"; } else { return "Login Successful"; }
-            
-
+            if (user == null) { return ("Invalid email or password", null); } else { return ("Login Successful", user); }
         }
 
     }

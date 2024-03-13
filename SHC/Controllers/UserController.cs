@@ -44,14 +44,14 @@ namespace SHC.Controllers
                 return await passwordValidationHandler.HandleRegisterRequest(request);
             }
         }
-        public async Task<string> Login(LoginRequest request)
+        public async Task<(string, VirtualUser?)> Login(LoginRequest request)
         {
             string error = "";
-            if (request == null) { error += "request is null.\n"; }
+            if (request == null) { error += "request is null.\n"; return (error, null); }
             if (request.Email == null) { error += "Email is null\n"; }
             if (request.Password == null) { error += "Password is null\n"; }
 
-            if (error != "") { return error; } else { return await _userService.Login(request); }
+            if (error != "") { return (error, null); } else { return await _userService.Login(request); }
 
         }
     }

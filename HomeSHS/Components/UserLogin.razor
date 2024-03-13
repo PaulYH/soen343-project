@@ -5,23 +5,28 @@
 @using SHC.Utilities;
 @using SHC.Services;
 @using SHC.Data
+@using SHC.Entities;
 
 @inject IUserService userService;
 
-
-<span class="login">Log In</span>
+<span class="login"><b>Log In</b></span>
+<br>
+<br>
 
 <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
 <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
 
-<button class="form--submit" @onclick="Submit">Sign up</button>
+<button class="form--submit" @onclick="Submit">Log In</button>
 
 <p>@response </p>
 
 @code {
     LoginRequest request;
     UserController controller;
-    string response = "response";
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    (string, VirtualUser?) response = ("", null);
+
 
     protected override void OnInitialized()
     {
@@ -36,6 +41,11 @@
         Console.WriteLine("Start Submitting");
         response = await controller.Login(request);
         request = new LoginRequest();
+        if (response.Item2 is not null)
+        {
+            simulationContext.CurrentUser = response.Item2;    
+        }
+
         StateHasChanged();
     }
 }

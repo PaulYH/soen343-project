@@ -11,7 +11,7 @@ namespace SHC.Services
     public interface IUserService
     {
         Task<string> HandleRegisterRequest(RegisterRequest request);
-        Task<string> Login(LoginRequest request);
+        Task<(string, VirtualUser)> Login(LoginRequest request);
 
 
     }
