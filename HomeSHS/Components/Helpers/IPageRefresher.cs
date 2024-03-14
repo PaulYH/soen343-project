@@ -2,7 +2,9 @@
 {
     public interface IPageRefresher
     {
-        event Action RefreshRequested;
-        void CallRequestRefresh();
+        event Action IndexRefreshRequested;
+        event Action SHCTabRefreshRequested;
+        void CallIndexRequestRefresh();
+        void CallSHCTabRefreshRequested();
     }
 }

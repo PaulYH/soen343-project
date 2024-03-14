@@ -240,7 +240,7 @@ namespace HomeSHS.Components.Helpers
             return result;
         }
 
-        public List<(IRoom, (double x, double y))> BuildLayoutStructure()
+        public async Task<List<(IRoom, (double x, double y))>> BuildLayoutStructure()
         {
             AddEntrance();
 
@@ -363,6 +363,8 @@ namespace HomeSHS.Components.Helpers
                 }
             }
 
+            simulationContext.SelectedRoom = renderRooms.FirstOrDefault().Item1;
+            simulationContext.SelectedGroup = "windows";
             return renderRooms;
         }
 

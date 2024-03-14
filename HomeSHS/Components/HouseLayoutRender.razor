@@ -5,29 +5,34 @@
 @using SHC.Entities.Room
 @using SHC.Entities.Window
 @inject IJSRuntime JsRuntime
+@inject IPageRefresher PageRefresher
 
-<svg id="render-container"
-     width="1500"
-     height="1000"
-     viewBox="0 0 1500 1000">
-        @foreach (var r in renderRooms)
-        {
-            <g>
-                <rect id="@(r.Item1.Name + "-" + r.Item1.Id)"
-                      height="100"
-                      width="100"
-                      style="fill:none; stroke:black; stroke-width:2px"
-                      x="@r.Item2.x"
-                      y="@r.Item2.y"></rect>
-                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
-                      x="@(r.Item2.x + 25)"
-                      y="@(r.Item2.y + 25)">
-                    @r.Item1.Name
-                </text>
-            </g>
-        }
-    
-</svg>
+<body>
+    <div class="container">
+        <svg id="render-container"
+             width="1500"
+             height="1000"
+             viewBox="0 0 1500 1000">
+            @foreach (var r in renderRooms)
+            {
+                <g>
+                    <rect id="@(r.Item1.Name + "-" + r.Item1.Id)"
+                          height="100"
+                          width="100"
+                          style="fill:white; stroke:black; stroke-width:2px"
+                          x="@r.Item2.x"
+                          y="@r.Item2.y"
+                          @onclick=@(() => SetSelectedRoom(r.Item1))></rect>
+                    <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
+                          x="@(r.Item2.x + 25)"
+                          y="@(r.Item2.y + 25)">
+                        @r.Item1.Name
+                    </text>
+                </g>
+            }
+        </svg>
+    </div>
+</body>
 
 
 @code {
@@ -48,17 +53,16 @@
     {
         if (!simulationContext.hasRenderLoaded)
         {
-            Thread.Sleep(1000);
-            simulationContext.RenderRooms = houseAssembler.BuildLayoutStructure();
+            simulationContext.RenderRooms = await houseAssembler.BuildLayoutStructure();
             renderRooms = simulationContext.RenderRooms;
             simulationContext.hasRenderLoaded = true;
         }
     }
 
-    public void SetTest()
+    public void SetSelectedRoom(IRoom selectedRoom)
     {
-        showx = "hello";
-        showy = "there";
+        simulationContext.SelectedRoom = selectedRoom;
+        PageRefresher.CallSHCTabRefreshRequested();
     }
 
     /*

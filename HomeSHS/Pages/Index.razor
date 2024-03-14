@@ -5,7 +5,7 @@
 @using SHC.Entities
 @inject IPageRefresher PageRefresher
 
-<div style="display: flex; flex-direction: row; align-items: flex-start;">
+<div class="main-container">
     
     @if (simulationContext.House == null)
     {
@@ -15,7 +15,7 @@
     }
     else
     {
-    <div>
+    <div class="tabs-container">
         <SettingsTabControl>
             <ModuleSettingsTab Text="SHS">
                 <SHSTab />
@@ -26,7 +26,7 @@
         </SettingsTabControl>
     </div>
 
-    <div>
+    <div class="home-view-container">
         <HouseLayoutRender />
     </div>
     }
@@ -39,10 +39,10 @@
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        PageRefresher.RefreshRequested += RefreshPage;
+        PageRefresher.IndexRefreshRequested += RefreshIndex;
     }
 
-    private void RefreshPage()
+    private void RefreshIndex()
     {
         StateHasChanged();
     }

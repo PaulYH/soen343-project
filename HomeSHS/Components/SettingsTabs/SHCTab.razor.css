@@ -2,13 +2,6 @@
     font-family: Arial, sans-serif;
 }
 
-.container {
-    width: 200px;
-    padding: 20px;
-    border: 1px solid #000;
-    margin-top: 20px;
-}
-
 select, button, .checkbox-group {
     width: 100%;
     margin: 10px 0;

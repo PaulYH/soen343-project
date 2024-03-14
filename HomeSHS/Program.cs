@@ -7,6 +7,7 @@ using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using HomeSHS.Components.Helpers;
+using SHC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

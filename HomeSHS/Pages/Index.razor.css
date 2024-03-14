@@ -1,0 +1,23 @@
+﻿.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    row-gap: 20px;
+}
+
+.tabs-container {
+    padding: 20px;
+    border: 1px solid #000;
+    margin-top: 20px;
+    margin-right: 10px;
+    min-width: 275px;
+}
+
+.home-view-container {
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    border: 1px solid #000;
+    margin-top: 20px;
+    margin-left: 10px;
+}

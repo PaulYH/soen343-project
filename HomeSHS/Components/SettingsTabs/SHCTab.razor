@@ -1,18 +1,49 @@
-﻿<body>
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Door
+@using SHC.Entities.Light
+@using SHC.Entities.Window
+@inject IPageRefresher PageRefresher
+
+<body>
+    <br />
     <div class="container">
-        <label for="item">Item</label>
+        <h3 for="item">@simulationContext.SelectedRoom.Name</h3>
         <select id="item" multiple>
-            <option value="windows">Windows</option>
-            <option value="lights">Lights</option>
-            <option value="doors">Doors</option>
+            <option value="windows" @onclick=@(async () => await SetSelectedGroup("windows"))>Windows</option>
+            <option value="lights" @onclick=@(async () => await SetSelectedGroup("lights"))>Lights</option>
+            <option value="doors" @onclick=@(async () => await SetSelectedGroup("doors"))>Doors</option>
         </select>
-        <button type="button">Open/Close</button>
-        <div class="checkbox-group">
-            <label><input type="checkbox" name="location" value="backyard"> Backyard</label>
-            <label><input type="checkbox" name="location" value="garage"> Garage</label>
-            <label><input type="checkbox" name="location" value="main"> Main</label>
-            <label><input type="checkbox" id="check-all"> All / None</label>
-        </div>
+        @if (simulationContext.SelectedGroup == "windows")
+        {
+            <h4>Is Open?</h4>
+            <div class="checkbox-group">
+                @foreach(var window in selectedRoomWindows)
+                {
+                    <label><input type="checkbox" checked="@window.isOpen" @onclick=@(() => ToggleSettingWindow(window)) name="location" value="@window.Name"> @window.Name</label>
+                }
+            </div>
+        }
+        @if (simulationContext.SelectedGroup == "lights")
+        {
+            <h4>Is On?</h4>
+            <div class="checkbox-group">
+                @foreach (var light in selectedRoomLights)
+                {
+                    <label><input type="checkbox" checked="@light.isOn" @onclick=@(() => ToggleSettingLight(light)) name="location" value="@light.Name"> @light.Name</label>
+                }
+            </div>
+        }
+        @if (simulationContext.SelectedGroup == "doors")
+        {
+            <h4>Is Locked?</h4>
+            <div class="checkbox-group">
+                @foreach (var door in selectedRoomDoors)
+                {
+                    <label><input type="checkbox" checked="@door.IsLocked" @onclick=@(() => ToggleSettingDoor(door)) name="location" value="@door.Name"> @door.Name</label>
+                }
+            </div>
+        }
     </div>
     <script>
         // handles the check-all functionality
@@ -27,5 +58,78 @@
 
 
 @code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    List<SmartWindow> selectedRoomWindows = new List<SmartWindow>();
+    List<SmartDoor> selectedRoomDoors = new List<SmartDoor>();
+    List<SmartLight> selectedRoomLights = new List<SmartLight>();
 
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHCTabRefreshRequested += RefreshSHCTab;
+
+        await SetSelectedRoomWindows();
+        await SetSelectedRoomDoors();
+        await SetSelectedRoomLights();
+    }
+
+    private async Task SetSelectedGroup(string group)
+    {
+        simulationContext.SelectedGroup = group;
+        PageRefresher.CallSHCTabRefreshRequested();
+    }
+
+    private void RefreshSHCTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+
+    private async Task SetSelectedRoomWindows()
+    {
+        selectedRoomWindows = new List<SmartWindow>();
+        if (simulationContext.SelectedRoom.LeftWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)simulationContext.SelectedRoom.LeftWall.Window);
+        if (simulationContext.SelectedRoom.RightWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)simulationContext.SelectedRoom.RightWall.Window);
+        if (simulationContext.SelectedRoom.TopWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)simulationContext.SelectedRoom.TopWall.Window);
+        if (simulationContext.SelectedRoom.BottomWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)simulationContext.SelectedRoom.BottomWall.Window);
+    }
+
+    private async Task SetSelectedRoomDoors()
+    {
+        selectedRoomDoors = new List<SmartDoor>();
+        if (simulationContext.SelectedRoom.LeftWall.Door != null)
+            selectedRoomDoors.Add((SmartDoor)simulationContext.SelectedRoom.LeftWall.Door);
+        if (simulationContext.SelectedRoom.RightWall.Door != null)
+            selectedRoomDoors.Add((SmartDoor)simulationContext.SelectedRoom.RightWall.Door);
+        if (simulationContext.SelectedRoom.TopWall.Door != null)
+            selectedRoomDoors.Add((SmartDoor)simulationContext.SelectedRoom.TopWall.Door);
+        if (simulationContext.SelectedRoom.BottomWall.Door != null)
+            selectedRoomDoors.Add((SmartDoor)simulationContext.SelectedRoom.BottomWall.Door);
+    }
+
+    private async Task SetSelectedRoomLights()
+    {
+        selectedRoomLights = new List<SmartLight>();
+        if (simulationContext.SelectedRoom.Lights != null)
+            foreach (var light in simulationContext.SelectedRoom.Lights)
+                selectedRoomLights.Add((SmartLight)light);
+    }
+
+    private async Task ToggleSettingWindow(SmartWindow window)
+    {
+        window.isOpen = !window.isOpen;
+        OnInitializedAsync();
+    }
+    private async Task ToggleSettingDoor(SmartDoor door)
+    {
+        door.IsLocked = !door.IsLocked;
+    }
+    private async Task ToggleSettingLight(SmartLight light)
+    {
+        light.isOn = !light.isOn;
+    }
 }

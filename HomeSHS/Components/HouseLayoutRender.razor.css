@@ -1,0 +1,13 @@
+﻿body {
+    font-family: Arial, sans-serif;
+}
+
+.containers {
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    border: 1px solid #000;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
