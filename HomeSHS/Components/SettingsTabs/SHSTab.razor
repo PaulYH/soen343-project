@@ -1,5 +1,88 @@
-﻿<h3>SHSTab</h3>
+﻿<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Home System (SHS) Dashboard</title>
+</head>
+<body>
 
+    <div class="container">
+ 
+        <!-- User profiles section -->
+        <div class="form-section">
+            <label for="user-profiles">User Profiles:</label>
+
+            <select id="user-profiles" multiple>
+                <option value="user1">User 1</option>
+                <option value="user2">User 2</option>
+
+            </select>
+            <button>Add</button>
+            <button>Remove</button>
+            <button>Edit</button>
+        </div>
+
+        <!-- Date and time section -->
+        <div class="form-section datetime-container">
+            <div class="gap">
+                <div>
+                    <label for="date">Set Date:</label>
+                    <input type="date" id="date">
+                </div>
+
+                <div>
+                    <label for="time">Set Time:</label>
+                    <input type="time" id="time">
+                </div>
+            </div>
+            <button class="button-date-time">Set Date and Time</button>
+        </div>
+        <!--<button class="button-date-time">Set Date and Time</button> -->
+        <!-- Login and location section -->
+        <div class="form-section">
+            <label for="login">Log in with User Profile:</label>
+            <select id="login">
+
+                <option value="user1">User 1</option>
+                <option value="user2">User 2</option>
+
+            </select>
+            <button>Log In</button>
+        </div>
+
+        <div class="form-section">
+            <label for="house-location">Set House Location:</label>
+            <input type="text" id="house-location" placeholder="Enter house location">
+            <button>Set Location</button>
+        </div>
+
+        <!-- Modules and permissions section -->
+        <div class="form-section">
+            <h2>Modules and Permissions</h2>
+
+            <div>
+                <label class="SHC">Smart Home Control (SHC):</label>
+                <div>
+                    <input type="checkbox" id="shc-lights" name="shc-commands" value="lights">
+                    <label for="shc-lights">Control Lights</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="shc-locks" name="shc-commands" value="locks">
+                    <label for="shc-locks">Control Locks (Depends on user location)</label>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+    </script>
+
+</body>
+</html>
 
 
 @code {
