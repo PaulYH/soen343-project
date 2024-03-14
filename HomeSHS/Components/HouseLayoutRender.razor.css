@@ -11,3 +11,11 @@
     margin-left: 20px;
 }
 
+.text-regular {
+    font: 15px sans-serif;
+}
+
+.text-selected {
+    font: bold 15px sans-serif;
+}
+

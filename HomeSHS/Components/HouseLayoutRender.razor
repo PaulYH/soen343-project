@@ -10,9 +10,9 @@
 <body>
     <div class="container">
         <svg id="render-container"
-             width="1500"
+             width="1000"
              height="1000"
-             viewBox="0 0 1500 1000">
+             viewBox="0 0 1000 1000">
             @foreach (var r in renderRooms)
             {
                 <g>
@@ -24,8 +24,10 @@
                           y="@r.Item2.y"
                           @onclick=@(() => SetSelectedRoom(r.Item1))></rect>
                     <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
-                          x="@(r.Item2.x + 25)"
-                          y="@(r.Item2.y + 25)">
+                          class="@(simulationContext.SelectedRoom.Id == r.Item1.Id ? "text-selected" : "text-regular")"
+                          x="@(r.Item2.x + 12)"
+                          y="@(r.Item2.y + 50)"
+                          @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @r.Item1.Name
                     </text>
                 </g>
@@ -55,6 +57,7 @@
         {
             simulationContext.RenderRooms = await houseAssembler.BuildLayoutStructure();
             renderRooms = simulationContext.RenderRooms;
+            simulationContext.SelectedRoom = renderRooms.FirstOrDefault().Item1;
             simulationContext.hasRenderLoaded = true;
         }
     }

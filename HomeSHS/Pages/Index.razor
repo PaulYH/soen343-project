@@ -15,6 +15,21 @@
     }
     else
     {
+    <div class="context-container">
+        @if (simulationContext.CurrentDateTime == null)
+        {
+            <div class="user-container">
+                <p>Hello</p>
+            </div>
+        }
+        else
+        {
+            <div class="simulation-container">
+                <p>Hello2</p>
+            </div>
+        }   
+    </div>
+
     <div class="tabs-container">
         <SettingsTabControl>
             <ModuleSettingsTab Text="SHS">
