@@ -15,32 +15,9 @@
     }
     else
     {
-    <div class="context-container">
-        @if (simulationContext.CurrentDateTime == null)
-        {
-            <div class="user-container">
-                <p>Hello</p>
-            </div>
-        }
-        else
-        {
-            <div class="simulation-container">
-                <p>Hello2</p>
-            </div>
-        }   
+    <div>
+        <SimulatorSettings />    
     </div>
-
-    <div class="tabs-container">
-        <SettingsTabControl>
-            <ModuleSettingsTab Text="SHS">
-                <SHSTab />
-            </ModuleSettingsTab>
-            <ModuleSettingsTab Text="SHC">
-                <SHCTab />
-            </ModuleSettingsTab>
-        </SettingsTabControl>
-    </div>
-
     <div class="home-view-container">
         <HouseLayoutRender />
     </div>

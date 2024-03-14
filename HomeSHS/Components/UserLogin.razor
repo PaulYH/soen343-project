@@ -9,16 +9,12 @@
 
 @inject IUserService userService;
 
-<span class="login"><b>Log In</b></span>
-<br>
-<br>
-
-<input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
-<input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
-
-<button class="form--submit" @onclick="Submit">Log In</button>
-
-<p>@response.Item1 </p>
+<div class="container">
+    <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
+    <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
+    <button class="form--submit" @onclick="Submit">Log In</button>
+    <p>@response.Item1 </p>
+</div>
 
 @code {
     LoginRequest request;

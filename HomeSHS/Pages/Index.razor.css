@@ -5,22 +5,6 @@
     row-gap: 20px;
 }
 
-.context-container {
-    padding: 20px;
-    border: 1px solid #000;
-    margin-top: 20px;
-    margin-right: 10px;
-    min-width: 275px;
-}
-
-.tabs-container {
-    padding: 20px;
-    border: 1px solid #000;
-    margin-top: 20px;
-    margin-right: 10px;
-    min-width: 275px;
-}
-
 .home-view-container {
     width: fit-content;
     height: fit-content;

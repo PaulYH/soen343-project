@@ -1,0 +1,26 @@
+﻿.simulator-settings-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 1062px;
+}
+
+.context-container {
+    padding: 20px;
+    border: 1px solid #000;
+    margin-top: 20px;
+    margin-right: 10px;
+    min-width: 275px;
+}
+
+.user-container {
+    width: 250px;
+}
+
+.settings-tabs-container {
+    padding: 20px;
+    border: 1px solid #000;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 275px;
+}
