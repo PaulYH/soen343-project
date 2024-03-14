@@ -4,7 +4,9 @@
     {
         event Action IndexRefreshRequested;
         event Action SHCTabRefreshRequested;
+        event Action SimulatorSettingsRefreshRequested;
         void CallIndexRequestRefresh();
         void CallSHCTabRefreshRequested();
+        void CallSimulatorSettingsRefresh();
     }
 }

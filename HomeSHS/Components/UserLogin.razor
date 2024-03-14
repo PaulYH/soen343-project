@@ -1,5 +1,6 @@
 ﻿@page "/login"
 
+@using HomeSHS.Components.Helpers
 @using Microsoft.AspNetCore.Components.Forms;
 @using SHC.Controllers;
 @using SHC.Utilities;
@@ -8,6 +9,7 @@
 @using SHC.Entities;
 
 @inject IUserService userService;
+@inject IPageRefresher PageRefresher;
 
 <div class="container">
     <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
@@ -42,6 +44,6 @@
             simulationContext.CurrentUser = response.Item2;    
         }
 
-        StateHasChanged();
+        PageRefresher.CallSimulatorSettingsRefresh();
     }
 }

@@ -4,6 +4,7 @@
     {
         public event Action IndexRefreshRequested;
         public event Action SHCTabRefreshRequested;
+        public event Action SimulatorSettingsRefreshRequested;
 
         public void CallIndexRequestRefresh()
         {
@@ -13,6 +14,11 @@
         public void CallSHCTabRefreshRequested()
         {
             SHCTabRefreshRequested?.Invoke();
+        }
+
+        public void CallSimulatorSettingsRefresh()
+        {
+            SimulatorSettingsRefreshRequested?.Invoke();
         }
     }
 }

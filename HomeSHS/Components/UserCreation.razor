@@ -1,5 +1,6 @@
 ﻿@page "/signup"
 
+@using HomeSHS.Components.Helpers
 @using Microsoft.AspNetCore.Components.Forms;
 @using SHC.Controllers;
 @using SHC.Utilities;
@@ -8,6 +9,7 @@
 @using SHC.Enums;
 
 @inject IUserService userService;
+@inject IPageRefresher PageRefresher
 
 <div class="container">
     <input placeholder="First Name" class="form--input" @bind-value="request.FirstName">
@@ -60,6 +62,6 @@
         response = await controller.HandleRegisterRequest(request);
         request = new RegisterRequest();
         StateHasChanged();
-        
+
     }
 }

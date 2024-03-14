@@ -1,4 +1,6 @@
-﻿@using SHC.Entities
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
 
 <div class="simulator-settings-container">
     <div class="context-container">
@@ -11,7 +13,7 @@
         else
         {
             <div class="simulation-container">
-                <p>Hello2</p>
+                <SimulationInfo />
             </div>
         }
     </div>
@@ -27,4 +29,14 @@
 
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        PageRefresher.SimulatorSettingsRefreshRequested += RefreshSimulatorSettings;
+    }
+
+    public void RefreshSimulatorSettings()
+    {
+        StateHasChanged();
+    }
 }
