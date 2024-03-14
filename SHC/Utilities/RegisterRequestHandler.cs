@@ -9,6 +9,6 @@ namespace SHC.Utilities
 {
     internal interface RegisterRequestHandler
     {
-        Task<VirtualUser> HandleRegisterRequest(RegisterRequest request);
+        Task<string> HandleRegisterRequest(RegisterRequest request);
     }
 }

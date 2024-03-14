@@ -10,9 +10,9 @@ namespace SHC.Services
 {
     public interface IUserService
     {
-        Task<VirtualUser> HandleRegisterRequest(RegisterRequest request);
-        Task<VirtualUser> Login(LoginRequest request);
-
+        Task<string> HandleRegisterRequest(RegisterRequest request);
+        Task<(string, VirtualUser)> Login(LoginRequest request);
+        Task<IEnumerable<VirtualUser>> GetAllUsers();
 
     }
 }
