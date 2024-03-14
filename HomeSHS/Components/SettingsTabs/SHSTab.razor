@@ -1,0 +1,52 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Room
+@inject IPageRefresher PageRefresher
+
+<body>
+    <br />
+    <div class="container">
+        <select id="item" multiple>
+            @foreach(var room in renderedRooms)
+            {
+                <option value="room" @onclick="@(() => SelectRoom(room.Item1))">@room.Item1.Name</option>
+            }
+        </select>
+        <Button>Move user here</Button>
+    </div>
+</body>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    VirtualUser? currentUser;
+    List<(IRoom, (double x, double y))>? renderedRooms;
+    IRoom selectedRoom;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHSTabRefreshRequested += RefreshSHSTab;
+
+        renderedRooms = simulationContext.RenderRooms;
+        currentUser = simulationContext.CurrentUser;
+        selectedRoom = renderedRooms.FirstOrDefault().Item1;
+    }
+
+    private void SelectRoom(IRoom room)
+    {
+        selectedRoom = room;
+    }
+
+    private void MoveUser()
+    {
+        currentUser.CurrentLocation = selectedRoom;
+        simulationContext.CurrentUser.CurrentLocation = selectedRoom;
+        PageRefresher.CallSimulatorSettingsRefresh();
+    }
+
+    private void RefreshSHSTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+}

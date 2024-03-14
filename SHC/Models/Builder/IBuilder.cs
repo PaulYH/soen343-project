@@ -15,10 +15,10 @@ namespace SHC.Models.Builder
     public interface IBuilder
     {
         public void buildWalls();
-        public void buildWindow(int rWindowNum, int sWindowNum);
-        public void buildDoor(int rDoorNum, int SDoorNum);
-        public void buildLight(int rLightNum, int sLightNum);
-        public void buildRoom(String type, String name);
+        public void buildWindow(int sWindowNum);
+        public void buildDoor(int SDoorNum);
+        public void buildLight(int sLightNum);
+        public void buildRoom(int id, String type, String name);
         public void buildHouse();
 
         public House getProduct();

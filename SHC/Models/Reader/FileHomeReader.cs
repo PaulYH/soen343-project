@@ -9,34 +9,14 @@ namespace SHC.Models
 {
     public class FileHomeReader {
 
-        public List<string> type { get; set; }
-        public  List<string> name {  get;  set; }
-        public List<int> width { get; set; }
-        public List<int> height { get; set; }
-        public List<int> sLightNum { get; set; }
-        public List<int> rLightNum { get; set; }
-        public List<int> sDoorNum { get; set; }
-        public List<int> rDoorNum { get; set; }
-        public List<int> sWindowNum { get; set; }
-        public List<int> rWindowNum { get; set; }
+        public List<string> Type { get; set; } = new List<string>();
+        public  List<string> Name {  get;  set; } = new List<string>();
+        public List<int> Width { get; set; } = new List<int>();
+        public List<int> Height { get; set; } = new List<int>();
+        public List<int> LightQty { get; set; } = new List<int>();
+        public List<int> DoorQty { get; set; } = new List<int>();
+        public List<int> WindowQty { get; set; } = new List<int>();
 
-
-
-
-
-        public FileHomeReader()
-        {
-            type = new List<string>();
-            name = new List<string>();
-            width = new List<int>();
-            height = new List<int>();
-            sLightNum = new List<int>();
-            rLightNum = new List<int>();
-            sDoorNum = new List<int>();
-            rDoorNum = new List<int>();
-            sWindowNum = new List<int>();
-            rWindowNum = new List<int>();
-        }
         public void readFile(Stream fileStream)
         {
             try
@@ -53,24 +33,49 @@ namespace SHC.Models
                     {
                         var line = reader.ReadLine();
                         var values = line.Split(',');
-                        type.Add(values[0]);
-                        name.Add(values[1]);
+                        Type.Add(values[0]);
 
-                        string[] dimensions = values[2].Split('/');
-                        width.Add(int.Parse(dimensions[0]));
-                        height.Add(int.Parse(dimensions[1]));
+                        switch (values[0])
+                        {
+                            case "Entrance":
+                                Name.Add("Entrance");
+                                Width.Add(1);
+                                Height.Add(1);
+                                LightQty.Add(int.Parse(values[1]));
+                                DoorQty.Add(int.Parse(values[2]));
+                                WindowQty.Add(int.Parse(values[3]));
+                                break;
+                            case "Garage":
+                                Name.Add("Garage");
 
-                        string[] sLights = values[3].Split('/');
-                        sLightNum.Add(int.Parse(sLights[0]));
-                        rLightNum.Add(int.Parse(sLights[1]));
+                                string[] gDimensions = values[2].Split('/');
+                                Width.Add(int.Parse(gDimensions[0]));
+                                Height.Add(int.Parse(gDimensions[1]));
 
-                        string[] sDoors = values[4].Split('/');
-                        sDoorNum.Add(int.Parse(sDoors[0]));
-                        rDoorNum.Add(int.Parse(sDoors[1]));
+                                LightQty.Add(int.Parse(values[3]));
+                                DoorQty.Add(int.Parse(values[4]));
+                                WindowQty.Add(int.Parse(values[5]));
+                                break;
+                            case "Backyard":
+                                Name.Add("Backyard");
+                                Width.Add(1);
+                                Height.Add(1);
+                                LightQty.Add(int.Parse(values[1]));
+                                DoorQty.Add(0);
+                                WindowQty.Add(0);
+                                break;
+                            case "CommonRoom":
+                                Name.Add(values[1]);
 
-                        string[] sWindows = values[5].Split('/');
-                        sWindowNum.Add(int.Parse(sWindows[0]));
-                        rWindowNum.Add(int.Parse(sWindows[1]));
+                                string[] rDimensions = values[2].Split('/');
+                                Width.Add(int.Parse(rDimensions[0]));
+                                Height.Add(int.Parse(rDimensions[1]));
+
+                                LightQty.Add(int.Parse(values[3]));
+                                DoorQty.Add(int.Parse(values[4]));
+                                WindowQty.Add(int.Parse(values[5]));
+                                break;
+                        }
                     }
                 }
             }

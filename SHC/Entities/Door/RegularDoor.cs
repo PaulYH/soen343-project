@@ -10,7 +10,7 @@ namespace SHC.Entities.Door
     public class RegularDoor : IDoor
     {
         public string Name { get; set; }
-        public IRoom SideA { get; set; }
-        public IRoom SideB { get; set; }
+        public IRoom? SideA { get; set; }
+        public IRoom? SideB { get; set; }
     }
 }

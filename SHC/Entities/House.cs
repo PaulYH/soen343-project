@@ -9,21 +9,11 @@ namespace SHC.Entities
 {
     public class House
     {
-        public List<IRoom>? rooms { get; set; }
+        public List<IRoom>? Rooms { get; set; }
 
         public int width = 1;
 
         public int height = 1;
 
-        public House (List <IRoom> pRooms)
-        {
-
-            rooms = pRooms;
-        }
-
-        public House()
-        {
-
-        }
     }
 }

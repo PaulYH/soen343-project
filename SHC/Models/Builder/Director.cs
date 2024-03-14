@@ -17,22 +17,22 @@ namespace SHC.Models.Builder
         {
             this.rd = rd;
             this.homeBuilder = homeBuilder;
-            roomNum = rd.name.Count;
+            roomNum = rd.Name.Count;
             Console.WriteLine("Created");
 
         }
 
         public void constructHouse()
         {
-            for (int i =0; i<roomNum; i++)
+            for (int i = 0; i < roomNum; i++)
             {
                 Console.WriteLine(roomNum);
                 Console.WriteLine("Going in the loop");
-                homeBuilder.buildDoor(rd.rDoorNum[i], rd.sDoorNum[i]);
-                homeBuilder.buildWindow(rd.rWindowNum[i], rd.sWindowNum[i]);
+                homeBuilder.buildDoor(rd.DoorQty[i]);
+                homeBuilder.buildWindow(rd.WindowQty[i]);
                 homeBuilder.buildWalls();
-                homeBuilder.buildLight(rd.rLightNum[i], rd.sLightNum[i]);
-                homeBuilder.buildRoom(rd.type[i], rd.name[i]);
+                homeBuilder.buildLight(rd.LightQty[i]);
+                homeBuilder.buildRoom(i, rd.Type[i], rd.Name[i]);
             }
             homeBuilder.buildHouse();
             Console.WriteLine("Home in the builder");

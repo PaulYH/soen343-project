@@ -1,7 +1,41 @@
 ﻿@page "/"
 @using HomeSHS.Components
+@using HomeSHS.Components.Helpers
+@using HomeSHS.Components.SettingsTabs
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
 
-<PageTitle>Index</PageTitle>
+<div class="main-container">
+    
+    @if (simulationContext.House == null)
+    {
+        <div>
+            <FileUpload />
+        </div>
+    }
+    else
+    {
+    <div>
+        <SimulatorSettings />    
+    </div>
+    <div class="home-view-container">
+        <HouseLayoutRender />
+    </div>
+    }
 
-<h1>Hello, world!</h1>
-<FileUpload />
+</div>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.IndexRefreshRequested += RefreshIndex;
+    }
+
+    private void RefreshIndex()
+    {
+        StateHasChanged();
+    }
+}

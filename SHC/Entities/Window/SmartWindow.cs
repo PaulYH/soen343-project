@@ -10,5 +10,6 @@ namespace SHC.Entities.Window
     {
         public string Name { get; set; }
         public bool isOpen { get; set; } = false;
+        public bool isBlocked { get; set; } = false;
     }
 }

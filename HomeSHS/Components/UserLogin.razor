@@ -1,5 +1,6 @@
 ﻿@page "/login"
 
+@using HomeSHS.Components.Helpers
 @using Microsoft.AspNetCore.Components.Forms;
 @using SHC.Controllers;
 @using SHC.Utilities;
@@ -8,17 +9,14 @@
 @using SHC.Entities;
 
 @inject IUserService userService;
+@inject IPageRefresher PageRefresher;
 
-<span class="login"><b>Log In</b></span>
-<br>
-<br>
-
-<input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
-<input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
-
-<button class="form--submit" @onclick="Submit">Log In</button>
-
-<p>@response.Item1 </p>
+<div class="container">
+    <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
+    <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
+    <button class="form--submit" @onclick="Submit">Log In</button>
+    <p>@response.Item1 </p>
+</div>
 
 @code {
     LoginRequest request;
@@ -46,6 +44,6 @@
             simulationContext.CurrentUser = response.Item2;    
         }
 
-        StateHasChanged();
+        PageRefresher.CallSimulatorSettingsRefresh();
     }
 }

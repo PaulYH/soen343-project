@@ -22,6 +22,7 @@ namespace SHC.Services
         }
         public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
+            SimulationContext simulationContext = SimulationContext.GetInstance();
             VirtualUser user = new VirtualUser();
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
@@ -31,7 +32,8 @@ namespace SHC.Services
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return "User Creation Successful!";
+            simulationContext.CurrentUser = user;
+            return "User Creation Successful! Please log in to continue.";
         }
         public async Task<(string, VirtualUser?)> Login(LoginRequest request)
         {

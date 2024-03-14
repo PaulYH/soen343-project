@@ -1,5 +1,6 @@
 ﻿@page "/signup"
 
+@using HomeSHS.Components.Helpers
 @using Microsoft.AspNetCore.Components.Forms;
 @using SHC.Controllers;
 @using SHC.Utilities;
@@ -8,28 +9,25 @@
 @using SHC.Enums;
 
 @inject IUserService userService;
+@inject IPageRefresher PageRefresher
 
-<span class="signup"><b>Sign Up</b></span>
-<br>
+<div class="container">
     <input placeholder="First Name" class="form--input" @bind-value="request.FirstName">
     <input placeholder="Last Name" class="form--input" @bind-value="request.LastName">
     <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
     <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
     <input type="password" placeholder="Confirm password" class="form--input" @bind-value="request.PasswordConfirm">
     <label for="cars">Role:</label>
-
-    <Blazorise.Select TValue="int" @bind-SelectedValue= "type">Role:
+    <Blazorise.Select TValue="int" @bind-SelectedValue="type">
+        Role:
         <Blazorise.SelectItem Value=0>Parent</Blazorise.SelectItem>
         <Blazorise.SelectItem Value=1>Child</Blazorise.SelectItem>
         <Blazorise.SelectItem Value=2>Guest</Blazorise.SelectItem>
         <Blazorise.SelectItem Value=3>Stranger</Blazorise.SelectItem>
     </Blazorise.Select>
-
-
     <button class="form--submit" @onclick="Submit">Sign up</button>
-
-
     <p>@response </p>
+</div>
 
 @code {
     RegisterRequest request;
@@ -64,6 +62,6 @@
         response = await controller.HandleRegisterRequest(request);
         request = new RegisterRequest();
         StateHasChanged();
-        
+
     }
 }
