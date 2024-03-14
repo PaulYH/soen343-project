@@ -1,5 +1,69 @@
-﻿<h3>UserCreation</h3>
+﻿@page "/signup"
+
+@using Microsoft.AspNetCore.Components.Forms;
+@using SHC.Controllers;
+@using SHC.Utilities;
+@using SHC.Services;
+@using SHC.Data;
+@using SHC.Enums;
+
+@inject IUserService userService;
+
+<span class="signup"><b>Sign Up</b></span>
+<br>
+    <input placeholder="First Name" class="form--input" @bind-value="request.FirstName">
+    <input placeholder="Last Name" class="form--input" @bind-value="request.LastName">
+    <input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
+    <input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
+    <input type="password" placeholder="Confirm password" class="form--input" @bind-value="request.PasswordConfirm">
+    <label for="cars">Role:</label>
+
+    <Blazorise.Select TValue="int" @bind-SelectedValue= "type">Role:
+        <Blazorise.SelectItem Value=0>Parent</Blazorise.SelectItem>
+        <Blazorise.SelectItem Value=1>Child</Blazorise.SelectItem>
+        <Blazorise.SelectItem Value=2>Guest</Blazorise.SelectItem>
+        <Blazorise.SelectItem Value=3>Stranger</Blazorise.SelectItem>
+    </Blazorise.Select>
+
+
+    <button class="form--submit" @onclick="Submit">Sign up</button>
+
+
+    <p>@response </p>
 
 @code {
+    RegisterRequest request;
+    UserController controller;
+    string response = "";
+    int type = 0;
 
+    protected override void OnInitialized()
+    {
+        controller = new UserController(userService);
+        request = new RegisterRequest();
+    }
+
+    async void Submit()
+    {
+        Console.WriteLine("Start Submitting");
+        switch (type)
+        {
+            case 0:
+                request.UserType = UserType.Parent;
+                break;
+            case 1:
+                request.UserType = UserType.Child;
+                break;
+            case 2:
+                request.UserType = UserType.Guest;
+                break;
+            case 3:
+                request.UserType = UserType.Stranger;
+                break;
+        }
+        response = await controller.HandleRegisterRequest(request);
+        request = new RegisterRequest();
+        StateHasChanged();
+        
+    }
 }

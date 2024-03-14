@@ -1,5 +1,51 @@
-﻿<h3>UserLogin</h3>
+﻿@page "/login"
+
+@using Microsoft.AspNetCore.Components.Forms;
+@using SHC.Controllers;
+@using SHC.Utilities;
+@using SHC.Services;
+@using SHC.Data
+@using SHC.Entities;
+
+@inject IUserService userService;
+
+<span class="login"><b>Log In</b></span>
+<br>
+<br>
+
+<input type="email" placeholder="Email address" class="form--input" @bind-value="request.Email">
+<input type="password" placeholder="Password" class="form--input" @bind-value="request.Password">
+
+<button class="form--submit" @onclick="Submit">Log In</button>
+
+<p>@response.Item1 </p>
 
 @code {
+    LoginRequest request;
+    UserController controller;
+    SimulationContext simulationContext = SimulationContext.GetInstance();
 
+    (string, VirtualUser?) response = ("", null);
+
+
+    protected override void OnInitialized()
+    {
+        // base.OnInitialized();
+
+        controller = new UserController(userService);
+        request = new LoginRequest();
+    }
+
+    async void Submit()
+    {
+        Console.WriteLine("Start Submitting");
+        response = await controller.Login(request);
+        request = new LoginRequest();
+        if (response.Item2 is not null)
+        {
+            simulationContext.CurrentUser = response.Item2;    
+        }
+
+        StateHasChanged();
+    }
 }

@@ -22,19 +22,20 @@ namespace SHC.Controllers
         {
             _userService = userService;
         }
-        public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
+        public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
             string exceptionToThrow = "";
-            if (request == null) { throw new ArgumentNullException("request is null."); }
-            if (request.FirstName == null) { exceptionToThrow += "FirstName is null\n"; }
-            if (request.LastName == null) { exceptionToThrow += "LastName is null\n"; }
-            if (request.Email == null) { exceptionToThrow += "Email is null\n"; }
-            if (request.Password == null) { exceptionToThrow += "Password is null\n"; }
-            if (request.PasswordConfirm == null) { exceptionToThrow += "PasswordConfirm is null\n"; }
+            if (request == null) { return "request is null."; }
+            if (request.FirstName == null || request.FirstName == "") { exceptionToThrow += "FirstName is null\n"; }
+            if (request.LastName == null || request.LastName == "") { exceptionToThrow += "LastName is null\n"; }
+            if (request.Email == null || request.Email == "") { exceptionToThrow += "Email is null\n"; }
+            if (request.Password == null || request.Password == "") { exceptionToThrow += "Password is null\n"; }
+            if (request.PasswordConfirm == null || request.PasswordConfirm == "") { exceptionToThrow += "PasswordConfirm is null\n"; }
 
             if (exceptionToThrow != "")
             {
-                throw new ArgumentNullException(exceptionToThrow);
+                //throw new ArgumentNullException(exceptionToThrow);
+                return "Invalid request: \n" + exceptionToThrow;
             }
             else
             {
@@ -43,17 +44,20 @@ namespace SHC.Controllers
                 return await passwordValidationHandler.HandleRegisterRequest(request);
             }
         }
-        public async Task<VirtualUser> Login(LoginRequest request)
+        public async Task<(string, VirtualUser?)> Login(LoginRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException("request is null");
-            }
-            if (request == null) { throw new ArgumentNullException("request is null."); }
-            if (request.Email == null) { throw new ArgumentNullException("Email is null\n"); }
-            if (request.Password == null) { throw new ArgumentNullException("Password is null\n"); }
+            string error = "";
+            if (request == null) { error += "request is null.\n"; return (error, null); }
+            if (request.Email == null || request.Email == "") { error += "Email is null\n"; }
+            if (request.Password == null || request.Password == "") { error += "Password is null\n"; }
 
-            return await _userService.Login(request);
+            if (error != "") { return (error, null); } else { return await _userService.Login(request); }
+
+        }
+
+        public async Task<IEnumerable<VirtualUser>> GetAllUsers()
+        {
+            return await _userService.GetAllUsers();
         }
 
     }

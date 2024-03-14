@@ -16,7 +16,7 @@ namespace SHC.Utilities
         {
             _userService = userService;
         }
-        public async Task<VirtualUser> HandleRegisterRequest(RegisterRequest request)
+        public async Task<string> HandleRegisterRequest(RegisterRequest request)
         {
             // pass to userService
             return await _userService.HandleRegisterRequest(request);
