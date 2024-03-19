@@ -1,4 +1,4 @@
-# HomeWiz: Smart Home Simulator (SOEN 343 Project)
+# 🏠 HomeWiz: Smart Home Simulator (SOEN 343 Project)
 
 ## Team Members
 * ***Hicham Kitaz (40188246)***
