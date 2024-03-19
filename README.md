@@ -14,7 +14,7 @@
 * ***Ziad-Tarik Taufeek (40205732)***
   * Username: Ziad-Tari
  
-  ## Description
+## Description
 Our project, titled HomeWiz, is designed to tackle the challenges faced by homeowners and IoT system developers in managing and programming smart home systems. It addresses issues such as modularity, feature interaction, and system understanding, as well as enhances user satisfaction and promotes the adoption of smart home technology. Through a user-friendly graphical interface, it simplifies the programming and management of smart home systems, offering a visual representation of household device interactions. 
 
 ## Development Framework Overview
