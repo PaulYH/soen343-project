@@ -21,17 +21,17 @@ Our project, titled HomeWiz, is designed to tackle the challenges faced by homeo
 
 Our project is built on the Microsoft .NET environment. Below are the core components of our development framework:
 
-***ASP.NET Core***
+***ASP.NET Core*** <br/>
 It is our primary framework for web app development, utilizing .NET and C# for full-stack capabilities. It includes built-in authentication for secure account management.
 
-***Blazor***
+***Blazor*** <br/>
 It complements ASP.NET Core by enabling front-end development in C#, promoting a unified programming experience and ensuring seamless integration within the .NET ecosystem.
 
-***Entity Framework Core***
+***Entity Framework Core*** <br/>
 Our choice for ORM (Object-Relational Mapping), allowing for streamlined database communication without SQL, integrated with .NET for enhanced development productivity.
 
-***Microsoft SQL Server**
+***Microsoft SQL Server*** <br/>
 Chosen for its solid performance and compatibility with Entity Framework Core, ensuring reliable data management within the .NET framework.
 
-***Coding Language***
+***Coding Language*** <br/>
 The application is developed in C#, which aligns with .NET's supported languages for consistent coding practices.
