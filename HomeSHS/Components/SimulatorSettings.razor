@@ -1,0 +1,42 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
+
+<div class="simulator-settings-container">
+    <div class="context-container">
+        @if (simulationContext.CurrentUser == null)
+        {
+            <div class="user-container">
+                <UserTabs />
+            </div>
+        }
+        else
+        {
+            <div class="simulation-container">
+                <SimulationInfo />
+            </div>
+        }
+    </div>
+
+    @if (simulationContext.CurrentUser != null)
+    {
+        <div class="settings-tabs-container">
+            <ModuleTabs />
+        </div>
+    }
+</div>
+
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        PageRefresher.SimulatorSettingsRefreshRequested += RefreshSimulatorSettings;
+    }
+
+    public void RefreshSimulatorSettings()
+    {
+        StateHasChanged();
+    }
+}

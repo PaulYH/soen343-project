@@ -84,7 +84,21 @@
 </body>
 </html>
 
+    private void SelectRoom(IRoom room)
+    {
+        selectedRoom = room;
+    }
 
-@code {
+    private void MoveUser()
+    {
+        currentUser.CurrentLocation = selectedRoom;
+        simulationContext.CurrentUser.CurrentLocation = selectedRoom;
+        PageRefresher.CallSimulatorSettingsRefresh();
+    }
 
+    private void RefreshSHSTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
 }

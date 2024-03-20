@@ -1,6 +1,7 @@
 ﻿<CascadingValue Value="this">
+
     <div class="btn-group" role="group">
-        @foreach (ModuleSettingsTab tab in Tabs)
+        @foreach (TabWrapper tab in Tabs)
         {
             <button type="button"
                     class="btn @GetButtonClass(tab)"
@@ -9,16 +10,17 @@
             </button>
         }
     </div>
+
     @ChildContent
 </CascadingValue>
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    public ModuleSettingsTab ActiveTab { get; set; }
-    List<ModuleSettingsTab> Tabs = new List<ModuleSettingsTab>();
+    public TabWrapper ActiveTab { get; set; }
+    List<TabWrapper> Tabs = new List<TabWrapper>();
 
-    internal void AddPage(ModuleSettingsTab tabPage)
+    internal void AddPage(TabWrapper tabPage)
     {
         Tabs.Add(tabPage);
         if (Tabs.Count == 1)
@@ -26,12 +28,12 @@
         StateHasChanged();
     }
 
-    string GetButtonClass(ModuleSettingsTab tab)
+    string GetButtonClass(TabWrapper tab)
     {
         return tab == ActiveTab ? "btn-primary" : "btn-secondary";
     }
 
-    void ActivateTab(ModuleSettingsTab tab)
+    void ActivateTab(TabWrapper tab)
     {
         ActiveTab = tab;
     }

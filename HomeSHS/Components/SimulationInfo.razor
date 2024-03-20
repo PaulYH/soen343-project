@@ -1,0 +1,82 @@
+﻿@using SHC.Entities
+@using SHC.Enums
+@using System.Timers;
+@implements IDisposable
+
+<h3>Simulation</h3>
+<Button Clicked="@(() => ToggleOnSwitch())"
+        Color="@(isOn ? Color.Success : Color.Danger)">
+        @(isOn ? "ON" : "OFF")
+</Button>
+<br />
+<br />
+@if (currentUser.UserType > UserType.Child)
+{
+    <h4>Welcome</h4>
+}
+else
+{
+    <h4>Welcome, @currentUser.FirstName</h4>
+}
+<p><b>Account Type:</b> @currentUser.UserType</p>
+<p><b>Location:</b> @(currentUser.CurrentLocation == null ? "Outside" : currentUser.CurrentLocation.Name)</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<p>
+    <h4>@currentTime.ToString("D")</h4>
+    <h4>@currentTime.ToString("T")</h4>
+</p>
+<p><b>Outside Temperature:</b> @simulationContext.OutsideTemperature °C</p>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    bool isOn = false;
+    VirtualUser currentUser;
+    DateTime currentTime = DateTime.Now;
+    Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isOn = simulationContext.IsOn;
+        currentUser = simulationContext.CurrentUser;
+        timer = new Timer(1000);
+        timer.Enabled = true;
+        timer.AutoReset = true;
+        timer.Elapsed += (sender, e) => UpdateTime();
+    }
+
+    protected void UpdateTime()
+    {
+        if (isOn)
+        {
+            currentTime = DateTime.Now;
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+            simulationContext.CurrentDateTime = DateTime.Now;
+        }
+    }
+
+    Task ToggleOnSwitch()
+    {
+        isOn = !isOn;
+        simulationContext.IsOn = !isOn;
+
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+}
