@@ -47,6 +47,28 @@ namespace SHC.Services
             var users = await _context.Users.ToListAsync();
             return users;
         }
+        public async Task<bool> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if ( user == null ) { return false; }
+            else
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task<VirtualUser?> EditUser(VirtualUser user)
+        {
+            VirtualUser? newUser = _context.Users.Find(user.Id);
+            if (newUser == null) { return null; }
+            newUser.FirstName = user.FirstName;
+            newUser.LastName = user.LastName;
+            newUser.Email = user.Email;
+            await _context.SaveChangesAsync();
+            return newUser;
+        }
 
     }
 }

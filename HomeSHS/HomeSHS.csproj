@@ -13,6 +13,8 @@
     <EmbeddedResource Remove="Components\NewFolder\**" />
     <None Remove="Components\NewFolder\**" />
   </ItemGroup>
+	
+	
 
 
 	<ItemGroup>
