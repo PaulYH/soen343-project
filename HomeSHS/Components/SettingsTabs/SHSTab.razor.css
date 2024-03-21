@@ -1,42 +1,48 @@
-﻿.container {
-    width: 130%;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-section {
+﻿.form-section {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-    .form-section label {
-        display: block;
-        margin-bottom: 5px;
-    }
+.form-section label {
+    display: block;
+    margin-bottom: 5px;
+}
 
-    .form-section input,
-    .form-section select,
-    .form-section button {
-        padding: 10px;
-        margin-bottom: 10px;
-    }
+.form-section input,
+.form-section select {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 200px;
+}
 
-    .form-section input,
-    .form-section select {
-        width: calc(100% - 22px);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+button {
+    width: 200px;
+    height: 45px;
+}
+
+.crud-btns {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.crud-btn {
+    width: 75px;
+}
+
+.edit-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
 
 .gap {
     display: flex;
-    justify-content: space-between;
 }
 
-    .gap > div {
-        width: 48%;
-    }
+.gap > div {
+    width: 48%;
+}
 
 button {
     width: auto;

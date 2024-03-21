@@ -1,7 +1,9 @@
-﻿@using SHC.Entities
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
 @using SHC.Enums
 @using System.Timers;
 @implements IDisposable
+@inject IPageRefresher PageRefresher
 
 <h3>Simulation</h3>
 <Button Clicked="@(() => ToggleOnSwitch())"
@@ -35,35 +37,60 @@ else
     <h4>@currentTime.ToString("D")</h4>
     <h4>@currentTime.ToString("T")</h4>
 </p>
+<p><b>Simulation Speed:</b> @(timeSpeed.ToString() + "x")</p>
+<Slider @bind-Value="@timeSpeed" Step="1" Min="1" Max="5"/>
+<br />
+<br />
+<br />
 <p><b>Outside Temperature:</b> @simulationContext.OutsideTemperature °C</p>
 
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
     bool isOn = false;
+    bool toggledOnce = false;
+    int timeSpeed = 1;
+    int timerInterval = 1000;
     VirtualUser currentUser;
     DateTime currentTime = DateTime.Now;
+    DateTime? selectedDateTime;
     Timer? timer;
 
     protected override async Task OnInitializedAsync()
     {
+        PageRefresher.SimulationInfoRefreshRequested += RefreshSimulationInfo;
+
         isOn = simulationContext.IsOn;
         currentUser = simulationContext.CurrentUser;
-        timer = new Timer(1000);
+        timer = new Timer(timerInterval);
         timer.Enabled = true;
         timer.AutoReset = true;
         timer.Elapsed += (sender, e) => UpdateTime();
+    }
+
+    public void RefreshSimulationInfo()
+    {
+        currentUser = simulationContext.CurrentUser;
+        StateHasChanged();
     }
 
     protected void UpdateTime()
     {
         if (isOn)
         {
-            currentTime = DateTime.Now;
+            if (currentTime != simulationContext.CurrentDateTime && toggledOnce)
+                currentTime = simulationContext.CurrentDateTime;
+            if (timer.Interval != (1000 / timeSpeed))
+                timer.Interval = 1000 / timeSpeed;
+
+            currentTime = currentTime.AddSeconds(1);
             InvokeAsync(() =>
             {
                 StateHasChanged();
             });
-            simulationContext.CurrentDateTime = DateTime.Now;
+            simulationContext.CurrentDateTime = currentTime;
+
+            if (!toggledOnce)
+                toggledOnce = true;
         }
     }
 
