@@ -1,6 +1,7 @@
 ﻿@using HomeSHS.Components.Helpers
 @using SHC.Controllers
 @using SHC.Entities
+@using SHC.Entities.Room
 @using SHC.Services
 @using SHC.Utilities
 @inject IUserService UserService
@@ -26,8 +27,8 @@
 
             <div class="crud-btns">
                 <Button class="crud-btn" Color="Color.Success" Clicked="@(() => { ShowModal("AddUserModal"); })">Add</Button>
-                <Button class="crud-btn" Color="Color.Danger">Delete</Button>
-                <Button class="crud-btn" Color="Color.Primary">Edit</Button>
+                <Button class="crud-btn" Color="Color.Danger" Clicked="@(() => { ShowModal("DeleteUserModal"); })">Delete</Button>
+                <Button class="crud-btn" Color="Color.Primary" Clicked="@(() => { ShowModal("EditUserModal"); })">Edit</Button>
             </div>
         </div>
 
@@ -60,9 +61,7 @@
         <div class="form-section">
             <h3>Permissions</h3>
         </div>
-
     </div>
-
 </body>
 
 <Modal @ref="AddUserModal" Closing="OnClosing">
@@ -75,6 +74,55 @@
             <UserCreation />
         </ModalBody>
         <ModalFooter>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="DeleteUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Are you sure you want to delete @selectedUser.FirstName @selectedUser.LastName ?</ModalTitle>
+                <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Button Color="Color.Danger" onclick="@(async () => { await DeleteUser(); })">Confirm</Button>
+            <Button Color="Color.Dark" onclick="@(async () => { await HideModal("DeleteUserModal"); })">Close</Button>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="EditUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Edit Profile</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>First name</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.FirstName"></TextEdit>
+                <FieldLabel>Last name</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.LastName"></TextEdit>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.Email"></TextEdit>
+            </Field>
+            <Label>Location:</Label>
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@(selectedUser.CurrentLocation != null ? selectedUser.CurrentLocation.Name : "Outside")</DropdownToggle>
+                    <DropdownMenu MaxMenuHeight="200px">
+                        @foreach (var room in simulationContext.RenderRooms)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedRoomChanged(room.Item1);})">@room.Item1.Name</DropdownItem>
+                    }
+                    @if (selectedUser.CurrentLocation != null)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedRoomChanged(null);})">Outside</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        </ModalBody>
+        <ModalFooter>
+             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save changes</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -104,17 +152,18 @@
     </ModalContent>
 </Modal>
 
- @code {
+@code {
     UserController userController;
     DateTime selectedDate;
     SimulationContext simulationContext = SimulationContext.GetInstance();
     VirtualUser? currentUser;
     VirtualUser? selectedUser;
+    (IRoom, (double x, double y)) selectedRoom;
     VirtualUser? selectedLoginUser;
     private Modal AddUserModal;
     private Modal DeleteUserModal;
     private Modal EditUserModal;
-    private Modal SetLocationModal;
+    //private Modal SetLocationModal;
     private Modal UserLoginModal;
     private LoginRequest request;
     private string inputPassword = "";
@@ -131,6 +180,8 @@
         currentUser = simulationContext.CurrentUser;
         selectedUser = currentUser;
         selectedLoginUser = currentUser;
+        selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
+        selectedRoom.Item1 = selectedUser.CurrentLocation;
     }
 
     private void RefreshSHSTab()
@@ -147,6 +198,11 @@
     public void OnSelectedUserChanged(VirtualUser user)
     {
         selectedUser = user;
+    }
+
+    public void OnSelectedRoomChanged(IRoom? room)
+    {
+        selectedUser.CurrentLocation = room;
     }
 
     public void OnSelectedLoginUserChanged(VirtualUser user)
@@ -168,14 +224,13 @@
                 EditUserModal.Show();
                 break;
             case "SetLocationModal":
-                SetLocationModal.Show();
+                //SetLocationModal.Show();
                 break;
             case "UserLoginModal":
                 request.Email = selectedLoginUser.Email;
                 UserLoginModal.Show();
                 break;
         }
-
     }
 
     private async Task HideModal(string modalName)
@@ -192,7 +247,7 @@
                 EditUserModal.Hide();
                 break;
             case "SetLocationModal":
-                SetLocationModal.Hide();
+                //SetLocationModal.Hide();
                 break;
             case "UserLoginModal":
                 UserLoginModal.Hide();
@@ -208,6 +263,12 @@
         PageRefresher.CallSHSTabRefreshRequested();
     }
 
+    private async Task DeleteUser()
+    {
+        await userController.DeleteUser(selectedUser.Id);
+        await HideModal("DeleteUserModal");
+    }
+
     private async Task SubmitLogin()
     {
         var response = await userController.Login(request);
@@ -220,6 +281,12 @@
         {
             incorrectPassword = true;
         }
+    }
+
+    private async Task EditUser()
+    {
+        await userController.EditUser(selectedUser);
+        await HideModal("EditUserModal");
     }
 }
 
