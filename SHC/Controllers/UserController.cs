@@ -35,7 +35,7 @@ namespace SHC.Controllers
             if (exceptionToThrow != "")
             {
                 //throw new ArgumentNullException(exceptionToThrow);
-                return "Invalid request: \n" + exceptionToThrow;
+                return "Invalid request: " + exceptionToThrow;
             }
             else
             {
@@ -69,6 +69,5 @@ namespace SHC.Controllers
         {
             return await _userService.GetAllUsers();
         }
-
     }
 }
