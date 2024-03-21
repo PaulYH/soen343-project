@@ -35,7 +35,7 @@ namespace SHC.Controllers
             if (exceptionToThrow != "")
             {
                 //throw new ArgumentNullException(exceptionToThrow);
-                return "Invalid request: \n" + exceptionToThrow;
+                return "Invalid request: " + exceptionToThrow;
             }
             else
             {
@@ -52,13 +52,22 @@ namespace SHC.Controllers
             if (request.Password == null || request.Password == "") { error += "Password is null\n"; }
 
             if (error != "") { return (error, null); } else { return await _userService.Login(request); }
+        }
 
+        public async Task<bool> DeleteUser(int id)
+        {
+            return await _userService.DeleteUser(id);
+        }
+
+        public async Task<VirtualUser?> EditUser(VirtualUser user)
+        {
+            if (user == null) { return null; }
+            return await _userService.EditUser(user);
         }
 
         public async Task<IEnumerable<VirtualUser>> GetAllUsers()
         {
             return await _userService.GetAllUsers();
         }
-
     }
 }

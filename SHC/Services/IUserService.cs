@@ -13,6 +13,8 @@ namespace SHC.Services
         Task<string> HandleRegisterRequest(RegisterRequest request);
         Task<(string, VirtualUser)> Login(LoginRequest request);
         Task<IEnumerable<VirtualUser>> GetAllUsers();
+        Task<bool> DeleteUser(int id);
+        Task<VirtualUser?> EditUser(VirtualUser updatedUser);
 
     }
 }
