@@ -1,47 +1,136 @@
 ﻿@using HomeSHS.Components.Helpers
+@using SHC.Controllers
 @using SHC.Entities
-@using SHC.Entities.Room
+@using SHC.Services
+@using SHC.Utilities
+@inject IUserService UserService
 @inject IPageRefresher PageRefresher
 
 <body>
-    <br />
+
     <div class="container">
-        <select id="item" multiple>
-            @foreach(var room in renderedRooms)
+ 
+        <!-- User profiles section -->
+        <div class="form-section">
+            <label for="user-profiles">User Profiles:</label>
+
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@selectedUser.FirstName @selectedUser.LastName</DropdownToggle>
+                <DropdownMenu MaxMenuHeight="200px">
+                    @foreach (var user in simulationContext.Users)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedUserChanged(user);})">@user.FirstName @user.LastName</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+
+            <div class="crud-btns">
+                <Button class="crud-btn" Color="Color.Success" Clicked="@(() => { ShowModal("AddUserModal"); })">Add</Button>
+                <Button class="crud-btn" Color="Color.Danger">Delete</Button>
+                <Button class="crud-btn" Color="Color.Primary">Edit</Button>
+            </div>
+        </div>
+
+        <!-- Date and time section -->
+        <div class="form-section datetime-container">
+            <label for="dateTime">Select date and time</label>
+            <DateEdit id="dateTime" TValue="DateTime" @bind-Date="@selectedDate" InputMode="DateInputMode.DateTime" />
+            <Button class="button-date-time" Color="Color.Primary"  @onclick="@OnDateChanged">Set Date and Time</Button>
+        </div>
+        <!--<button class="button-date-time">Set Date and Time</button> -->
+        <!-- Login and location section -->
+        <div class="form-section">
+            <label for="login">Log in as another user:</label>
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@selectedLoginUser.FirstName @selectedLoginUser.LastName</DropdownToggle>
+                    <DropdownMenu MaxMenuHeight="200px">
+                        @foreach (var user in simulationContext.Users)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedLoginUserChanged(user);})">@user.FirstName @user.LastName</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+            @if (selectedLoginUser != currentUser)
             {
-                <option value="room" @onclick="@(() => SelectRoom(room.Item1))">@room.Item1.Name</option>
+                <Button Color="Color.Primary" Clicked="@(() => { ShowModal("UserLoginModal"); })">Log in</Button>
             }
-        </select>
-        <Button>Move user here</Button>
+        </div>
+
+        <!-- Modules and permissions section -->
+        <div class="form-section">
+            <h3>Permissions</h3>
+        </div>
+
     </div>
+
 </body>
 
-@code {
+<Modal @ref="AddUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add user</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <UserCreation />
+        </ModalBody>
+        <ModalFooter>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="UserLoginModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Login as @selectedLoginUser.FirstName @selectedLoginUser.LastName</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Text="@(selectedLoginUser.Email)" Disabled></TextEdit>
+                <FieldLabel>Password</FieldLabel>
+                <TextEdit Role="TextRole.Password" @bind-Text="request.Password">
+                    @if (incorrectPassword)
+                    {
+                        <FieldHelp><Text TextColor="TextColor.Danger">Incorrect password.</Text></FieldHelp>
+                    }
+                </TextEdit>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+             <Button Color="Color.Primary" onclick="@(async () => { await SubmitLogin();})">Log in</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+ @code {
+    UserController userController;
+    DateTime selectedDate;
     SimulationContext simulationContext = SimulationContext.GetInstance();
     VirtualUser? currentUser;
-    List<(IRoom, (double x, double y))>? renderedRooms;
-    IRoom selectedRoom;
+    VirtualUser? selectedUser;
+    VirtualUser? selectedLoginUser;
+    private Modal AddUserModal;
+    private Modal DeleteUserModal;
+    private Modal EditUserModal;
+    private Modal SetLocationModal;
+    private Modal UserLoginModal;
+    private LoginRequest request;
+    private string inputPassword = "";
+    private bool incorrectPassword = false;
 
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        request = new LoginRequest();
+        userController = new UserController(UserService);
         PageRefresher.SHSTabRefreshRequested += RefreshSHSTab;
 
-        renderedRooms = simulationContext.RenderRooms;
+        selectedDate = simulationContext.CurrentDateTime;
         currentUser = simulationContext.CurrentUser;
-        selectedRoom = renderedRooms.FirstOrDefault().Item1;
-    }
-
-    private void SelectRoom(IRoom room)
-    {
-        selectedRoom = room;
-    }
-
-    private void MoveUser()
-    {
-        currentUser.CurrentLocation = selectedRoom;
-        simulationContext.CurrentUser.CurrentLocation = selectedRoom;
-        PageRefresher.CallSimulatorSettingsRefresh();
+        selectedUser = currentUser;
+        selectedLoginUser = currentUser;
     }
 
     private void RefreshSHSTab()
@@ -49,4 +138,89 @@
         StateHasChanged();
         OnInitializedAsync();
     }
+
+    public void OnDateChanged()
+    {
+        simulationContext.CurrentDateTime = selectedDate;
+    }
+
+    public void OnSelectedUserChanged(VirtualUser user)
+    {
+        selectedUser = user;
+    }
+
+    public void OnSelectedLoginUserChanged(VirtualUser user)
+    {
+        selectedLoginUser = user;
+    }
+
+    private void ShowModal(string modalName)
+    {
+        switch (modalName)
+        {
+            case "AddUserModal":
+                AddUserModal.Show();
+                break;
+            case "DeleteUserModal":
+                DeleteUserModal.Show();
+                break;
+            case "EditUserModal":
+                EditUserModal.Show();
+                break;
+            case "SetLocationModal":
+                SetLocationModal.Show();
+                break;
+            case "UserLoginModal":
+                request.Email = selectedLoginUser.Email;
+                UserLoginModal.Show();
+                break;
+        }
+
+    }
+
+    private async Task HideModal(string modalName)
+    {
+        switch (modalName)
+        {
+            case "AddUserModal":
+                AddUserModal.Hide();
+                break;
+            case "DeleteUserModal":
+                DeleteUserModal.Hide();
+                break;
+            case "EditUserModal":
+                EditUserModal.Hide();
+                break;
+            case "SetLocationModal":
+                SetLocationModal.Hide();
+                break;
+            case "UserLoginModal":
+                UserLoginModal.Hide();
+                break;
+        }
+    }
+
+    private async Task OnClosing(ModalClosingEventArgs e)
+    {
+        simulationContext.Users = (List<VirtualUser>) await UserService.GetAllUsers();
+        PageRefresher.CallSHCTabRefreshRequested();
+        PageRefresher.CallSimulationInfoRefresh();
+        PageRefresher.CallSHSTabRefreshRequested();
+    }
+
+    private async Task SubmitLogin()
+    {
+        var response = await userController.Login(request);
+        if (response.Item2 is not null)
+        {
+            simulationContext.CurrentUser = response.Item2;
+            await HideModal("UserLoginModal");
+        }
+        else
+        {
+            incorrectPassword = true;
+        }
+    }
 }
+
+

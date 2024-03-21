@@ -3,7 +3,9 @@
 @using HomeSHS.Components.Helpers
 @using HomeSHS.Components.SettingsTabs
 @using SHC.Entities
+@using SHC.Services
 @inject IPageRefresher PageRefresher
+@inject IUserService UserService
 
 <div class="main-container">
     
@@ -30,6 +32,7 @@
 
     protected async override Task OnInitializedAsync()
     {
+        simulationContext.Users = (List<VirtualUser>)await UserService.GetAllUsers();
         await base.OnInitializedAsync();
         PageRefresher.IndexRefreshRequested += RefreshIndex;
     }

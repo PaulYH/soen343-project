@@ -1,22 +1,69 @@
-﻿
-body {
-    font-family: Arial, sans-serif;
+﻿.form-section {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-select, button, .checkbox-group {
-    width: 100%;
-    margin: 10px 0;
+.form-section label {
+    display: block;
+    margin-bottom: 5px;
 }
 
-select {
-    height: 70px;
+.form-section input,
+.form-section select {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 200px;
 }
 
 button {
-    padding: 5px;
+    width: 200px;
+    height: 45px;
 }
 
-label {
+.crud-btns {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.crud-btn {
+    width: 75px;
+}
+
+.edit-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.gap {
+    display: flex;
+}
+
+.gap > div {
+    width: 48%;
+}
+
+button {
+    width: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.button-date-time {
+    padding: 10px;
     display: block;
-    margin: 5px 0;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.SHC {
+    font-size: 20px;
+    font-style: italic;
 }
