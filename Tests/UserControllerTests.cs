@@ -220,6 +220,85 @@ namespace Tests
             result.Should().Be(("Login Successful", null));
         }
 
+        [Fact]
+        public async void DeleteUser_ShouldReturnTrue_WhenValidId()
+        {
+            // Arrange
+            int validId = 1;
+            _userServiceMock.Setup(x => x.DeleteUser(validId)).ReturnsAsync(true);
+
+            // Act
+            var result = await _userController.DeleteUser(validId);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public async void DeleteUser_ShouldReturnTrue_WhenInValidId()
+        {
+            // Arrange
+            int invalidId = 0;
+            _userServiceMock.Setup(x => x.DeleteUser(invalidId)).ReturnsAsync(false);
+
+            // Act
+            var result = await _userController.DeleteUser(invalidId);
+            
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void EditUser_ShouldReturnTrue_WhenNullUser()
+        {
+            // Arrange
+            VirtualUser user = new VirtualUser();
+
+            _userServiceMock.Setup(x => x.EditUser(user)).ReturnsAsync(user);
+
+            // Act
+            var result = await _userController.EditUser(null);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+
+        [Fact]
+        public async void EditUser_ShouldReturnTrue_WhenValidUser()
+        {
+            // Arrange
+            VirtualUser user = new VirtualUser();
+
+            _userServiceMock.Setup(x => x.EditUser(user)).ReturnsAsync(user);
+
+            // Act
+            var result = await _userController.EditUser(user);
+
+            // Assert
+            result.Should().Be(user);
+        }
+
+
+
+        [Fact]
+        public async void GetAllUsers_ShouldReturnUsers()
+        {
+            // Arrange
+            var user = new VirtualUser();
+            var list = new List<VirtualUser>{user};
+
+            _userServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(list);
+
+            // Act
+            var result = await _userController.GetAllUsers();
+
+            // Assert
+            result.Should().Equal(list);
+
+        }
+
 
     }
 }
