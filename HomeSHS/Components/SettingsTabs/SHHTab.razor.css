@@ -1,0 +1,75 @@
+﻿.form-section {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+    .form-section label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-section input,
+    .form-section select {
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 200px;
+    }
+
+button {
+    width: 200px;
+    height: 45px;
+}
+
+.crud-btns {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.crud-btn {
+    width: 75px;
+}
+
+.edit-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.gap {
+    display: flex;
+}
+
+    .gap > div {
+        width: 48%;
+    }
+
+button {
+    width: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.button-date-time {
+    padding: 10px;
+    display: block;
+}
+
+.button-temperature {
+    padding: 10px;
+    display: block;
+}
+
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.SHH {
+    font-size: 20px;
+    font-style: italic;
+}

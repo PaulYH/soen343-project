@@ -1,0 +1,32 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Room
+@inject IPageRefresher PageRefresher
+
+<p>This is the SHH tab</p>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    VirtualUser? currentUser;
+    (IRoom, (double x, double y)) selectedRoom;
+    double outsideTemperature;
+    List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> zones;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHHTabRefreshRequested += RefreshSHHTab;
+
+        currentUser = simulationContext.CurrentUser;
+        selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
+        outsideTemperature = simulationContext.OutsideTemperature;
+        zones = ((SmartHomeHeating)simulationContext.SHHListener.observers.FirstOrDefault()).ZoneManagement;
+    }
+
+    private void RefreshSHHTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+}
