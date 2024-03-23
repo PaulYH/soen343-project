@@ -58,6 +58,11 @@ button {
     padding: 10px;
     display: block;
 }
+.button-temperature {
+    padding: 10px;
+    display: block;
+}
+
 
 button:hover {
     background-color: #0056b3;
