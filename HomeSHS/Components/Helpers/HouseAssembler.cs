@@ -247,6 +247,8 @@ namespace HomeSHS.Components.Helpers
 
             foreach(var room in house.Rooms)
             {
+                room.Temperature = simulationContext.OutsideTemperature;
+
                 List<string> sidesToCheck = new List<string>() {"left", "right", "top", "bottom"};
                 string sideWithFreeDoor = "";
                 bool roomAttached = false;
@@ -396,6 +398,7 @@ namespace HomeSHS.Components.Helpers
                 throw new InvalidDataException("The first element in the room list is not of type Entrance");
 
             entrance = (Entrance) house.Rooms.First();
+            entrance.Temperature = simulationContext.OutsideTemperature;
             renderRooms.Add((entrance, (400, 400)));
             house.Rooms.Remove(entrance);
         }

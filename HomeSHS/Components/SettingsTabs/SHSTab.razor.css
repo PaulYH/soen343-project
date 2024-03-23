@@ -1,4 +1,8 @@
-﻿.form-section {
+﻿body {
+    font-family: Arial, sans-serif;
+}
+
+.form-section {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
