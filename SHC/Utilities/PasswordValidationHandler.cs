@@ -31,7 +31,7 @@ namespace SHC.Utilities
             if (exceptionToThrow != "") 
             {
                 //throw new Exception(exceptionToThrow);
-                return "Invalid Password: \n" + exceptionToThrow;
+                return "Invalid Password: " + exceptionToThrow;
             }
             else
             {

@@ -7,6 +7,7 @@
 @inject IUserService UserService
 @inject IPageRefresher PageRefresher
 
+
 <body>
 
     <div class="container">
@@ -55,6 +56,12 @@
             {
                 <Button Color="Color.Primary" Clicked="@(() => { ShowModal("UserLoginModal"); })">Log in</Button>
             }
+        </div>
+
+        <div class="temperaturebutton">
+            <NumericEdit @bind-Value="@outsideTemperature"/>
+            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set Date and Time</Button>
+
         </div>
 
         <!-- Modules and permissions section -->
@@ -168,6 +175,7 @@
     private LoginRequest request;
     private string inputPassword = "";
     private bool incorrectPassword = false;
+    double outsideTemperature;
 
     protected async override Task OnInitializedAsync()
     {
@@ -180,14 +188,24 @@
         currentUser = simulationContext.CurrentUser;
         selectedUser = currentUser;
         selectedLoginUser = currentUser;
+
         selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
         selectedRoom.Item1 = selectedUser.CurrentLocation;
+
+        outsideTemperature = simulationContext.OutsideTemperature;
+
     }
 
     private void RefreshSHSTab()
     {
         StateHasChanged();
         OnInitializedAsync();
+    }
+
+    public void OnTemperatureChanged()
+    {
+        simulationContext.OutsideTemperature = outsideTemperature;
+        PageRefresher.CallSimulationInfoRefresh();
     }
 
     public void OnDateChanged()
