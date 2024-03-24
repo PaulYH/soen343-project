@@ -21,7 +21,7 @@
             <div class="checkbox-group">
                 @foreach(var window in selectedRoomWindows)
                 {
-                    <label><input type="checkbox" checked="@window.isOpen" disabled="@(areWindowsDisabled || window.isBlocked)" @onclick=@(() => ToggleSettingWindow(window)) name="location" value="@window.Name"> @(window.isBlocked ? window.Name + "(Blocked) " : window.Name) </label>
+                    <label><input type="checkbox" checked="@window.isOpen" disabled="@(areWindowsDisabled || window.isBlocked)" @onclick=@(() => ToggleSettingWindow(window)) name="location" value="@window.Name"> @(window.isBlocked ? window.Name + " (Blocked)" : window.Name) </label>
                 }
             </div>
         }
