@@ -2,6 +2,7 @@
 @using SHC.Controllers
 @using SHC.Entities
 @using SHC.Entities.Room
+@using SHC.Entities.Window
 @using SHC.Services
 @using SHC.Utilities
 @inject IUserService UserService
@@ -58,12 +59,26 @@
             }
         </div>
 
-        <div class="temperaturebutton">
+        <div class="temperature-button">
             <NumericEdit @bind-Value="@outsideTemperature"/>
             <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set Date and Time</Button>
-
         </div>
 
+        <label>Obstruct window</label>
+         <div>
+            @foreach (var window in selectedRoomWindows)
+            {
+                @if (window.isBlocked)
+                {
+                    <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>(Blocked) @window.Name</Button>
+                }
+                else
+                {
+                    <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>@window.Name</Button>
+                }
+            }
+        </div>
+ 
         <!-- Modules and permissions section -->
         <div class="form-section">
             <h3>Permissions</h3>
@@ -176,6 +191,7 @@
     private string inputPassword = "";
     private bool incorrectPassword = false;
     double outsideTemperature;
+    List<SmartWindow> selectedRoomWindows = new List<SmartWindow>();
 
     protected async override Task OnInitializedAsync()
     {
@@ -191,6 +207,7 @@
 
         selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
         selectedRoom.Item1 = selectedUser.CurrentLocation;
+        
 
         outsideTemperature = simulationContext.OutsideTemperature;
 
@@ -200,6 +217,26 @@
     {
         StateHasChanged();
         OnInitializedAsync();
+    }
+
+    private async Task SetCurrentUserWindows()
+    {
+        selectedRoomWindows = new List<SmartWindow>();
+        if (selectedUser.CurrentLocation is null) {return;}
+
+        if (selectedUser.CurrentLocation.LeftWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.LeftWall.Window);
+        if (selectedUser.CurrentLocation.RightWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.RightWall.Window);
+        if (selectedUser.CurrentLocation.TopWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.TopWall.Window);
+        if (selectedUser.CurrentLocation.BottomWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.BottomWall.Window);
+    }
+    private void ToggleObstruct(IWindow window)
+    {
+        window.isBlocked = !window.isBlocked;
+        RefreshSHSTab();
     }
 
     public void OnTemperatureChanged()
@@ -213,14 +250,17 @@
         simulationContext.CurrentDateTime = selectedDate;
     }
 
-    public void OnSelectedUserChanged(VirtualUser user)
+    public async void OnSelectedUserChanged(VirtualUser user)
     {
         selectedUser = user;
+        await SetCurrentUserWindows();
+        PageRefresher.CallSHSTabRefreshRequested();
     }
 
-    public void OnSelectedRoomChanged(IRoom? room)
+    public async void OnSelectedRoomChanged(IRoom? room)
     {
         selectedUser.CurrentLocation = room;
+        await SetCurrentUserWindows();
     }
 
     public void OnSelectedLoginUserChanged(VirtualUser user)
@@ -307,5 +347,3 @@
         await HideModal("EditUserModal");
     }
 }
-
-
