@@ -3,6 +3,7 @@
 @using SHC.Entities
 @using SHC.Entities.Room
 @using SHC.Entities.Window
+@using SHC.Entities.Light
 @using SHC.Services
 @using SHC.Utilities
 @inject IUserService UserService
@@ -207,7 +208,7 @@
 
         selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
         selectedRoom.Item1 = selectedUser.CurrentLocation;
-        
+
 
         outsideTemperature = simulationContext.OutsideTemperature;
 
@@ -344,6 +345,46 @@
     private async Task EditUser()
     {
         await userController.EditUser(selectedUser);
+        // turn on the lights in the room the user moved to
+        UpdateAutoLights();
         await HideModal("EditUserModal");
+    }
+
+    private void UpdateAutoLights()
+    {
+        var users = simulationContext.Users;
+        List<IRoom> occupiedRooms = new List<IRoom>();
+        foreach (var user in users)
+        {
+            occupiedRooms.Add(user.CurrentLocation);
+        }
+        foreach(var room in simulationContext.RenderRooms)
+        {
+            IRoom room2 = room.Item1;
+            if (occupiedRooms.Contains(room2))
+            {
+                TurnOnAutoLights(room2);
+            }
+            else
+            {
+                TurnOffAutoLights(room2);
+            }
+        }
+    }
+
+    private void TurnOffAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = false; }
+        }
+    }
+
+    private void TurnOnAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = true; }
+        }
     }
 }

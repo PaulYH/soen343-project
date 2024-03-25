@@ -10,5 +10,6 @@ namespace SHC.Entities.Light
     {
         public string Name { get; set; }
         public bool isOn { get; set; } = false;
+        public bool autoMode { get; set; } = true;
     }
 }
