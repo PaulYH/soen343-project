@@ -11,6 +11,7 @@ namespace SHC.Utilities.Observer
     {
         public List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> state;
         public List<IObserver> observers = new List<IObserver>();
+        public bool isOn = false;
 
         public SHHListener(List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> _state)
         {

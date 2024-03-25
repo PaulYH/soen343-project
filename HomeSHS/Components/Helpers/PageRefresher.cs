@@ -6,6 +6,7 @@
         public event Action SHSTabRefreshRequested;
         public event Action SHCTabRefreshRequested;
         public event Action SHHTabRefreshRequested;
+        public event Action SelectedRoomSHHInfoRefreshRequested;
         public event Action SimulatorSettingsRefreshRequested;
         public event Action SimulationInfoRefreshRequested;
 
@@ -28,6 +29,10 @@
             SHHTabRefreshRequested?.Invoke();
         }
 
+        public void CallSelectedRoomSHHInfoRefresh()
+        {
+            SelectedRoomSHHInfoRefreshRequested?.Invoke();
+        }
         public void CallSimulatorSettingsRefresh()
         {
             SimulatorSettingsRefreshRequested?.Invoke();

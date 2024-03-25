@@ -15,5 +15,124 @@ namespace SHC.Entities
         {
             ZoneManagement = ((SHHListener) eventListener).state;
         }
+
+        public async Task UpdateRoomTemperaturesHAVCOn(string timeOfDay)
+        {
+            SimulationContext simulationContext = SimulationContext.GetInstance();
+
+            switch (timeOfDay)
+            {
+                case "time1":
+                    foreach (var room in simulationContext.RenderRooms)
+                    {
+                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                        if (room.Item1.Temperature < zone.temp1 - 0.25 || room.Item1.Temperature > zone.temp1 + 0.25)
+                        {
+                            if (room.Item1.Temperature < zone.temp1)
+                            {
+                                room.Item1.Temperature += 0.1;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > zone.temp1)
+                            {
+                                room.Item1.Temperature -= 0.1;
+                                continue;
+                            }
+                        }
+                        
+                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature += 0.05;
+                            continue;
+                        }
+
+                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature -= 0.05;
+                            continue;
+                        }
+                    }
+                    break;
+                case "time2":
+                    foreach (var room in simulationContext.RenderRooms)
+                    {
+                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                        if (room.Item1.Temperature < zone.temp2 - 0.25 || room.Item1.Temperature > zone.temp2 + 0.25)
+                        {
+                            if (room.Item1.Temperature < zone.temp2)
+                            {
+                                room.Item1.Temperature += 0.1;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > zone.temp2)
+                            {
+                                room.Item1.Temperature -= 0.1;
+                                continue;
+                            }
+                        }
+
+                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature += 0.05;
+                            continue;
+                        }
+
+                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature += 0.05;
+                            continue;
+                        }
+                    }
+                    break;
+                case "time3":
+                    foreach (var room in simulationContext.RenderRooms)
+                    {
+                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                        if (room.Item1.Temperature < zone.temp3 - 0.25 || room.Item1.Temperature > zone.temp3 + 0.25)
+                        {
+                            if (room.Item1.Temperature < zone.temp3)
+                            {
+                                room.Item1.Temperature += 0.1;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > zone.temp3)
+                            {
+                                room.Item1.Temperature -= 0.1;
+                                continue;
+                            }
+                        }
+
+                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature += 0.05;
+                            continue;
+                        }
+
+                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                        {
+                            room.Item1.Temperature += 0.05;
+                            continue;
+                        }
+                    }
+                    break;
+            }
+
+        }
+
+        public void UpdateRoomTemperaturesHAVCOff()
+        {
+            SimulationContext simulationContext = SimulationContext.GetInstance();
+
+            foreach (var zone in ZoneManagement)
+            {
+
+            }
+        }
     }
 }

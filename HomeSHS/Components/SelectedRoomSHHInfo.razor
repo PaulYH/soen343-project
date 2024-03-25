@@ -1,0 +1,25 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
+
+<h3 for="item">@simulationContext.SelectedRoom.Name</h3>
+<p>Room temp: @(String.Format("{0:0.0}", @simulationContext.SelectedRoom.Temperature)) °C</p>
+<p>Zone: @simulationContext.SelectedRoom.ZoneNum</p>
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        PageRefresher.SelectedRoomSHHInfoRefreshRequested += RefreshSelectedRoomSHHInfo;
+    }
+
+    private void RefreshSelectedRoomSHHInfo()
+    {
+        InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+    }
+}
