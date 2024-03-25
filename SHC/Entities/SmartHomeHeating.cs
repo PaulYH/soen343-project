@@ -25,100 +25,196 @@ namespace SHC.Entities
                 case "time1":
                     foreach (var room in simulationContext.RenderRooms)
                     {
-                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
-
-                        if (room.Item1.Temperature < zone.temp1 - 0.25 || room.Item1.Temperature > zone.temp1 + 0.25)
+                        if (!room.Item1.IsZoneOverriden)
                         {
-                            if (room.Item1.Temperature < zone.temp1)
+                            var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                            if (room.Item1.Temperature < zone.temp1 - 0.25 || room.Item1.Temperature > zone.temp1 + 0.25)
                             {
-                                room.Item1.Temperature += 0.1;
+                                if (room.Item1.Temperature < zone.temp1)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
+
+                                if (room.Item1.Temperature > zone.temp1)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
                                 continue;
                             }
 
-                            if (room.Item1.Temperature > zone.temp1)
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
                             {
-                                room.Item1.Temperature -= 0.1;
+                                room.Item1.Temperature -= 0.05;
                                 continue;
                             }
                         }
-                        
-                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        else
                         {
-                            room.Item1.Temperature += 0.05;
-                            continue;
-                        }
+                            if (room.Item1.Temperature < room.Item1.OverrideTemp - 0.25 || room.Item1.Temperature > room.Item1.OverrideTemp + 0.25)
+                            {
+                                if (room.Item1.Temperature < room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
 
-                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
-                        {
-                            room.Item1.Temperature -= 0.05;
-                            continue;
+                                if (room.Item1.Temperature > room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature -= 0.05;
+                                continue;
+                            }
                         }
                     }
                     break;
                 case "time2":
                     foreach (var room in simulationContext.RenderRooms)
                     {
-                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
-
-                        if (room.Item1.Temperature < zone.temp2 - 0.25 || room.Item1.Temperature > zone.temp2 + 0.25)
+                        if (!room.Item1.IsZoneOverriden)
                         {
-                            if (room.Item1.Temperature < zone.temp2)
+                            var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                            if (room.Item1.Temperature < zone.temp2 - 0.25 || room.Item1.Temperature > zone.temp2 + 0.25)
                             {
-                                room.Item1.Temperature += 0.1;
+                                if (room.Item1.Temperature < zone.temp2)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
+
+                                if (room.Item1.Temperature > zone.temp2)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
                                 continue;
                             }
 
-                            if (room.Item1.Temperature > zone.temp2)
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
                             {
-                                room.Item1.Temperature -= 0.1;
+                                room.Item1.Temperature -= 0.05;
                                 continue;
                             }
                         }
-
-                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        else
                         {
-                            room.Item1.Temperature += 0.05;
-                            continue;
-                        }
+                            if (room.Item1.Temperature < room.Item1.OverrideTemp - 0.25 || room.Item1.Temperature > room.Item1.OverrideTemp + 0.25)
+                            {
+                                if (room.Item1.Temperature < room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
 
-                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
-                        {
-                            room.Item1.Temperature -= 0.05;
-                            continue;
+                                if (room.Item1.Temperature > room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature -= 0.05;
+                                continue;
+                            }
                         }
                     }
                     break;
                 case "time3":
                     foreach (var room in simulationContext.RenderRooms)
                     {
-                        var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
-
-                        if (room.Item1.Temperature < zone.temp3 - 0.25 || room.Item1.Temperature > zone.temp3 + 0.25)
+                        if (!room.Item1.IsZoneOverriden)
                         {
-                            if (room.Item1.Temperature < zone.temp3)
+                            var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
+
+                            if (room.Item1.Temperature < zone.temp3 - 0.25 || room.Item1.Temperature > zone.temp3 + 0.25)
                             {
-                                room.Item1.Temperature += 0.1;
+                                if (room.Item1.Temperature < zone.temp3)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
+
+                                if (room.Item1.Temperature > zone.temp3)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
                                 continue;
                             }
 
-                            if (room.Item1.Temperature > zone.temp3)
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
                             {
-                                room.Item1.Temperature -= 0.1;
+                                room.Item1.Temperature -= 0.05;
                                 continue;
                             }
                         }
-
-                        if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                        else
                         {
-                            room.Item1.Temperature += 0.05;
-                            continue;
-                        }
+                            if (room.Item1.Temperature < room.Item1.OverrideTemp - 0.25 || room.Item1.Temperature > room.Item1.OverrideTemp + 0.25)
+                            {
+                                if (room.Item1.Temperature < room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature += 0.1;
+                                    continue;
+                                }
 
-                        if (room.Item1.Temperature > simulationContext.OutsideTemperature)
-                        {
-                            room.Item1.Temperature -= 0.05;
-                            continue;
-                        }
+                                if (room.Item1.Temperature > room.Item1.OverrideTemp)
+                                {
+                                    room.Item1.Temperature -= 0.1;
+                                    continue;
+                                }
+                            }
+
+                            if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature += 0.05;
+                                continue;
+                            }
+
+                            if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                            {
+                                room.Item1.Temperature -= 0.05;
+                                continue;
+                            }
+                        }  
                     }
                     break;
             }

@@ -43,7 +43,14 @@
                                 @foreach (var room in simulationContext.RenderRooms)
                                 {
                                     <TableRowCell>
+                                        @if (!room.Item1.IsZoneOverriden)
+                                        {
                                         <Radio Group="@("room-" + room.Item1.Id)" TValue="(IRoom, string)" Value="@((room.Item1, zone.zoneNum.ToString()))" Checked="@zone.rooms.Contains(room.Item1)" CheckedChanged="@(() => {OnCheckedValueChanged((room.Item1, zone.zoneNum.ToString()));})" />
+                                        }
+                                        else
+                                        {
+                                        <Paragraph TextSize="TextSize.ExtraSmall">Overridden</Paragraph>
+                                        }
                                     </TableRowCell>
                                 }
                             <TableRowCell>
