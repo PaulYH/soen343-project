@@ -83,7 +83,7 @@ namespace SHC.Entities
 
                         if (room.Item1.Temperature > simulationContext.OutsideTemperature)
                         {
-                            room.Item1.Temperature += 0.05;
+                            room.Item1.Temperature -= 0.05;
                             continue;
                         }
                     }
@@ -116,7 +116,7 @@ namespace SHC.Entities
 
                         if (room.Item1.Temperature > simulationContext.OutsideTemperature)
                         {
-                            room.Item1.Temperature += 0.05;
+                            room.Item1.Temperature -= 0.05;
                             continue;
                         }
                     }
@@ -125,13 +125,24 @@ namespace SHC.Entities
 
         }
 
-        public void UpdateRoomTemperaturesHAVCOff()
+        public async Task UpdateRoomTemperaturesHAVCOff()
         {
             SimulationContext simulationContext = SimulationContext.GetInstance();
 
-            foreach (var zone in ZoneManagement)
+            foreach (var room in simulationContext.RenderRooms)
             {
+                var zone = ZoneManagement.Where(x => x.zoneNum == room.Item1.ZoneNum).FirstOrDefault();
 
+                if (room.Item1.Temperature < simulationContext.OutsideTemperature)
+                {
+                    room.Item1.Temperature += 0.05;
+                    continue;
+                }
+                if (room.Item1.Temperature > simulationContext.OutsideTemperature)
+                {
+                    room.Item1.Temperature -= 0.05;
+                    continue;
+                }
             }
         }
     }

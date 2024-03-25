@@ -99,8 +99,11 @@ else
 
             if (simulationContext.SHHListener.isOn)
                 await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOn(timeOfDay);
+            else
+                await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOff();
 
             PageRefresher.CallSelectedRoomSHHInfoRefresh();
+            PageRefresher.CallHomeRenderRefresh();
 
             InvokeAsync(() =>
             {

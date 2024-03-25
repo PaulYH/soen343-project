@@ -25,10 +25,17 @@
                           @onclick=@(() => SetSelectedRoom(r.Item1))></rect>
                     <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
                           class="@(simulationContext.SelectedRoom.Id == r.Item1.Id ? "text-selected" : "text-regular")"
-                          x="@(r.Item2.x + 12)"
-                          y="@(r.Item2.y + 50)"
+                          x="@(r.Item2.x + 8)"
+                          y="@(r.Item2.y + 45)"
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @r.Item1.Name
+                    </text>
+                    <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-temp")"
+                          class="text-temp"
+                          x="@(r.Item2.x + 8)"
+                          y="@(r.Item2.y + 60)"
+                          @onclick=@(() => SetSelectedRoom(r.Item1))>
+                        @(String.Format("{0:0.0}", r.Item1.Temperature)) °C
                     </text>
                 </g>
             }
@@ -60,6 +67,8 @@
             simulationContext.SelectedRoom = renderRooms.FirstOrDefault().Item1;
             simulationContext.hasRenderLoaded = true;
         }
+        renderRooms = simulationContext.RenderRooms;
+        PageRefresher.HomeRenderRefreshRequested += RefreshRender;
     }
 
     public void SetSelectedRoom(IRoom selectedRoom)
@@ -70,18 +79,12 @@
         PageRefresher.CallSelectedRoomSHHInfoRefresh();
     }
 
-    /*
-        public async Task<(double, double)> GetPosition(string id)
-        {
-            string response = await JsRuntime.InvokeAsync<string>("GetRoomPosition", id);
-            var result = response.Split(' ');
-            var x = Double.Parse(result[0]);
-            var y = Double.Parse(result[1]);
-
-            showx = result[0];
-            showy = result[1];
-            return (x, y);
-        }
-    */
+    private void RefreshRender()
+    {
+        InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+    }
     
 }

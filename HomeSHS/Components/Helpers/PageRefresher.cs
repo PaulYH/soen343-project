@@ -9,6 +9,7 @@
         public event Action SelectedRoomSHHInfoRefreshRequested;
         public event Action SimulatorSettingsRefreshRequested;
         public event Action SimulationInfoRefreshRequested;
+        public event Action HomeRenderRefreshRequested;
 
         public void CallIndexRequestRefresh()
         {
@@ -41,6 +42,11 @@
         public void CallSimulationInfoRefresh()
         {
             SimulationInfoRefreshRequested?.Invoke();
+        }
+
+        public void CallHomeRenderRefresh()
+        {
+            HomeRenderRefreshRequested?.Invoke();
         }
     }
 }
