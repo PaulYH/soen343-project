@@ -51,6 +51,7 @@
 
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
     List<SmartWindow> selectedRoomWindows = new List<SmartWindow>();
     List<SmartDoor> selectedRoomDoors = new List<SmartDoor>();
     List<SmartLight> selectedRoomLights = new List<SmartLight>();
@@ -122,14 +123,37 @@
     {
         window.isOpen = !window.isOpen;
         OnInitializedAsync();
+        outputConsole.Log(
+            deviceId: $"{window.ToString()}",
+            eventType: $"ToggleWindow",
+            eventDesc: $"{(window.isOpen ? "Opened window" : "Closed window")}",
+            details: $""
+        );
     }
+
     private async Task ToggleSettingDoor(SmartDoor door)
     {
         door.IsLocked = !door.IsLocked;
+        OnInitializedAsync();
+        outputConsole.Log(
+            deviceId: $"{door.ToString()}",
+            eventType: $"ToggleDoor",
+            eventDesc: $"{(door.IsLocked ? "Unlocked door" : "Locked door")}",
+            details: $""
+        );
     }
+
     private async Task ToggleSettingLight(SmartLight light)
     {
         light.isOn = !light.isOn;
+        light.isOn = !light.isOn;
+        OnInitializedAsync();
+        outputConsole.Log(
+            deviceId: $"{light.ToString()}",
+            eventType: $"ToggleLight",
+            eventDesc: $"{(light.isOn ? "Turned on light" : "Turned off light")}",
+            details: $""
+        );
     }
 
     private async Task SetAllPermissions()
@@ -154,5 +178,3 @@
         }
     }
 }
-
-
