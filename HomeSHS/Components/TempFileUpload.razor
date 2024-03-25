@@ -1,0 +1,58 @@
+﻿@page "/TempFileUpload"
+
+@using System.IO
+@using HomeSHS.Components.Helpers
+@using SHC.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using SHC.Models.Builder;
+@using SHC.Entities;
+@inject IPageRefresher PageRefresher
+ 
+    <InputFile id="fileInput" OnChange="@HandleFileChange" accept=".txt"  />
+    <Button class="submit-button" Color="Color.Primary" @onclick="Submit">Submit</Button>
+@code {
+    TemperatureFileReader tempReader;
+    MemoryStream fileContent;
+    private bool fileSelected = false;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File; 
+        if (file != null)
+        {
+            fileContent?.Dispose(); 
+            fileContent = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(fileContent);
+            fileSelected = true; 
+        }
+    }
+
+    void Submit()
+    {
+        if (fileSelected && fileContent != null)
+        {
+            fileContent.Position = 0;
+
+            if (tempReader == null)
+            {
+                tempReader = new TemperatureFileReader();
+            }
+            tempReader.ReadFile(fileContent);
+            Console.WriteLine("File processed. Number of records: " + tempReader.Temperatures.Count);
+            foreach (var (dateTime, temperature) in tempReader.Temperatures)
+            {
+                Console.WriteLine($"DateTime: {dateTime}, Temperature: {temperature}°C");
+            }
+            fileSelected = false; // Reset flag after processing
+        }
+        else
+        {
+            Console.WriteLine("No file selected or file could not be read.");
+        }
+    }
+
+}
