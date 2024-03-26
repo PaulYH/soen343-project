@@ -91,6 +91,7 @@
 
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
     VirtualUser? currentUser;
     bool isOn = false;
     (IRoom, (double x, double y)) selectedRoom;
@@ -128,6 +129,12 @@
             simulationContext.SHHListener.isOn = isOn;
         }
 
+        outputConsole.Log(
+            deviceId: $"SHHTab",
+            eventType: $"ToggleHeating",
+            eventDesc: $"User turned the heating {(simulationContext.SHHListener.isOn? "on" : "off")}",
+            details: $"");
+
         return Task.CompletedTask;
     }
 
@@ -155,6 +162,12 @@
         int nextZoneNum = zones.Last().zoneNum + 1;
         double temp = simulationContext.OutsideTemperature;
         zones.Add((nextZoneNum, new List<IRoom>(), temp, temp, temp));
+        outputConsole.Log(
+            deviceId: $"SHHTab",
+            eventType: $"AddZone",
+            eventDesc: $"User added new zone: {zones.Last()}",
+            details: $"");
+
     }
 
     private void DeleteZone()
@@ -171,6 +184,13 @@
         }
 
         zones.Remove(zones[zoneIndex]);
+
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"RemoveZone",
+        eventDesc: $"User deleted a zone",
+        details: $"Deleted zone had {toDeleteZone.rooms} rooms");
+
     }
 
     private async Task OnCheckedValueChanged((IRoom, string) result)
@@ -194,12 +214,19 @@
                 zones[zoneIndex].rooms.Add(room);
             }
         }
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"ChangeRoomZone",
+        eventDesc: $"User changed the zone of a room",
+        details: $"");
+
     }
 
     private void OnValueChanged(int zoneNum, double temp, string tempCategory)
     {
         var zone = zones.Where(x => x.zoneNum == zoneNum).First();
         var zoneIndex = zones.IndexOf(zone);
+
         switch (tempCategory)
         {
             case "temp1":
@@ -212,6 +239,12 @@
                 zone.temp3 = temp;
                 break;
         }
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"ChangeZoneTemperature",
+        eventDesc: $"User changed the desired temperature of a zone",
+        details: $"new temperature: {temp}");
+
 
         zones[zoneIndex] = zone;
     }
