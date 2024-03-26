@@ -5,8 +5,11 @@
         public event Action IndexRefreshRequested;
         public event Action SHSTabRefreshRequested;
         public event Action SHCTabRefreshRequested;
+        public event Action SHHTabRefreshRequested;
+        public event Action SelectedRoomSHHInfoRefreshRequested;
         public event Action SimulatorSettingsRefreshRequested;
         public event Action SimulationInfoRefreshRequested;
+        public event Action HomeRenderRefreshRequested;
 
         public void CallIndexRequestRefresh()
         {
@@ -22,6 +25,15 @@
             SHCTabRefreshRequested?.Invoke();
         }
 
+        public void CallSHHTabRefreshRequested()
+        {
+            SHHTabRefreshRequested?.Invoke();
+        }
+
+        public void CallSelectedRoomSHHInfoRefresh()
+        {
+            SelectedRoomSHHInfoRefreshRequested?.Invoke();
+        }
         public void CallSimulatorSettingsRefresh()
         {
             SimulatorSettingsRefreshRequested?.Invoke();
@@ -30,6 +42,11 @@
         public void CallSimulationInfoRefresh()
         {
             SimulationInfoRefreshRequested?.Invoke();
+        }
+
+        public void CallHomeRenderRefresh()
+        {
+            HomeRenderRefreshRequested?.Invoke();
         }
     }
 }
