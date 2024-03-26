@@ -73,7 +73,7 @@ else
         StateHasChanged();
     }
 
-    protected void UpdateTime()
+    protected async void UpdateTime()
     {
         if (isOn)
         {
@@ -83,6 +83,28 @@ else
                 timer.Interval = 1000 / timeSpeed;
 
             currentTime = currentTime.AddSeconds(1);
+
+            TimeSpan morning = new TimeSpan(5, 0, 0);
+            TimeSpan afternoon = new TimeSpan(13, 0, 0);
+            TimeSpan night = new TimeSpan(21, 0, 0);
+
+            var timeOfDay = "";
+
+            if (currentTime.TimeOfDay >= morning && currentTime.TimeOfDay < afternoon)
+                timeOfDay = "time1";
+            else if (currentTime.TimeOfDay >= afternoon && currentTime.TimeOfDay < night)
+                timeOfDay = "time2";
+            else
+                timeOfDay = "time3";
+
+            if (simulationContext.SHHListener.isOn)
+                await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOn(timeOfDay);
+            else
+                await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOff();
+
+            PageRefresher.CallSelectedRoomSHHInfoRefresh();
+            PageRefresher.CallHomeRenderRefresh();
+
             InvokeAsync(() =>
             {
                 StateHasChanged();
@@ -97,7 +119,9 @@ else
     Task ToggleOnSwitch()
     {
         isOn = !isOn;
-        simulationContext.IsOn = !isOn;
+        simulationContext.IsOn = isOn;
+
+        PageRefresher.CallSHHTabRefreshRequested();
 
         return Task.CompletedTask;
     }

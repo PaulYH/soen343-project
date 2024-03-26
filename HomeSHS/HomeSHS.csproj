@@ -7,10 +7,6 @@
     <UserSecretsId>f6ff0844-ccd0-432c-8160-a78e5007a8f0</UserSecretsId>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<UseRazorSourceGenerator>false</UseRazorSourceGenerator>
-	</PropertyGroup>
-
 
 
 	<ItemGroup>
@@ -19,6 +15,20 @@
     <EmbeddedResource Remove="Components\NewFolder\**" />
     <None Remove="Components\NewFolder\**" />
   </ItemGroup>
+
+	<PropertyGroup>
+		<UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Components\TempFileUpload.razor.css" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <Content Include="Components\TempFileUpload.razor.css" />
+	</ItemGroup>
 
 
 

@@ -3,6 +3,7 @@
 @using SHC.Entities
 @using SHC.Entities.Room
 @using SHC.Entities.Window
+@using SHC.Entities.Light
 @using SHC.Services
 @using SHC.Utilities
 @inject IUserService UserService
@@ -59,7 +60,7 @@
 
         <div class="temperature-button">
             <NumericEdit @bind-Value="@outsideTemperature"/>
-            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set Date and Time</Button>
+            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set temperature</Button>
         </div>
 
         <label>Obstruct window</label>
@@ -142,7 +143,7 @@
             </Dropdown>
         </ModalBody>
         <ModalFooter>
-             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save changes</Button>
+             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save Changes</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -379,6 +380,46 @@
     private async Task EditUser()
     {
         await userController.EditUser(selectedUser);
+        // turn on the lights in the room the user moved to
+        UpdateAutoLights();
         await HideModal("EditUserModal");
+    }
+
+    private void UpdateAutoLights()
+    {
+        var users = simulationContext.Users;
+        List<IRoom> occupiedRooms = new List<IRoom>();
+        foreach (var user in users)
+        {
+            occupiedRooms.Add(user.CurrentLocation);
+        }
+        foreach(var room in simulationContext.RenderRooms)
+        {
+            IRoom room2 = room.Item1;
+            if (occupiedRooms.Contains(room2))
+            {
+                TurnOnAutoLights(room2);
+            }
+            else
+            {
+                TurnOffAutoLights(room2);
+            }
+        }
+    }
+
+    private void TurnOffAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = false; }
+        }
+    }
+
+    private void TurnOnAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = true; }
+        }
     }
 }

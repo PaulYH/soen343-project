@@ -1,0 +1,51 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@inject IPageRefresher PageRefresher
+
+<h3 for="item">@simulationContext.SelectedRoom.Name</h3>
+<p>Room temp: @(String.Format("{0:0.0}", @simulationContext.SelectedRoom.Temperature)) °C</p>
+<p>Zone: @simulationContext.SelectedRoom.ZoneNum</p>
+<Check TValue="bool" Checked="isOverriden" CheckedChanged="@(() => {OnCheckedChanged();})">Override zone temperature</Check>
+@if (isOverriden)
+{
+    <br/>
+    <p>Set room temperature:</p>
+    <NumericEdit TValue="double" @bind-Value="desiredTemp"></NumericEdit>
+    <Button Color="Color.Primary" Clicked="@(() => SetTemp())">Set temperature</Button>
+}
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    bool isOverriden;
+    double desiredTemp;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        isOverriden = simulationContext.SelectedRoom.IsZoneOverriden;
+        desiredTemp = simulationContext.SelectedRoom.OverrideTemp;
+        PageRefresher.SelectedRoomSHHInfoRefreshRequested += RefreshSelectedRoomSHHInfo;
+    }
+
+    private void RefreshSelectedRoomSHHInfo()
+    {
+        InvokeAsync(() =>
+            {
+                StateHasChanged();
+                isOverriden = simulationContext.SelectedRoom.IsZoneOverriden;
+                desiredTemp = simulationContext.SelectedRoom.OverrideTemp;
+            });
+    }
+
+    private void OnCheckedChanged()
+    {
+        isOverriden = !isOverriden;
+        simulationContext.SelectedRoom.IsZoneOverriden = isOverriden;
+    }
+
+    private void SetTemp()
+    {
+        simulationContext.SelectedRoom.OverrideTemp = desiredTemp;
+        RefreshSelectedRoomSHHInfo();
+    }
+}
