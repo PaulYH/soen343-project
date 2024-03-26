@@ -32,6 +32,8 @@
                 @foreach (var light in selectedRoomLights)
                 {
                     <label><input type="checkbox" checked="@light.isOn" disabled="@areLightsDisabled" @onclick=@(() => ToggleSettingLight(light)) name="location" value="@light.Name"> @light.Name</label>
+                    <label><input type="checkbox" checked="@light.autoMode" disabled="@areLightsDisabled" @onclick=@(() => ToggleAutoModeLight(light)) value="@light.Name"> AutoMode?</label>
+
                 }
             </div>
         }
@@ -131,6 +133,12 @@
     {
         light.isOn = !light.isOn;
     }
+
+    private async Task ToggleAutoModeLight(SmartLight light)
+    {
+        light.autoMode= !light.autoMode;
+    }
+
 
     private async Task SetAllPermissions()
     {
