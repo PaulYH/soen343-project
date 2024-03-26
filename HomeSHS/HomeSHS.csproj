@@ -18,6 +18,18 @@
 
 
 
+	<ItemGroup>
+	  <None Remove="Components\TempFileUpload.razor.css" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <Content Include="Components\TempFileUpload.razor.css" />
+	</ItemGroup>
+
+
+
 
 	<ItemGroup>
     <PackageReference Include="Blazorise.Bootstrap" Version="1.4.3" />

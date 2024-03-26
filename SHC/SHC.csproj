@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Models\Reader\" />
     <Folder Include="Services\" />
+	  <Folder Include="Models\Reader\" />
   </ItemGroup>
 
 	<ItemGroup>
