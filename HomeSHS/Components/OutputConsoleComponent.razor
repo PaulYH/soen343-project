@@ -12,20 +12,20 @@
 <Accordion>
     @foreach(var log in console.outputLog)
     {
-        <AccordionItem>
-            <AccordionHeader>
+        <Collapse>
+            <CollapseHeader>
                 <Heading Size="HeadingSize.Is5">
                     <AccordionToggle>@log.datetime: @log.eventType</AccordionToggle>
                 </Heading>
-            </AccordionHeader>
-            <AccordionBody>
-                Timestamp: @log.datetime
-                Device Id: @log.deviceId
-                Event type: @log.eventType
-                Event description: @log.eventDesc
+            </CollapseHeader>
+            <CollapseBody>
+                Timestamp: @log.datetime<br />
+                Device Id: @log.deviceId<br />
+                Event type: @log.eventType<br />
+                Event description: @log.eventDesc<br />
                 Details: @log.details
-            </AccordionBody>
-        </AccordionItem>
+            </CollapseBody>
+        </Collapse>
     }
 
 </Accordion>
