@@ -30,6 +30,53 @@
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @r.Item1.Name
                     </text>
+                    @if (AreLightsOn(r.Item1))
+                    {
+                        
+                        <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 20)" width="20" height="20">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: yellow;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                        </foreignObject>
+                    }
+                    else
+                    {
+                        <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 20)" width="20" height="20">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px;">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                        </foreignObject>
+                    }
+
+                    @if (AreWindowsOpen(r.Item1))
+                    {
+                        
+                        <image href="/asset/window-open.svg"
+                               x="@r.Item2.x" y="@(r.Item2.y + 100 - 40)"
+                               width="15" height="15" />
+                    }
+                    else
+                    {
+                        <image href="/asset/window-closed.svg"
+                               x="@r.Item2.x" y="@(r.Item2.y + 100 - 40)"
+                               width="15" height="15" />
+                    }
+
+                    @if (AreDoorsLocked(r.Item1))
+                    {
+                      
+                        <image href="/asset/door-closed.svg"
+                               x="@r.Item2.x" y="@(r.Item2.y)"
+                               width="15" height="15" />
+                    }
+                    else
+                    {
+                        
+                        <image href="/asset/door-open.svg"
+                               x="@r.Item2.x" y="@(r.Item2.y)"
+                               width="15" height="15" />
+                    }
+                  
                 </g>
             }
         </svg>
@@ -68,18 +115,123 @@
         PageRefresher.CallSHCTabRefreshRequested();
     }
 
-    /*
-        public async Task<(double, double)> GetPosition(string id)
+    private bool AreLightsOn(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
         {
-            string response = await JsRuntime.InvokeAsync<string>("GetRoomPosition", id);
-            var result = response.Split(' ');
-            var x = Double.Parse(result[0]);
-            var y = Double.Parse(result[1]);
-
-            showx = result[0];
-            showy = result[1];
-            return (x, y);
+            if (light.isOn)
+                return true;
         }
-    */
+        return false;
+    }
+
+    private bool AreWindowsOpen(IRoom room)
+    {
+        SmartWindow window = (SmartWindow)room.BottomWall.Window;
+
+        if (window != null)
+        {
+
+            if (window.isOpen)
+            {
+                return true;
+            }
+
+        }
+
+        window = (SmartWindow)room.LeftWall.Window;
+
+        if (window != null)
+        {
+
+            if (window.isOpen)
+            {
+                return true;
+            }
+
+        }
+
+        window = (SmartWindow)room.RightWall.Window;
+
+        if (window != null)
+        {
+
+            if (window.isOpen)
+            {
+                return true;
+            }
+
+        }
+
+        window = (SmartWindow)room.TopWall.Window;
+
+        if (window != null)
+        {
+
+            if (window.isOpen)
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
+    private bool AreDoorsLocked(IRoom room)
+    {
+        SmartDoor door = (SmartDoor)room.BottomWall.Door;
+
+        if (door != null)
+        {
+
+            if (door.IsLocked)
+            {
+                return true;
+            }
+
+        }
+
+        door = (SmartDoor)room.LeftWall.Door;
+
+        if (door != null)
+        {
+
+            if (door.IsLocked)
+            {
+                return true;
+            }
+
+        }
+
+        door = (SmartDoor)room.RightWall.Door;
+
+        if (door != null)
+        {
+
+            if (door.IsLocked)
+            {
+                return true;
+            }
+
+        }
+
+        door = (SmartDoor)room.TopWall.Door;
+
+        if (door != null)
+        {
+
+            if (door.IsLocked)
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
     
+
 }

@@ -11,6 +11,13 @@ using SHC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services
+    .AddBlazorise()
+    .AddBootstrapProviders() // Registers Bootstrap CSS providers
+    .AddFontAwesomeIcons(); // Registers FontAwesome icon set
+
+builder.Services.AddScoped<IClassProvider, BootstrapClassProvider>();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

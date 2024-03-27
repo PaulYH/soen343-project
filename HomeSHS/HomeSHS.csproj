@@ -24,6 +24,7 @@
 
 
 	<ItemGroup>
+    <PackageReference Include="Blazorise" Version="1.4.2" />
     <PackageReference Include="Blazorise.Bootstrap" Version="1.4.2" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.4.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
@@ -42,6 +43,10 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\SHC\SHC.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="wwwroot\asset\" />
   </ItemGroup>
 
 </Project>
