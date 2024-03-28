@@ -1,0 +1,251 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Room
+@inject IPageRefresher PageRefresher
+
+<body>
+    <Button Clicked="@(() => ToggleOnSwitch())"
+            Color="@(isOn ? Color.Success : Color.Danger)">
+        @(isOn ? "ON" : "OFF")
+    </Button>
+    <br/>
+    <div class="container">
+        <div class="form-section">
+            <SelectedRoomSHHInfo />
+            <Button class="button-date-time" Color="Color.Primary" onclick="@(() => {ShowModal();})">Edit zones</Button>
+        </div>
+    </div>
+</body>
+
+<Modal @ref="EditZonesModal" Closing="OnClosing">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>Edit zones</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Table>
+                <TableHeader>
+                    <TableHeaderCell>Zone #</TableHeaderCell>
+                    @foreach (var room in simulationContext.RenderRooms)
+                    {
+                        <TableHeaderCell>@room.Item1.Name</TableHeaderCell>
+                    }
+                    <TableHeaderCell>Morning Temp</TableHeaderCell>
+                    <TableHeaderCell>Afternoon Temp</TableHeaderCell>
+                    <TableHeaderCell>Night Temp</TableHeaderCell>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var zone in zones)
+                    {
+                        <TableRow>
+                            <TableRowCell>@zone.zoneNum</TableRowCell>
+                                @foreach (var room in simulationContext.RenderRooms)
+                                {
+                                    <TableRowCell>
+                                        @if (!room.Item1.IsZoneOverriden)
+                                        {
+                                        <Radio Group="@("room-" + room.Item1.Id)" TValue="(IRoom, string)" Value="@((room.Item1, zone.zoneNum.ToString()))" Checked="@zone.rooms.Contains(room.Item1)" CheckedChanged="@(() => {OnCheckedValueChanged((room.Item1, zone.zoneNum.ToString()));})" />
+                                        }
+                                        else
+                                        {
+                                        <Paragraph TextSize="TextSize.ExtraSmall">Overridden</Paragraph>
+                                        }
+                                    </TableRowCell>
+                                }
+                            <TableRowCell>
+                                <NumericEdit TValue="double" Value="zone.temp1" ValueChanged="@((x) => {OnValueChanged(zone.zoneNum, x, "temp1");})"></NumericEdit>
+                            </TableRowCell>
+                            <TableRowCell>
+                                <NumericEdit TValue="double" Value="zone.temp2" ValueChanged="@((x) => {OnValueChanged(zone.zoneNum, x, "temp2");})"></NumericEdit>
+                            </TableRowCell>
+                            <TableRowCell>
+                                <NumericEdit TValue="double" Value="zone.temp3" ValueChanged="@((x) => {OnValueChanged(zone.zoneNum, x, "temp3");})"></NumericEdit>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+            <div>
+                <Button Color="Color.Primary" onclick="@(() => {AddZone();})">Add zone</Button>
+            </div>
+            <br/>
+            <div>
+                <Dropdown>
+                    <DropdownToggle Color="Color.Primary">@selectedDeleteZoneNum</DropdownToggle>
+                    <DropdownMenu MaxMenuHeight="200px">
+                        @foreach (var zone in zones)
+                        {
+                            <DropdownItem Clicked="@(() => {selectedDeleteZoneNum = zone.zoneNum;})">@zone.zoneNum</DropdownItem>
+                        }
+                    </DropdownMenu>
+                    <Button Color="Color.Danger" onclick="@(() => {DeleteZone();})">Delete zone</Button>
+                </Dropdown>
+            </div>          
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Dark" onclick="@(() => {HideModal();})">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
+    VirtualUser? currentUser;
+    bool isOn = false;
+    (IRoom, (double x, double y)) selectedRoom;
+    double outsideTemperature;
+    List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> zones;
+    List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> selectedTemps;
+    private Modal EditZonesModal;
+    int selectedDeleteZoneNum = 0;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHHTabRefreshRequested += RefreshSHHTab;
+
+        isOn = simulationContext.SHHListener.isOn;
+        currentUser = simulationContext.CurrentUser;
+        selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
+        outsideTemperature = simulationContext.OutsideTemperature;
+        zones = ((SmartHomeHeating)simulationContext.SHHListener.observers.FirstOrDefault()).ZoneManagement;
+        selectedTemps = zones.ToList();
+    }
+
+    private void RefreshSHHTab()
+    {
+        PageRefresher.CallSelectedRoomSHHInfoRefresh();
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+
+    Task ToggleOnSwitch()
+    {
+        if (simulationContext.IsOn)
+        {
+            isOn = !isOn;
+            simulationContext.SHHListener.isOn = isOn;
+        }
+
+        outputConsole.Log(
+            deviceId: $"SHHTab",
+            eventType: $"ToggleHeating",
+            eventDesc: $"User turned the heating {(simulationContext.SHHListener.isOn? "on" : "off")}",
+            details: $"");
+
+        return Task.CompletedTask;
+    }
+
+    private void ShowModal()
+    {
+        EditZonesModal.Show();
+    }
+
+    private void HideModal()
+    {
+        EditZonesModal.Hide();
+
+    }
+
+    private async Task OnClosing(ModalClosingEventArgs e)
+    {
+        simulationContext.SHHListener.state = zones;
+        simulationContext.SHHListener.Notify();
+        PageRefresher.CallSHHTabRefreshRequested();
+        StateHasChanged();
+    }
+
+    private void AddZone()
+    {
+        int nextZoneNum = zones.Last().zoneNum + 1;
+        double temp = simulationContext.OutsideTemperature;
+        zones.Add((nextZoneNum, new List<IRoom>(), temp, temp, temp));
+        outputConsole.Log(
+            deviceId: $"SHHTab",
+            eventType: $"AddZone",
+            eventDesc: $"User added new zone: {zones.Last()}",
+            details: $"");
+
+    }
+
+    private void DeleteZone()
+    {
+        var toDeleteZone = zones.Where(x => x.zoneNum == selectedDeleteZoneNum).FirstOrDefault();
+        var zoneIndex = zones.IndexOf(toDeleteZone);
+
+        if (toDeleteZone.rooms.Count > 0)
+        {
+            foreach (var room in toDeleteZone.rooms)
+            {
+                zones.FirstOrDefault().rooms.Add(room);
+            }
+        }
+
+        zones.Remove(zones[zoneIndex]);
+
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"RemoveZone",
+        eventDesc: $"User deleted a zone",
+        details: $"Deleted zone had {toDeleteZone.rooms} rooms");
+
+    }
+
+    private async Task OnCheckedValueChanged((IRoom, string) result)
+    {
+        var room = result.Item1;
+        var zoneId = int.Parse(result.Item2);
+
+        foreach (var zone in zones)
+        {
+            var zoneIndex = zones.IndexOf(zone);
+            if (zone.rooms.Contains(room) && zone.zoneNum != zoneId)
+            {
+                zones[zoneIndex].rooms.Remove(room);
+                Console.Write($"Changing room {room.Name} from Zone {zone.zoneNum} to Zone {zoneId}");
+            }
+
+            if (zone.zoneNum == zoneId)
+            {
+                room.ZoneNum = zoneId;
+                simulationContext.RenderRooms.Where(x => x.Item1.Id == room.Id).First().Item1.ZoneNum = zoneId;
+                zones[zoneIndex].rooms.Add(room);
+            }
+        }
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"ChangeRoomZone",
+        eventDesc: $"User changed the zone of a room",
+        details: $"");
+
+    }
+
+    private void OnValueChanged(int zoneNum, double temp, string tempCategory)
+    {
+        var zone = zones.Where(x => x.zoneNum == zoneNum).First();
+        var zoneIndex = zones.IndexOf(zone);
+
+        switch (tempCategory)
+        {
+            case "temp1":
+                zone.temp1 = temp;
+                break;
+            case "temp2":
+                zone.temp2 = temp;
+                break;
+            case "temp3":
+                zone.temp3 = temp;
+                break;
+        }
+        outputConsole.Log(
+        deviceId: $"SHHTab",
+        eventType: $"ChangeZoneTemperature",
+        eventDesc: $"User changed the desired temperature of a zone",
+        details: $"new temperature: {temp}");
+
+
+        zones[zoneIndex] = zone;
+    }
+}

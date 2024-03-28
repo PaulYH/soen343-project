@@ -8,17 +8,17 @@
     flex-direction: column;
 }
 
-.form-section label {
-    display: block;
-    margin-bottom: 5px;
-}
+    .form-section label {
+        display: block;
+        margin-bottom: 5px;
+    }
 
-.form-section input,
-.form-section select {
-    padding: 10px;
-    margin-bottom: 10px;
-    width: 200px;
-}
+    .form-section input,
+    .form-section select {
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 200px;
+    }
 
 button {
     width: 200px;
@@ -28,8 +28,7 @@ button {
 .crud-btns {
     display: flex;
     justify-content: space-evenly;
-    margin-left: -35px;
-    margin-top: 5px;
+    padding-bottom: 10px;
 }
 
 .crud-btn {
@@ -45,9 +44,9 @@ button {
     display: flex;
 }
 
-.gap > div {
-    width: 48%;
-}
+    .gap > div {
+        width: 48%;
+    }
 
 button {
     width: auto;
@@ -61,13 +60,12 @@ button {
 
 .button-date-time {
     padding: 10px;
-    display: flex;
-    margin-top: 5px;
+    display: block;
 }
+
 .button-temperature {
     padding: 10px;
-    display: flex;
-    margin-top: 5px;
+    display: block;
 }
 
 
@@ -75,7 +73,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-.SHC {
+.SHH {
     font-size: 20px;
     font-style: italic;
 }

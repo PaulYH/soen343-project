@@ -1,0 +1,35 @@
+﻿@page "/oc"
+
+
+@using HomeSHS.Components.Helpers
+@using Microsoft.AspNetCore.Components.Forms;
+@using Blazorise.Components.Progress;
+
+
+
+@using SHC.Entities;
+
+<Accordion>
+    @foreach(var log in console.outputLog)
+    {
+        <Collapse>
+            <CollapseHeader>
+                <Heading Size="HeadingSize.Is5">
+                    <AccordionToggle>@log.datetime: @log.eventType</AccordionToggle>
+                </Heading>
+            </CollapseHeader>
+            <CollapseBody>
+                Timestamp: @log.datetime<br />
+                Device Id: @log.deviceId<br />
+                Event type: @log.eventType<br />
+                Event description: @log.eventDesc<br />
+                Details: @log.details
+            </CollapseBody>
+        </Collapse>
+    }
+
+</Accordion>
+
+@code {
+    OutputConsole console = OutputConsole.GetInstance();
+}

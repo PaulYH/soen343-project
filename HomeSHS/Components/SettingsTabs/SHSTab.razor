@@ -9,11 +9,9 @@
 @inject IUserService UserService
 @inject IPageRefresher PageRefresher
 
-
 <body>
 
     <div class="container">
- 
         <!-- User profiles section -->
         <div class="form-section">
             <label for="user-profiles">User Profiles:</label>
@@ -62,7 +60,7 @@
 
         <div class="temperature-button">
             <NumericEdit @bind-Value="@outsideTemperature"/>
-            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set Date and Time</Button>
+            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set temperature</Button>
         </div>
 
         <label>Obstruct window</label>
@@ -145,7 +143,7 @@
             </Dropdown>
         </ModalBody>
         <ModalFooter>
-             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save changes</Button>
+             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save Changes</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -179,6 +177,7 @@
     UserController userController;
     DateTime selectedDate;
     SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
     VirtualUser? currentUser;
     VirtualUser? selectedUser;
     (IRoom, (double x, double y)) selectedRoom;
@@ -209,9 +208,7 @@
         selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
         selectedRoom.Item1 = selectedUser.CurrentLocation;
 
-
         outsideTemperature = simulationContext.OutsideTemperature;
-
     }
 
     private void RefreshSHSTab()
@@ -234,21 +231,41 @@
         if (selectedUser.CurrentLocation.BottomWall.Window != null)
             selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.BottomWall.Window);
     }
+
     private void ToggleObstruct(IWindow window)
     {
         window.isBlocked = !window.isBlocked;
         RefreshSHSTab();
+
+        outputConsole.Log(
+            deviceId: $"{window.ToString()}",
+            eventType: "WindowObstruct",
+            eventDesc: $"Window was {(window.isBlocked ? "" : "un") } obstructed by user",
+            details: ""
+        );
     }
 
     public void OnTemperatureChanged()
     {
         simulationContext.OutsideTemperature = outsideTemperature;
         PageRefresher.CallSimulationInfoRefresh();
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "TemperatureChange",
+            eventDesc: $"Outside Temperature was changed by user",
+            details: $"new temperature: {outsideTemperature}"
+        );
     }
 
     public void OnDateChanged()
     {
         simulationContext.CurrentDateTime = selectedDate;
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "DateChange",
+            eventDesc: $"Date was changed by user",
+            details: $"new date: {selectedDate}"
+        );
     }
 
     public async void OnSelectedUserChanged(VirtualUser user)
@@ -256,17 +273,35 @@
         selectedUser = user;
         await SetCurrentUserWindows();
         PageRefresher.CallSHSTabRefreshRequested();
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "UserChange",
+            eventDesc: $"Selected User changed",
+            details: $"new user: {user}"
+        );
     }
 
     public async void OnSelectedRoomChanged(IRoom? room)
     {
         selectedUser.CurrentLocation = room;
         await SetCurrentUserWindows();
+        outputConsole.Log(
+        deviceId: $"SHH Module",
+        eventType: "RoomChange",
+        eventDesc: $"Selected Room changed",
+        details: $"new room: {room}"
+        );
     }
 
     public void OnSelectedLoginUserChanged(VirtualUser user)
     {
         selectedLoginUser = user;
+        outputConsole.Log(
+        deviceId: $"SHH Module",
+        eventType: "LoginUserChange",
+        eventDesc: $"Logged in user has changed",
+        details: $"new user: {user}"
+        );
     }
 
     private void ShowModal(string modalName)

@@ -25,11 +25,12 @@
                           @onclick=@(() => SetSelectedRoom(r.Item1))></rect>
                     <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
                           class="@(simulationContext.SelectedRoom.Id == r.Item1.Id ? "text-selected" : "text-regular")"
-                          x="@(r.Item2.x + 12)"
-                          y="@(r.Item2.y + 50)"
+                          x="@(r.Item2.x + 8)"
+                          y="@(r.Item2.y + 45)"
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @r.Item1.Name
                     </text>
+                  
                     @if (AreLightsOn(r.Item1))
                     {
                         
@@ -88,6 +89,13 @@
                             <i class="fas fa-snowflake"></i>
                         </div>
                     </foreignObject>
+                    <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-temp")"
+                          class="text-temp"
+                          x="@(r.Item2.x + 8)"
+                          y="@(r.Item2.y + 60)"
+                          @onclick=@(() => SetSelectedRoom(r.Item1))>
+                        @(String.Format("{0:0.0}", r.Item1.Temperature)) °C
+                    </text>
                 </g>
             }
         </svg>
@@ -118,12 +126,16 @@
             simulationContext.SelectedRoom = renderRooms.FirstOrDefault().Item1;
             simulationContext.hasRenderLoaded = true;
         }
+        renderRooms = simulationContext.RenderRooms;
+        PageRefresher.HomeRenderRefreshRequested += RefreshRender;
     }
 
     public void SetSelectedRoom(IRoom selectedRoom)
     {
         simulationContext.SelectedRoom = selectedRoom;
         PageRefresher.CallSHCTabRefreshRequested();
+        PageRefresher.CallSHHTabRefreshRequested();
+        PageRefresher.CallSelectedRoomSHHInfoRefresh();
     }
 
     private bool AreLightsOn(IRoom room)
@@ -241,7 +253,14 @@
         }
 
         return false;
+      }
 
+    private void RefreshRender()
+    {
+        InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
     }
     
 

@@ -3,6 +3,7 @@ using SHC.Entities.Door;
 using SHC.Entities.Light;
 using SHC.Entities.Room;
 using SHC.Entities.Window;
+using SHC.Utilities.Observer;
 
 namespace HomeSHS.Components.Helpers
 {
@@ -246,6 +247,8 @@ namespace HomeSHS.Components.Helpers
 
             foreach(var room in house.Rooms)
             {
+                room.Temperature = simulationContext.OutsideTemperature;
+
                 List<string> sidesToCheck = new List<string>() {"left", "right", "top", "bottom"};
                 string sideWithFreeDoor = "";
                 bool roomAttached = false;
@@ -365,6 +368,25 @@ namespace HomeSHS.Components.Helpers
 
             simulationContext.SelectedRoom = renderRooms.FirstOrDefault().Item1;
             simulationContext.SelectedGroup = "windows";
+
+            var zoneRooms = new List<IRoom>();
+            foreach (var room in renderRooms)
+            {
+                zoneRooms.Add(room.Item1);
+            }
+
+            var startTemp = simulationContext.OutsideTemperature;
+
+            var zoneStartList = new List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)>()
+            {
+                (0, zoneRooms, startTemp, startTemp, startTemp)
+            };
+            
+
+            simulationContext.SHHListener = new SHHListener(zoneStartList);
+            simulationContext.SHHListener.AddSubscriber(new SmartHomeHeating());
+            simulationContext.SHHListener.Notify();
+
             return renderRooms;
         }
 
@@ -376,6 +398,7 @@ namespace HomeSHS.Components.Helpers
                 throw new InvalidDataException("The first element in the room list is not of type Entrance");
 
             entrance = (Entrance) house.Rooms.First();
+            entrance.Temperature = simulationContext.OutsideTemperature;
             renderRooms.Add((entrance, (400, 400)));
             house.Rooms.Remove(entrance);
         }
