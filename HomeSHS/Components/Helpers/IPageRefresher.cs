@@ -10,6 +10,7 @@
         event Action SimulatorSettingsRefreshRequested;
         event Action SimulationInfoRefreshRequested;
         event Action HomeRenderRefreshRequested;
+        event Action OutputConsoleRefreshRequested;
         void CallIndexRequestRefresh();
         void CallSHSTabRefreshRequested();
         void CallSHCTabRefreshRequested();
@@ -18,5 +19,6 @@
         void CallSimulatorSettingsRefresh();
         void CallSimulationInfoRefresh();
         void CallHomeRenderRefresh();
+        void CallOutputConsoleRefresh();
     }
 }

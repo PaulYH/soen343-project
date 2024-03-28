@@ -17,14 +17,20 @@
     }
     else
     {
-    <div>
-        <SimulatorSettings />    
-    </div>
-    <div class="home-view-container">
-        <HouseLayoutRender />
-    </div>
+        <div class="first-floor-container">
+            <div>
+                <SimulatorSettings />
+            </div>
+            <div class="home-view-container">
+                <HouseLayoutRender />
+            </div>
+        </div>
+        <button class="button-goto" type="button" onclick="document.getElementById('output-console').scrollIntoView({behavior:'smooth'})">Go to output console</button>
+        <div id="output-console" class="second-floor-container">
+            <button class="button-back" type="button" onclick="document.getElementById('#').scrollIntoView({behavior:'smooth'})">Back</button>
+            <OutputConsoleComponent />
+        </div>
     }
-
 </div>
 
 @code {
@@ -39,6 +45,9 @@
 
     private void RefreshIndex()
     {
-        StateHasChanged();
+        InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
     }
 }

@@ -131,6 +131,7 @@
             eventDesc: $"{(window.isOpen ? "Opened window" : "Closed window")}",
             details: $""
         );
+        PageRefresher.CallOutputConsoleRefresh();
     }
 
     private async Task ToggleSettingDoor(SmartDoor door)
@@ -143,6 +144,7 @@
             eventDesc: $"{(door.IsLocked ? "Unlocked door" : "Locked door")}",
             details: $""
         );
+        PageRefresher.CallOutputConsoleRefresh();
     }
 
     private async Task ToggleSettingLight(SmartLight light)
@@ -156,6 +158,7 @@
             eventDesc: $"{(light.isOn ? "Turned on light" : "Turned off light")}",
             details: $""
         );
+        PageRefresher.CallOutputConsoleRefresh();
     }
 
     private async Task ToggleAutoModeLight(SmartLight light)

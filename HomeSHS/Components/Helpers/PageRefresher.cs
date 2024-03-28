@@ -10,6 +10,7 @@
         public event Action SimulatorSettingsRefreshRequested;
         public event Action SimulationInfoRefreshRequested;
         public event Action HomeRenderRefreshRequested;
+        public event Action OutputConsoleRefreshRequested;
 
         public void CallIndexRequestRefresh()
         {
@@ -47,6 +48,11 @@
         public void CallHomeRenderRefresh()
         {
             HomeRenderRefreshRequested?.Invoke();
+        }
+
+        public void CallOutputConsoleRefresh()
+        {
+            OutputConsoleRefreshRequested?.Invoke();
         }
     }
 }

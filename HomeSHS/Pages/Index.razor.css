@@ -1,8 +1,23 @@
 ﻿.main-container {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 20px;
+}
+
+.first-floor-container {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     row-gap: 20px;
+}
+
+.second-floor-container {
+    border: 1px solid #000;
+    margin-top: 200px;
+    margin-bottom: 80px;
+    padding: 20px;
+    min-height: 1150px;
 }
 
 .home-view-container {
@@ -12,4 +27,31 @@
     border: 1px solid #000;
     margin-top: 20px;
     margin-left: 10px;
+}
+
+.button-goto {
+    background-color: #0D6EFD;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin-left: 925px;
+    margin-right: 925px;
+}
+
+.button-back {
+    background-color: #0D6EFD;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 12px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 925px;
 }

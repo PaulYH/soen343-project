@@ -16,9 +16,6 @@
     <None Remove="Components\NewFolder\**" />
   </ItemGroup>
 
-	<PropertyGroup>
-		<UseRazorSourceGenerator>false</UseRazorSourceGenerator>
-	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Remove="Components\TempFileUpload.razor.css" />

@@ -4,12 +4,13 @@
 @using HomeSHS.Components.Helpers
 @using Microsoft.AspNetCore.Components.Forms;
 @using Blazorise.Components.Progress;
-
+@inject IPageRefresher PageRefresher;
 
 
 @using SHC.Entities;
 
 <Accordion>
+    <h3>Output Console</h3>
     @foreach(var log in console.outputLog)
     {
         <Collapse>
@@ -32,4 +33,15 @@
 
 @code {
     OutputConsole console = OutputConsole.GetInstance();
+
+    protected async override Task OnInitializedAsync()
+    {
+        PageRefresher.OutputConsoleRefreshRequested += RefreshOutputConsole;
+    }
+
+    private void RefreshOutputConsole()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
 }
