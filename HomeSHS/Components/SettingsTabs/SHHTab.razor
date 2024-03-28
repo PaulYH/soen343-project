@@ -1,10 +1,12 @@
 ﻿@using HomeSHS.Components.Helpers
 @using SHC.Entities
 @using SHC.Entities.Room
+@using SHC.Enums
 @inject IPageRefresher PageRefresher
 
 <body>
     <Button Clicked="@(() => ToggleOnSwitch())"
+            Disabled="@(currentUser.UserType < 0)"
             Color="@(isOn ? Color.Success : Color.Danger)">
         @(isOn ? "ON" : "OFF")
     </Button>
@@ -12,7 +14,7 @@
     <div class="container">
         <div class="form-section">
             <SelectedRoomSHHInfo />
-            <Button class="button-date-time" Color="Color.Primary" onclick="@(() => {ShowModal();})">Edit zones</Button>
+            <Button class="button-date-time" Disabled="@((currentUser.UserType < 0 && currentUser.CurrentLocation != simulationContext.SelectedRoom) || currentUser.UserType == UserType.Stranger)" Color="Color.Primary" onclick="@(() => {ShowModal();})">Edit zones</Button>
         </div>
     </div>
 </body>

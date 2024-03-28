@@ -1,5 +1,6 @@
 ﻿@using HomeSHS.Components.Helpers
 @using SHC.Entities
+@using SHC.Enums
 @inject IPageRefresher PageRefresher
 
 <h3 for="item">@simulationContext.SelectedRoom.Name</h3>
@@ -10,11 +11,12 @@
 {
     <br/>
     <p>Set room temperature:</p>
-    <NumericEdit TValue="double" @bind-Value="desiredTemp"></NumericEdit>
-    <Button Color="Color.Primary" Clicked="@(() => SetTemp())">Set temperature</Button>
+    <NumericEdit TValue="double" Disabled="@((currentUser.UserType < 0 && currentUser.CurrentLocation != simulationContext.SelectedRoom) || currentUser.UserType == UserType.Stranger)" @bind-Value="desiredTemp"></NumericEdit>
+    <Button Color="Color.Primary" Disabled="@((currentUser.UserType < 0 && currentUser.CurrentLocation != simulationContext.SelectedRoom) || currentUser.UserType == UserType.Stranger)" Clicked="@(() => SetTemp())">Set temperature</Button>
 }
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
+    VirtualUser currentUser;
     bool isOverriden;
     double desiredTemp;
 
@@ -22,6 +24,7 @@
     {
         await base.OnInitializedAsync();
 
+        currentUser = simulationContext.CurrentUser;
         isOverriden = simulationContext.SelectedRoom.IsZoneOverriden;
         desiredTemp = simulationContext.SelectedRoom.OverrideTemp;
         PageRefresher.SelectedRoomSHHInfoRefreshRequested += RefreshSelectedRoomSHHInfo;
@@ -32,6 +35,7 @@
         InvokeAsync(() =>
             {
                 StateHasChanged();
+                currentUser = simulationContext.CurrentUser;
                 isOverriden = simulationContext.SelectedRoom.IsZoneOverriden;
                 desiredTemp = simulationContext.SelectedRoom.OverrideTemp;
             });

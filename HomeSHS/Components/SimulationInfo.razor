@@ -38,11 +38,40 @@ else
     <h4>@currentTime.ToString("T")</h4>
 </p>
 <p><b>Simulation Speed:</b> @(timeSpeed.ToString() + "x")</p>
-<Slider @bind-Value="@timeSpeed" Step="1" Min="1" Max="5"/>
+<Slider @bind-Value="@timeSpeed" Step="1" Min="1" Max="10"/>
 <br />
 <br />
 <br />
 <p><b>Outside Temperature:</b> @simulationContext.OutsideTemperature °C</p>
+
+<div class="form-section">
+    <h4>Permissions</h4>
+    <ul>
+        @if (currentUser.UserType == UserType.Parent)
+        {
+            <li>Open/close windows from anywhere</li>
+            <li>Lock/unlock doors from anywhere</li>
+            <li>On/off lights from anywhere</li>
+            <li>Full operation of SHH from home or remotely</li>
+        }
+        @if (currentUser.UserType == UserType.Child)
+        {
+            <li>Open/close windows in current room only</li>
+            <li>On/off lights in current room only</li>
+            <li>Increase/decreate room temperature in current room only</li>
+        }
+        @if (currentUser.UserType == UserType.Guest)
+        {
+            <li>Open/close windows in current room only</li>
+            <li>On/off lights in current room only</li>
+            <li>Increase/decreate room temperature in current room only</li>
+        }
+        @if (currentUser.UserType == UserType.Stranger)
+        {
+            <li>No permissions granted, the application is read-only</li>
+        }
+    </ul>
+</div>
 
 @code {
     SimulationContext simulationContext = SimulationContext.GetInstance();
@@ -83,6 +112,12 @@ else
                 timer.Interval = 1000 / timeSpeed;
 
             currentTime = currentTime.AddSeconds(1);
+
+            if (simulationContext.UploadedOutsideTemperatures.Any(x => x.date == currentTime))
+            {
+                var temp = simulationContext.UploadedOutsideTemperatures.Find(x => x.date == currentTime).temperature;
+                simulationContext.OutsideTemperature = temp;
+            }
 
             TimeSpan morning = new TimeSpan(5, 0, 0);
             TimeSpan afternoon = new TimeSpan(13, 0, 0);

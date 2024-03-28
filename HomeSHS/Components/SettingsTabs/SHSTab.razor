@@ -4,6 +4,7 @@
 @using SHC.Entities.Room
 @using SHC.Entities.Window
 @using SHC.Entities.Light
+@using SHC.Enums
 @using SHC.Services
 @using SHC.Utilities
 @inject IUserService UserService
@@ -14,8 +15,8 @@
     <div class="container">
         <!-- User profiles section -->
         <div class="form-section">
-            <label for="user-profiles">User Profiles:</label>
-
+            <br/>
+            <h4>User Profiles</h4>
             <Dropdown Class="select">
                 <DropdownToggle Color="Color.Primary">@selectedUser.FirstName @selectedUser.LastName</DropdownToggle>
                 <DropdownMenu MaxMenuHeight="200px">
@@ -35,14 +36,14 @@
 
         <!-- Date and time section -->
         <div class="form-section datetime-container">
-            <label for="dateTime">Select date and time</label>
+            <h4>Select Date and Time</h4>
             <DateEdit id="dateTime" TValue="DateTime" @bind-Date="@selectedDate" InputMode="DateInputMode.DateTime" />
             <Button class="button-date-time" Color="Color.Primary"  @onclick="@OnDateChanged">Set Date and Time</Button>
         </div>
         <!--<button class="button-date-time">Set Date and Time</button> -->
         <!-- Login and location section -->
         <div class="form-section">
-            <label for="login">Log in as another user:</label>
+            <h4>Log in as another user</h4>
             <Dropdown Class="select">
                 <DropdownToggle Color="Color.Primary">@selectedLoginUser.FirstName @selectedLoginUser.LastName</DropdownToggle>
                     <DropdownMenu MaxMenuHeight="200px">
@@ -58,29 +59,38 @@
             }
         </div>
 
-        <div class="temperature-button">
+        <div class="form-section">
+            <h4>Set outside temperature</h4>
             <NumericEdit @bind-Value="@outsideTemperature"/>
             <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set temperature</Button>
         </div>
 
-        <label>Obstruct window</label>
-         <div>
-            @foreach (var window in selectedRoomWindows)
-            {
-                @if (window.isBlocked)
-                {
-                    <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>(Blocked) @window.Name</Button>
-                }
-                else
-                {
-                    <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>@window.Name</Button>
-                }
-            }
-        </div>
- 
-        <!-- Modules and permissions section -->
+        <br />
         <div class="form-section">
-            <h3>Permissions</h3>
+            <h4>Upload temperature file</h4>
+            <TempFileUpload />
+        </div>
+
+        <br/>
+        <div class="form-section">
+            <h4>Obstruct Windows</h4>
+            <div>
+                @foreach (var window in selectedRoomWindows)
+                {
+                    @if (window.isBlocked)
+                    {
+                        <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>(Blocked) @window.Name</Button>
+                    }
+                    else
+                    {
+                        <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>@window.Name</Button>
+                    }
+                }
+                @if (selectedRoomWindows == null || selectedRoomWindows.Count == 0)
+                {
+                    <p>There are no windows at this location.</p>
+                }
+            </div>
         </div>
     </div>
 </body>

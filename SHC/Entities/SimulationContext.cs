@@ -15,6 +15,7 @@ namespace SHC.Entities
         public bool IsOn { get; set; } = false;
         public bool hasRenderLoaded { get; set; } = false;
         public double OutsideTemperature { get; set; } = 7.1;
+        public List<(DateTime date, double temperature)> UploadedOutsideTemperatures = new List<(DateTime date, double temperature)>();
         public DateTime CurrentDateTime { get; set; } = DateTime.Now;
         public VirtualUser? CurrentUser { get; set; }
         public List<VirtualUser> Users { get; set; } = new List<VirtualUser>();

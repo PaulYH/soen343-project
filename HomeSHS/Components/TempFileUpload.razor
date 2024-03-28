@@ -7,10 +7,14 @@
 @using SHC.Models.Builder;
 @using SHC.Entities;
 @inject IPageRefresher PageRefresher
- 
-    <InputFile id="fileInput" OnChange="@HandleFileChange" accept=".txt"  />
-    <Button class="submit-button" Color="Color.Primary" @onclick="Submit">Submit</Button>
+
+    <div style="display:flex;flex-direction:column;">
+        <InputFile id="fileInput" OnChange="@HandleFileChange" accept=".txt" />
+        <Button Width="Width.Px(80)" Height="Height.Px(40)" Color="Color.Primary" @onclick="Submit">Submit</Button>
+    </div>
+
 @code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
     TemperatureFileReader tempReader;
     MemoryStream fileContent;
     private bool fileSelected = false;
@@ -43,6 +47,10 @@
             }
             tempReader.ReadFile(fileContent);
             Console.WriteLine("File processed. Number of records: " + tempReader.Temperatures.Count);
+            if (tempReader.Temperatures.Count > 0)
+            {
+                simulationContext.UploadedOutsideTemperatures = tempReader.Temperatures;
+            }
             foreach (var (dateTime, temperature) in tempReader.Temperatures)
             {
                 Console.WriteLine($"DateTime: {dateTime}, Temperature: {temperature}°C");
