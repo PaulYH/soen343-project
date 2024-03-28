@@ -28,7 +28,8 @@ button {
 .crud-btns {
     display: flex;
     justify-content: space-evenly;
-    padding-bottom: 10px;
+    margin-left: -35px;
+    margin-top: 5px;
 }
 
 .crud-btn {
@@ -60,11 +61,13 @@ button {
 
 .button-date-time {
     padding: 10px;
-    display: block;
+    display: flex;
+    margin-top: 5px;
 }
 .button-temperature {
     padding: 10px;
-    display: block;
+    display: flex;
+    margin-top: 5px;
 }
 
 

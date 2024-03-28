@@ -164,6 +164,13 @@
     private async Task ToggleAutoModeLight(SmartLight light)
     {
         light.autoMode= !light.autoMode;
+        outputConsole.Log(
+            deviceId: $"{light.ToString()}",
+            eventType: $"ToggleAutoModeLight",
+            eventDesc: $"{(light.autoMode ? "Turned on automode" : "Turned off automode")}",
+            details: $""
+        );
+
     }
 
 
