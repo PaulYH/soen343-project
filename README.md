@@ -4,7 +4,7 @@
 * ***Hicham Kitaz (40188246)***
   * Username: hisham-kitaz
 * ***Nour Hassoun (40233077)***
-  * Username: 
+  * Username: NourHadieHassoun
 * ***Paul Humennyj (40209588)***
   * Username: PaulYH
 * ***Valeria Dolgaliova (40212218)***
