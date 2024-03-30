@@ -60,7 +60,7 @@ namespace SHC.Models
                                 Name.Add("Backyard");
                                 Width.Add(1);
                                 Height.Add(1);
-                                LightQty.Add(int.Parse(values[1]));
+                                LightQty.Add(int.Parse(values[2]));
                                 DoorQty.Add(0);
                                 WindowQty.Add(0);
                                 break;

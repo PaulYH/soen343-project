@@ -13,6 +13,7 @@ namespace SHC.Entities.Room
         public string Name { get; set; }
         public double Temperature { get; set; } = 0;
         public double OverrideTemp { get; set; } = 0;
+        public string TempStatus { get; set; } = "off";
         public int ZoneNum { get; set; } = 0;
         public bool IsZoneOverriden { get; set; } = false;
         public Wall ? LeftWall { get; set; }

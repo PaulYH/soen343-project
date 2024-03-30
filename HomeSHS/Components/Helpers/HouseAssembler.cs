@@ -248,6 +248,7 @@ namespace HomeSHS.Components.Helpers
             foreach(var room in house.Rooms)
             {
                 room.Temperature = simulationContext.OutsideTemperature;
+                room.OverrideTemp = simulationContext.OutsideTemperature;
 
                 List<string> sidesToCheck = new List<string>() {"left", "right", "top", "bottom"};
                 string sideWithFreeDoor = "";
@@ -399,7 +400,7 @@ namespace HomeSHS.Components.Helpers
 
             entrance = (Entrance) house.Rooms.First();
             entrance.Temperature = simulationContext.OutsideTemperature;
-            renderRooms.Add((entrance, (400, 400)));
+            renderRooms.Add((entrance, (325, 375)));
             house.Rooms.Remove(entrance);
         }
 

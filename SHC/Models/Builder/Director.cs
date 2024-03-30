@@ -28,7 +28,10 @@ namespace SHC.Models.Builder
             {
                 Console.WriteLine(roomNum);
                 Console.WriteLine("Going in the loop");
-                homeBuilder.buildDoor(rd.DoorQty[i]);
+                if (rd.Type[i] == "Backyard")
+                    homeBuilder.buildDoor(1);
+                else
+                    homeBuilder.buildDoor(rd.DoorQty[i]);
                 homeBuilder.buildWindow(rd.WindowQty[i]);
                 homeBuilder.buildWalls();
                 homeBuilder.buildLight(rd.LightQty[i]);

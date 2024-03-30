@@ -11,11 +11,11 @@
     <div class="container">
         <h3 for="item">@simulationContext.SelectedRoom.Name</h3>
         <select id="item" multiple>
-            <option value="windows" @onclick=@(async () => await SetSelectedGroup("windows"))>Windows</option>
+            <option value="windows" disabled="@(simulationContext.SelectedRoom.Name == "Backyard")" @onclick=@(async () => await SetSelectedGroup("windows"))>Windows</option>
             <option value="lights" @onclick=@(async () => await SetSelectedGroup("lights"))>Lights</option>
-            <option value="doors" @onclick=@(async () => await SetSelectedGroup("doors"))>Doors</option>
+            <option value="doors" disabled="@(simulationContext.SelectedRoom.Name == "Backyard")" @onclick=@(async () => await SetSelectedGroup("doors"))>Doors</option>
         </select>
-        @if (simulationContext.SelectedGroup == "windows")
+        @if (simulationContext.SelectedGroup == "windows" && simulationContext.SelectedRoom.Name != "Backyard")
         {
             <h4>Is Open?</h4>
             <div class="checkbox-group">
@@ -31,13 +31,13 @@
             <div class="checkbox-group">
                 @foreach (var light in selectedRoomLights)
                 {
-                    <label><input type="checkbox" checked="@light.isOn" disabled="@areLightsDisabled" @onclick=@(() => ToggleSettingLight(light)) name="location" value="@light.Name"> @light.Name</label>
+                    <label><input type="checkbox" checked="@light.isOn" disabled="@(areLightsDisabled || light.autoMode)" @onclick=@(() => ToggleSettingLight(light)) name="location" value="@light.Name"> @light.Name</label>
                     <label><input type="checkbox" checked="@light.autoMode" disabled="@areLightsDisabled" @onclick=@(() => ToggleAutoModeLight(light)) value="@light.Name"> AutoMode?</label>
 
                 }
             </div>
         }
-        @if (simulationContext.SelectedGroup == "doors")
+        @if (simulationContext.SelectedGroup == "doors" && simulationContext.SelectedRoom.Name != "Backyard")
         {
             <h4>Is Locked?</h4>
             <div class="checkbox-group">
@@ -149,7 +149,6 @@
 
     private async Task ToggleSettingLight(SmartLight light)
     {
-        light.isOn = !light.isOn;
         light.isOn = !light.isOn;
         OnInitializedAsync();
         outputConsole.Log(

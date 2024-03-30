@@ -12,7 +12,7 @@
         <svg id="render-container"
              width="1000"
              height="1000"
-             viewBox="0 0 1000 1000">
+             viewBox="0 0 850 850">
             @foreach (var r in renderRooms)
             {
                 <g>
@@ -26,73 +26,106 @@
                     <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-text")"
                           class="@(simulationContext.SelectedRoom.Id == r.Item1.Id ? "text-selected" : "text-regular")"
                           x="@(r.Item2.x + 8)"
-                          y="@(r.Item2.y + 45)"
+                          y="@(r.Item2.y + 35)"
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @r.Item1.Name
                     </text>
                   
                     @if (AreLightsOn(r.Item1))
                     {
-                        
-                        <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 20)" width="20" height="20">
-                            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: #FDDA0D;">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                        </foreignObject>
+                        <g>
+                            <foreignObject x="@(r.Item2.x + 25)" y="@(r.Item2.y + 73)" width="20" height="20">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: #FDDA0D;">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                            </foreignObject>
+                            <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-lights-qty")"
+                                  x="@(r.Item2.x + 26)"
+                                  y="@(r.Item2.y + 95)"
+                                  font-size="8px">
+                                @enabledLights
+                            </text>
+                         </g>
                     }
                     else
                     {
-                        <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 20)" width="20" height="20">
+                        <foreignObject x="@(r.Item2.x + 25)" y="@(r.Item2.y + 73)" width="20" height="20">
                             <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px;">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
                         </foreignObject>
                     }
 
-                    @if (AreWindowsOpen(r.Item1))
+                    @if (r.Item1.Name != "Backyard")
                     {
-                        
-                        <image href="/asset/window-open.svg"
-                               x="@r.Item2.x" y="@(r.Item2.y + 100 - 40)"
-                               width="15" height="15" />
-                    }
-                    else
-                    {
-                        <image href="/asset/window-closed.svg"
-                               x="@r.Item2.x" y="@(r.Item2.y + 100 - 40)"
-                               width="15" height="15" />
+                        @if (AreWindowsOpen(r.Item1))
+                        {
+                            <g>
+                                <image href="/asset/window-open.svg"
+                                       x="@(r.Item2.x + 5)" y="@(r.Item2.y + 73)"
+                                       width="15" height="15" />
+                                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-windows-qty")"
+                                      x="@(r.Item2.x + 10)"
+                                      y="@(r.Item2.y + 95)"
+                                      font-size="8px">
+                                    @enabledWindows
+                                </text>
+                            </g>
+                        }
+                        else
+                        {
+                            <image href="/asset/window-closed.svg"
+                                   x="@(r.Item2.x + 5)" y="@(r.Item2.y + 73)"
+                                   width="15" height="15" />
+                        }
                     }
 
-                    @if (AreDoorsLocked(r.Item1))
+                    @if (r.Item1.Name != "Backyard")
                     {
-                      
-                        <image href="/asset/door-closed.svg"
-                               x="@r.Item2.x" y="@(r.Item2.y)"
-                               width="15" height="15" />
+                        @if (AreDoorsLocked(r.Item1))
+                        {
+                            <g>
+                                <image href="/asset/door-open.svg"
+                                       x="@(r.Item2.x + 37)" y="@(r.Item2.y + 73)"
+                                       width="15" height="15" />
+                                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-doors-qty")"
+                                      x="@(r.Item2.x + 42)"
+                                      y="@(r.Item2.y + 95)"
+                                      font-size="8px">
+                                    @enabledDoors
+                                </text>
+                            </g>
+                        }
+                        else
+                        {
+                            <image href="/asset/door-closed.svg"
+                                   x="@(r.Item2.x + 37)" y="@(r.Item2.y + 73)"
+                                   width="15" height="15" />
+                        }
                     }
-                    else
+                    
+
+                    @if (r.Item1.TempStatus == "heating" && r.Item1.Name != "Backyard")
                     {
-                        
-                        <image href="/asset/door-open.svg"
-                               x="@r.Item2.x" y="@(r.Item2.y)"
-                               width="15" height="15" />
-                    }
-                  
-                    <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 80)" width="20" height="20">
-                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: red;">
+                        <foreignObject x="@(r.Item2.x + 57)" y="@(r.Item2.y + 73)" width="20" height="20">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: red;">
                                 <i class="fas fa-fire"></i>
                             </div>
                         </foreignObject>
+                    }
+                    @if (r.Item1.TempStatus == "cooling" && r.Item1.Name != "Backyard")
+                    {
+                        <foreignObject x="@(r.Item2.x + 57)" y="@(r.Item2.y + 73)" width="20" height="20">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: blue;">
+                                <i class="fas fa-snowflake"></i>
+                            </div>
+                        </foreignObject>
+                    }
 
-                    <foreignObject x="@r.Item2.x" y="@(r.Item2.y + 100 - 60)" width="20" height="20">
-                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: blue;">
-                            <i class="fas fa-snowflake"></i>
-                        </div>
-                    </foreignObject>
                     <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-temp")"
                           class="text-temp"
                           x="@(r.Item2.x + 8)"
-                          y="@(r.Item2.y + 60)"
+                          y="@(r.Item2.y + 50)"
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @(String.Format("{0:0.0}", r.Item1.Temperature)) °C
                     </text>
@@ -111,6 +144,11 @@
     int rect2y = 0;
     string showx = string.Empty;
     string showy = string.Empty;
+
+    int enabledDoors = 0;
+    int enabledWindows = 0;
+    int enabledLights = 0;
+
 
     HouseAssembler houseAssembler = new HouseAssembler(); 
     House house;
@@ -140,16 +178,22 @@
 
     private bool AreLightsOn(IRoom room)
     {
+        enabledLights = 0;
         foreach (SmartLight light in room.Lights)
         {
             if (light.isOn)
-                return true;
+                enabledLights++;
         }
+
+        if (enabledLights > 0)
+            return true;
+
         return false;
     }
 
     private bool AreWindowsOpen(IRoom room)
     {
+        enabledWindows = 0;
         SmartWindow window = (SmartWindow)room.BottomWall.Window;
 
         if (window != null)
@@ -157,7 +201,7 @@
 
             if (window.isOpen)
             {
-                return true;
+                enabledWindows++;
             }
 
         }
@@ -169,7 +213,7 @@
 
             if (window.isOpen)
             {
-                return true;
+                enabledWindows++;
             }
 
         }
@@ -181,7 +225,7 @@
 
             if (window.isOpen)
             {
-                return true;
+                enabledWindows++;
             }
 
         }
@@ -193,10 +237,13 @@
 
             if (window.isOpen)
             {
-                return true;
+                enabledWindows++;
             }
 
         }
+
+        if (enabledWindows > 0)
+            return true;
 
         return false;
 
@@ -204,6 +251,7 @@
 
     private bool AreDoorsLocked(IRoom room)
     {
+        enabledDoors = 0;
         SmartDoor door = (SmartDoor)room.BottomWall.Door;
 
         if (door != null)
@@ -211,7 +259,7 @@
 
             if (door.IsLocked)
             {
-                return true;
+                enabledDoors++;
             }
 
         }
@@ -223,7 +271,7 @@
 
             if (door.IsLocked)
             {
-                return true;
+                enabledDoors++;
             }
 
         }
@@ -235,7 +283,7 @@
 
             if (door.IsLocked)
             {
-                return true;
+                enabledDoors++;
             }
 
         }
@@ -247,10 +295,13 @@
 
             if (door.IsLocked)
             {
-                return true;
+                enabledDoors++;
             }
 
         }
+
+        if (enabledDoors > 0)
+            return true;
 
         return false;
       }

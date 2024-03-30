@@ -6,7 +6,7 @@
 
 <body>
     <Button Clicked="@(() => ToggleOnSwitch())"
-            Disabled="@(currentUser.UserType < 0)"
+            Disabled="isZoneEditDisabled"
             Color="@(isOn ? Color.Success : Color.Danger)">
         @(isOn ? "ON" : "OFF")
     </Button>
@@ -14,7 +14,7 @@
     <div class="container">
         <div class="form-section">
             <SelectedRoomSHHInfo />
-            <Button class="button-date-time" Disabled="@((currentUser.UserType < 0 && currentUser.CurrentLocation != simulationContext.SelectedRoom) || currentUser.UserType == UserType.Stranger)" Color="Color.Primary" onclick="@(() => {ShowModal();})">Edit zones</Button>
+            <Button class="button-date-time" Disabled="isZoneEditDisabled" Color="Color.Primary" onclick="@(() => {ShowModal();})">Edit zones</Button>
         </div>
     </div>
 </body>
@@ -31,7 +31,10 @@
                     <TableHeaderCell>Zone #</TableHeaderCell>
                     @foreach (var room in simulationContext.RenderRooms)
                     {
-                        <TableHeaderCell>@room.Item1.Name</TableHeaderCell>
+                        @if (room.Item1.Name != "Backyard")
+                        {
+                            <TableHeaderCell>@room.Item1.Name</TableHeaderCell>
+                        }
                     }
                     <TableHeaderCell>Morning Temp</TableHeaderCell>
                     <TableHeaderCell>Afternoon Temp</TableHeaderCell>
@@ -44,16 +47,19 @@
                             <TableRowCell>@zone.zoneNum</TableRowCell>
                                 @foreach (var room in simulationContext.RenderRooms)
                                 {
+                                    @if (room.Item1.Name != "Backyard")
+                                    {
                                     <TableRowCell>
                                         @if (!room.Item1.IsZoneOverriden)
                                         {
-                                        <Radio Group="@("room-" + room.Item1.Id)" TValue="(IRoom, string)" Value="@((room.Item1, zone.zoneNum.ToString()))" Checked="@zone.rooms.Contains(room.Item1)" CheckedChanged="@(() => {OnCheckedValueChanged((room.Item1, zone.zoneNum.ToString()));})" />
+                                            <Radio Group="@("room-" + room.Item1.Id)" TValue="(IRoom, string)" Value="@((room.Item1, zone.zoneNum.ToString()))" Checked="@zone.rooms.Contains(room.Item1)" CheckedChanged="@(() => {OnCheckedValueChanged((room.Item1, zone.zoneNum.ToString()));})" />
                                         }
                                         else
                                         {
-                                        <Paragraph TextSize="TextSize.ExtraSmall">Overridden</Paragraph>
+                                            <Paragraph TextSize="TextSize.ExtraSmall">Overridden</Paragraph>
                                         }
                                     </TableRowCell>
+                                    }
                                 }
                             <TableRowCell>
                                 <NumericEdit TValue="double" Value="zone.temp1" ValueChanged="@((x) => {OnValueChanged(zone.zoneNum, x, "temp1");})"></NumericEdit>
@@ -96,6 +102,7 @@
     OutputConsole outputConsole = OutputConsole.GetInstance();
     VirtualUser? currentUser;
     bool isOn = false;
+    bool isZoneEditDisabled = true;
     (IRoom, (double x, double y)) selectedRoom;
     double outsideTemperature;
     List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> zones;
@@ -114,6 +121,7 @@
         outsideTemperature = simulationContext.OutsideTemperature;
         zones = ((SmartHomeHeating)simulationContext.SHHListener.observers.FirstOrDefault()).ZoneManagement;
         selectedTemps = zones.ToList();
+        await SetAllPermissions();
     }
 
     private void RefreshSHHTab()
@@ -121,6 +129,7 @@
         PageRefresher.CallSelectedRoomSHHInfoRefresh();
         StateHasChanged();
         OnInitializedAsync();
+        SetAllPermissions();
     }
 
     Task ToggleOnSwitch()
@@ -249,5 +258,19 @@
 
 
         zones[zoneIndex] = zone;
+    }
+
+    private async Task SetAllPermissions()
+    {
+        switch (currentUser.UserType)
+        {
+            case UserType.Parent:
+                isZoneEditDisabled = false;
+                break;
+            case UserType.Child:
+            case UserType.Guest:
+            case UserType.Stranger:
+                break;
+        }
     }
 }
