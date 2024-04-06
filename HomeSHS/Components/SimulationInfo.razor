@@ -2,6 +2,7 @@
 @using SHC.Entities
 @using SHC.Enums
 @using System.Timers;
+@using SHC.Utilities.Observer;
 @implements IDisposable
 @inject IPageRefresher PageRefresher
 
@@ -138,6 +139,7 @@ else
                 await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOff();
 
             PageRefresher.CallSelectedRoomSHHInfoRefresh();
+            PageRefresher.CallSelectedRoomSHPInfoRefresh();
             PageRefresher.CallHomeRenderRefresh();
 
             InvokeAsync(() =>

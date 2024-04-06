@@ -4,6 +4,7 @@
 @using SHC.Entities.Light
 @using SHC.Entities.Window
 @using SHC.Enums
+@using SHC.Utilities.State
 @inject IPageRefresher PageRefresher
 
 <body>
@@ -49,5 +50,14 @@
     {
         isAwayOn = !isAwayOn;
         simulationContext.IsAwayOn = isAwayOn;
+
+        if (simulationContext.IsAwayOn)
+        {
+            simulationContext.SHPContext.ChangeState(new AwayState(simulationContext.SHPContext));
+        }
+        else
+        {
+            simulationContext.SHPContext.ChangeState(new RegularState(simulationContext.SHPContext));
+        }
     }
 }

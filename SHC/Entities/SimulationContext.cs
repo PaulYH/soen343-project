@@ -1,5 +1,6 @@
 ﻿using SHC.Entities.Room;
 using SHC.Utilities.Observer;
+using SHC.Utilities.State;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,7 @@ namespace SHC.Entities
         public string? SelectedGroup { get; set; }
         public House? House { get; set; }
         public SHHListener? SHHListener { get; set; }
+        public SmartHomeSecurity SHPContext { get; private set; } = new SmartHomeSecurity();
 
 
         private SimulationContext() { }
