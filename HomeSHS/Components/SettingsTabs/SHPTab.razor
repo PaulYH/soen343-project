@@ -1,0 +1,31 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Door
+@using SHC.Entities.Light
+@using SHC.Entities.Window
+@using SHC.Enums
+@inject IPageRefresher PageRefresher
+
+<body>
+
+</body>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
+    VirtualUser currentUser;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHPTabRefreshRequested += RefreshSHPTab;
+
+        currentUser = simulationContext.CurrentUser;
+    }
+
+    private void RefreshSHPTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+}

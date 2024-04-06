@@ -1,0 +1,21 @@
+﻿body {
+    font-family: Arial, sans-serif;
+}
+
+select, button, .checkbox-group {
+    width: 100%;
+    margin: 10px 0;
+}
+
+select {
+    height: 70px;
+}
+
+button {
+    padding: 5px;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}

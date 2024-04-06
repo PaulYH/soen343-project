@@ -6,6 +6,7 @@
         event Action SHSTabRefreshRequested;
         event Action SHCTabRefreshRequested;
         event Action SHHTabRefreshRequested;
+        event Action SHPTabRefreshRequested;
         event Action SelectedRoomSHHInfoRefreshRequested;
         event Action SimulatorSettingsRefreshRequested;
         event Action SimulationInfoRefreshRequested;
@@ -15,6 +16,7 @@
         void CallSHSTabRefreshRequested();
         void CallSHCTabRefreshRequested();
         void CallSHHTabRefreshRequested();
+        void CallSHPTabRefreshRequested();
         void CallSelectedRoomSHHInfoRefresh();
         void CallSimulatorSettingsRefresh();
         void CallSimulationInfoRefresh();

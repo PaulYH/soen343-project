@@ -18,12 +18,14 @@
 
 
 	<ItemGroup>
+	  <None Remove="Components\SettingsTabs\SHPTab.razor.css" />
 	  <None Remove="Components\TempFileUpload.razor.css" />
 	</ItemGroup>
 
 
 
 	<ItemGroup>
+	  <Content Include="Components\SettingsTabs\SHPTab.razor.css" />
 	  <Content Include="Components\TempFileUpload.razor.css" />
 	</ItemGroup>
 
