@@ -7,6 +7,20 @@
 @inject IPageRefresher PageRefresher
 
 <body>
+    <br/>
+    <h3>Away Mode</h3>
+    <Button Clicked="@(() => ToggleOnSwitch())"
+            Disabled="!simulationContext.IsOn"
+            Color="@(isAwayOn ? Color.Success : Color.Danger)">
+        @(isAwayOn ? "ON" : "OFF")
+    </Button>
+    <br/>
+    <br/>
+    <div class="container">
+        <div class="form-section">
+            <SelectedRoomSHPInfo />
+        </div>
+    </div>
 
 </body>
 
@@ -14,18 +28,26 @@
     SimulationContext simulationContext = SimulationContext.GetInstance();
     OutputConsole outputConsole = OutputConsole.GetInstance();
     VirtualUser currentUser;
+    bool isAwayOn = false;
 
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         PageRefresher.SHPTabRefreshRequested += RefreshSHPTab;
 
+        isAwayOn = simulationContext.IsAwayOn;
         currentUser = simulationContext.CurrentUser;
     }
 
     private void RefreshSHPTab()
     {
+        PageRefresher.CallSelectedRoomSHPInfoRefresh();
         StateHasChanged();
-        OnInitializedAsync();
+    }
+
+    private void ToggleOnSwitch()
+    {
+        isAwayOn = !isAwayOn;
+        simulationContext.IsAwayOn = isAwayOn;
     }
 }

@@ -16,6 +16,7 @@ namespace SHC.Entities.Room
         public string TempStatus { get; set; } = "off";
         public int ZoneNum { get; set; } = 0;
         public bool IsZoneOverriden { get; set; } = false;
+        public bool HasMotionDetector { get; set; } = false;
         public Wall LeftWall { get; set; }
         public Wall RightWall { get; set; }
         public Wall TopWall { get; set; }

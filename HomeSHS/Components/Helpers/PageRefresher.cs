@@ -8,6 +8,7 @@
         public event Action SHHTabRefreshRequested;
         public event Action SHPTabRefreshRequested;
         public event Action SelectedRoomSHHInfoRefreshRequested;
+        public event Action SelectedRoomSHPInfoRefreshRequested;
         public event Action SimulatorSettingsRefreshRequested;
         public event Action SimulationInfoRefreshRequested;
         public event Action HomeRenderRefreshRequested;
@@ -40,6 +41,10 @@
         public void CallSelectedRoomSHHInfoRefresh()
         {
             SelectedRoomSHHInfoRefreshRequested?.Invoke();
+        }
+        public void CallSelectedRoomSHPInfoRefresh()
+        {
+            SelectedRoomSHPInfoRefreshRequested?.Invoke();
         }
         public void CallSimulatorSettingsRefresh()
         {

@@ -1,0 +1,41 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Enums
+@inject IPageRefresher PageRefresher
+
+<h3 for="item">@simulationContext.SelectedRoom.Name</h3>
+<Check TValue="bool" Disabled="@(!simulationContext.IsAwayOn || !simulationContext.IsOn)" Checked="hasMotionSensor" CheckedChanged="@(() => {OnCheckedChanged();})">Motion detector? </Check>
+
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    VirtualUser currentUser;
+    bool hasMotionSensor = false;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        currentUser = simulationContext.CurrentUser;
+        hasMotionSensor = simulationContext.SelectedRoom.HasMotionDetector;
+        PageRefresher.SelectedRoomSHHInfoRefreshRequested += RefreshSelectedRoomSHPInfo;
+    }
+
+    private void RefreshSelectedRoomSHPInfo()
+    {
+        InvokeAsync(async () =>
+            {
+                StateHasChanged();
+                currentUser = simulationContext.CurrentUser;
+                hasMotionSensor = simulationContext.SelectedRoom.HasMotionDetector;
+                
+                // SetAllPermissions();
+            });
+    }
+
+    private void OnCheckedChanged()
+    {
+        hasMotionSensor = !hasMotionSensor;
+        simulationContext.SelectedRoom.HasMotionDetector = hasMotionSensor;
+    }
+}
