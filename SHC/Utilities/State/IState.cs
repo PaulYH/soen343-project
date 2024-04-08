@@ -8,5 +8,6 @@ namespace SHC.Utilities.State
 {
     public interface IState
     {
+        int CheckForPresenceInRooms();
     }
 }

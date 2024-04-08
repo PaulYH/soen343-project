@@ -27,7 +27,7 @@ namespace SHC.Entities
         public House? House { get; set; }
         public SHHListener? SHHListener { get; set; }
         public SmartHomeSecurity SHPContext { get; private set; } = new SmartHomeSecurity();
-
+        public string UserMessage { get; set; } = "";
 
         private SimulationContext() { }
         public static SimulationContext GetInstance()

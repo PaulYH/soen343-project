@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SHC.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,11 @@ namespace SHC.Utilities.State
         public RegularState(SmartHomeSecurity context) 
         { 
             this.context = context;
+        }
+
+        public int CheckForPresenceInRooms()
+        {
+            return -1;
         }
     }
 }

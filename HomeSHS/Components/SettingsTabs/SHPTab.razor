@@ -20,6 +20,13 @@
     <div class="container">
         <div class="form-section">
             <SelectedRoomSHPInfo />
+            <br/>
+            <h3>Police Timer</h3>
+            <Label>Minutes</Label>
+            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerMinutes" ValueChanged="@(x => timerMinutes = x)" />
+            <Label>Seconds</Label>
+            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerSeconds" ValueChanged="@(x => timerSeconds = x)" />
+            <Button Color="Color.Primary" Disabled="isAwayOn" Clicked="@(() => SetTimerTime())">Set timer</Button>
         </div>
     </div>
 
@@ -29,6 +36,8 @@
     SimulationContext simulationContext = SimulationContext.GetInstance();
     OutputConsole outputConsole = OutputConsole.GetInstance();
     VirtualUser currentUser;
+    int timerMinutes;
+    int timerSeconds;
     bool isAwayOn = false;
 
     protected async override Task OnInitializedAsync()
@@ -38,6 +47,9 @@
 
         isAwayOn = simulationContext.IsAwayOn;
         currentUser = simulationContext.CurrentUser;
+
+        timerMinutes = simulationContext.SHPContext.GetTimerMinutes();
+        timerSeconds = simulationContext.SHPContext.GetTimerSeconds();
     }
 
     private void RefreshSHPTab()
@@ -59,5 +71,12 @@
         {
             simulationContext.SHPContext.ChangeState(new RegularState(simulationContext.SHPContext));
         }
+    }
+
+    private void SetTimerTime()
+    {
+        simulationContext.SHPContext.SetTimerMinutes(timerMinutes);
+        simulationContext.SHPContext.SetTimerSeconds(timerSeconds);
+        RefreshSHPTab();
     }
 }

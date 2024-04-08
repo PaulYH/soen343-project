@@ -9,6 +9,9 @@ namespace SHC.Utilities.State
     public class SmartHomeSecurity
     {
         private IState state;
+        private int policeTimerMinutes = 1;
+        private int policeTimerSeconds = 0;
+        private int policeTimerTicks = -1;
 
         public SmartHomeSecurity()
         {
@@ -20,6 +23,39 @@ namespace SHC.Utilities.State
             state = newState;
         }
 
+        public int CheckForPresenceInRooms()
+        {
+            return state.CheckForPresenceInRooms();
+        }
 
+        public void SetTimerMinutes(int value)
+        {
+            policeTimerMinutes = value;
+        }
+
+        public void SetTimerSeconds(int value)
+        {
+            policeTimerSeconds = value;
+        }
+
+        public void SetTimerTicks(int value)
+        { 
+            policeTimerTicks = value;
+        }
+
+        public int GetTimerMinutes()
+        {
+            return policeTimerMinutes;
+        }
+
+        public int GetTimerSeconds()
+        {
+            return policeTimerSeconds;
+        }
+
+        public int GetTimerTicks()
+        {
+            return policeTimerTicks;
+        }
     }
 }

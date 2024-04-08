@@ -4,7 +4,7 @@
 @inject IPageRefresher PageRefresher
 
 <h3 for="item">@simulationContext.SelectedRoom.Name</h3>
-<Check TValue="bool" Disabled="@(!simulationContext.IsAwayOn || !simulationContext.IsOn)" Checked="hasMotionSensor" CheckedChanged="@(() => {OnCheckedChanged();})">Motion detector? </Check>
+<Check TValue="bool" Disabled="@(simulationContext.IsAwayOn || !simulationContext.IsOn)" Checked="hasMotionSensor" CheckedChanged="@(() => {OnCheckedChanged();})">Motion detector? </Check>
 
 
 @code {

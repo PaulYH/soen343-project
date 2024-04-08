@@ -1,5 +1,6 @@
 ﻿using SHC.Entities;
 using SHC.Entities.Room;
+using SHC.Utilities.State;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,24 @@ namespace SHC.Utilities.Observer
     public class SmartHomeHeating : IObserver
     {
         public List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> ZoneManagement;
-        public List<(int roomId, List<double> roomTemps)> OldRoomTemps;
+        public List<(int roomId, List<double> roomTemps)> OldRoomTemps = new List<(int roomId, List<double> roomTemps)>();
         private int minuteTickCounter = 0;
+
+        public SmartHomeHeating() 
+        {
+            var simContext = SimulationContext.GetInstance();
+            foreach (var room in simContext.RenderRooms)
+            {
+                
+                OldRoomTemps.Add((room.Item1.Id, new List<double>() { room.Item1.Temperature }));
+            }
+        }
 
         public void Update(IEventListener eventListener)
         {
             ZoneManagement = ((SHHListener)eventListener).state;
-
-            var simContext = SimulationContext.GetInstance();
-
-            foreach (var room in simContext.RenderRooms)
-            {
-                OldRoomTemps.Add((room.Item1.Id, new List<double>() { room.Item1.Temperature }));
-            }
         }
+
 
 
         public async Task UpdateRoomTemperaturesHAVCOn(string timeOfDay)
@@ -111,8 +116,6 @@ namespace SHC.Utilities.Observer
                                 continue;
                             }
                         }
-
-                        CheckTempHistoryForJump(room.Item1);
                     }
                     break;
                 case "time2":
@@ -192,9 +195,7 @@ namespace SHC.Utilities.Observer
                                 room.Item1.Temperature -= 0.05;
                                 continue;
                             }
-                        }
-
-                        CheckTempHistoryForJump(room.Item1);
+                        }                    
                     }
                     break;
                 case "time3":
@@ -275,10 +276,26 @@ namespace SHC.Utilities.Observer
                                 continue;
                             }
                         }
-
-                        CheckTempHistoryForJump(room.Item1);
                     }
                     break;
+            }
+
+            foreach (var room in simulationContext.RenderRooms)
+            {
+                CheckTempHistoryForJump(room.Item1);
+
+                if (room.Item1.Temperature > 135)
+                {
+                    simulationContext.SHPContext.ChangeState(new RegularState(simulationContext.SHPContext));
+
+                    var msg = $"Temperature over 135 °C in {room.Item1.Name}. Turning off Away mode.";
+
+                    if (simulationContext.UserMessage != msg)
+                    {
+                        simulationContext.UserMessage = $"Temperature over 135 °C in {room.Item1.Name}. Turning off Away mode.";
+                        OutputConsole.GetInstance().Log($"Room-{room.Item1.Id}", "SHP module", "Emergency Away mode shut off.", $"Temperature over 135 °C in {room.Item1.Name}.");
+                    }
+                }
             }
 
             if (minuteTickCounter < 59)
@@ -342,7 +359,11 @@ namespace SHC.Utilities.Observer
                 if (difference >= 15)
                 {
                     // turn off away mode and notify owners
-                    Console.WriteLine($"Jump of over 15 c in room {room.Name}");
+                    var simContext = SimulationContext.GetInstance();
+                    simContext.SHPContext.ChangeState(new RegularState(simContext.SHPContext));
+
+                    simContext.UserMessage = $"Sudden jump of {difference} °C in {room.Name} detected. Turning off Away mode.";
+                    OutputConsole.GetInstance().Log($"Room-{room.Id}", "SHP module", "Emergency Away mode shut off.", $"Sudden jump of {difference} °C in {room.Name} detected.");
                 }
             }
         }
