@@ -1,5 +1,6 @@
 ﻿using SHC.Entities;
 using SHC.Entities.Room;
+using SHC.Entities.Window;
 using SHC.Utilities.State;
 using System;
 using System.Collections.Generic;
@@ -295,6 +296,36 @@ namespace SHC.Utilities.Observer
                         simulationContext.UserMessage = $"Temperature over 135 °C in {room.Item1.Name}. Turning off Away mode.";
                         OutputConsole.GetInstance().Log($"Room-{room.Item1.Id}", "SHP module", "Emergency Away mode shut off.", $"Temperature over 135 °C in {room.Item1.Name}.");
                     }
+                }
+
+                if (room.Item1.Temperature < simulationContext.OutsideTemperature && simulationContext.OutsideTemperature >= 20 && !simulationContext.IsAwayOn)
+                {
+                    var roomWindowTop = room.Item1.TopWall.Window;
+                    var roomWindowBottom = room.Item1.BottomWall.Window;
+                    var roomWindowRight = room.Item1.RightWall.Window;
+                    var roomWindowLeft = room.Item1.LeftWall.Window;
+
+                    List<IWindow> windows = new List<IWindow>() { roomWindowTop, roomWindowBottom, roomWindowRight, roomWindowLeft};
+
+                    foreach (SmartWindow window in windows)
+                    {
+                        if (window != null)
+                        {
+                            if (window.isBlocked)
+                            {
+                                simulationContext.UserMessage = $"Window is blocked in {room.Item1.Name}. SHH module cannot open the windows.";
+                                OutputConsole.GetInstance().Log(window.Name, "Window open failed", "Blocked window", $"Window is blocked in {room.Item1.Name}. SHH module cannot open the windows.");
+                                break;
+                            }
+                            window.isOpen = true;
+                        }
+                    }
+                }
+
+                if (room.Item1.Temperature <= 0)
+                {
+                    simulationContext.UserMessage = "Temperature of 0 or less detected in home. This is a risk for pipes bursting.";
+                    OutputConsole.GetInstance().Log(room.Item1.Name, "Low temperature", "Temperature warning", $"Temperature of 0 or less detected in {room.Item1.Name}. This is a risk for pipes bursting.");
                 }
             }
 

@@ -11,7 +11,7 @@
     <br/>
     <h3>Away Mode</h3>
     <Button Clicked="@(() => ToggleOnSwitch())"
-            Disabled="!simulationContext.IsOn"
+            Disabled="!simulationContext.IsOn || currentUser.UserType != UserType.Parent"
             Color="@(isAwayOn ? Color.Success : Color.Danger)">
         @(isAwayOn ? "ON" : "OFF")
     </Button>
@@ -23,10 +23,10 @@
             <br/>
             <h3>Police Timer</h3>
             <Label>Minutes</Label>
-            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerMinutes" ValueChanged="@(x => timerMinutes = x)" />
+            <NumericEdit TValue="int" Disabled="isAwayOn || currentUser.UserType != UserType.Parent" Value="timerMinutes" ValueChanged="@(x => timerMinutes = x)" />
             <Label>Seconds</Label>
-            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerSeconds" ValueChanged="@(x => timerSeconds = x)" />
-            <Button Color="Color.Primary" Disabled="isAwayOn" Clicked="@(() => SetTimerTime())">Set timer</Button>
+            <NumericEdit TValue="int" Disabled="isAwayOn || currentUser.UserType != UserType.Parent" Value="timerSeconds" ValueChanged="@(x => timerSeconds = x)" />
+            <Button Color="Color.Primary" Disabled="isAwayOn || currentUser.UserType != UserType.Parent" Clicked="@(() => SetTimerTime())">Set timer</Button>
         </div>
     </div>
 
