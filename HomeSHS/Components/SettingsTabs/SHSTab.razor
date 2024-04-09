@@ -282,7 +282,6 @@
     {
         selectedUser = user;
         await SetCurrentUserWindows();
-        PageRefresher.CallSHSTabRefreshRequested();
         outputConsole.Log(
             deviceId: $"SHH Module",
             eventType: "UserChange",
