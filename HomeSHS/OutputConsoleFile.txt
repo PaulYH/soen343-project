@@ -1,2 +1,10 @@
-SHC.Entities.Window.SmartWindow ToggleWindow Opened window
-SHC.Entities.Window.SmartWindow ToggleWindow Closed window
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window  
+SHC.Entities.Window.SmartWindow ToggleWindow Closed window  
+SHH Module DateChange Date was changed by user new date: 2024-04-18 11:36:00 AM
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window  
+SHC.Entities.Window.SmartWindow ToggleWindow Closed window  
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window  
+SHC.Entities.Window.SmartWindow ToggleWindow Closed window  
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window  
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window  
+SHC.Entities.Window.SmartWindow ToggleWindow Closed window  

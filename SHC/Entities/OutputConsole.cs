@@ -33,10 +33,10 @@ namespace SHC.Entities
             outputLog.Add((DateTime.Now, deviceId, eventType, eventDesc, details));
 
         }
-       public void writeToFile(string caller, string even, string status)
+       public void writeToFile(string caller, string even, string status, string details)
     {
         
-        string sentence = caller + " " + even + " " + status;
+        string sentence = caller + " " + even + " " + status+ " " + details;
         string fileName = "OutputConsoleFile.txt";
 
 
