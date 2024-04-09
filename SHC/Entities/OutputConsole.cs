@@ -35,8 +35,12 @@ namespace SHC.Entities
         }
        public void writeToFile(string caller, string even, string status, string details)
     {
-        
-        string sentence = caller + " " + even + " " + status+ " " + details;
+            // Get the current date and time
+            DateTime currentTime = DateTime.Now;
+
+            // Convert it to a string
+            string currentTimeString = currentTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string sentence = currentTimeString + ": "+caller + " " + even + " " + status+ " " + details;
         string fileName = "OutputConsoleFile.txt";
 
 
