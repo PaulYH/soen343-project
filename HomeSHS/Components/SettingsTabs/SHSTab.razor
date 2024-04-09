@@ -1,0 +1,441 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Controllers
+@using SHC.Entities
+@using SHC.Entities.Room
+@using SHC.Entities.Window
+@using SHC.Entities.Light
+@using SHC.Enums
+@using SHC.Services
+@using SHC.Utilities
+@inject IUserService UserService
+@inject IPageRefresher PageRefresher
+
+<body>
+
+    <div class="container">
+        <!-- User profiles section -->
+        <div class="form-section">
+            <br/>
+            <h4>User Profiles</h4>
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@selectedUser.FirstName @selectedUser.LastName</DropdownToggle>
+                <DropdownMenu MaxMenuHeight="200px">
+                    @foreach (var user in simulationContext.Users)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedUserChanged(user);})">@user.FirstName @user.LastName</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+
+            <div class="crud-btns">
+                <Button class="crud-btn" Color="Color.Success" Clicked="@(() => { ShowModal("AddUserModal"); })">Add</Button>
+                <Button class="crud-btn" Color="Color.Danger" Clicked="@(() => { ShowModal("DeleteUserModal"); })">Delete</Button>
+                <Button class="crud-btn" Color="Color.Primary" Clicked="@(() => { ShowModal("EditUserModal"); })">Edit</Button>
+            </div>
+        </div>
+
+        <!-- Date and time section -->
+        <div class="form-section datetime-container">
+            <h4>Select Date and Time</h4>
+            <DateEdit id="dateTime" TValue="DateTime" @bind-Date="@selectedDate" InputMode="DateInputMode.DateTime" />
+            <Button class="button-date-time" Color="Color.Primary"  @onclick="@OnDateChanged">Set Date and Time</Button>
+        </div>
+        <!--<button class="button-date-time">Set Date and Time</button> -->
+        <!-- Login and location section -->
+        <div class="form-section">
+            <h4>Log in as another user</h4>
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@selectedLoginUser.FirstName @selectedLoginUser.LastName</DropdownToggle>
+                    <DropdownMenu MaxMenuHeight="200px">
+                        @foreach (var user in simulationContext.Users)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedLoginUserChanged(user);})">@user.FirstName @user.LastName</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+            @if (selectedLoginUser != currentUser)
+            {
+                <Button Color="Color.Primary" Clicked="@(() => { ShowModal("UserLoginModal"); })">Log in</Button>
+            }
+        </div>
+
+        <div class="form-section">
+            <h4>Set outside temperature</h4>
+            <NumericEdit @bind-Value="@outsideTemperature"/>
+            <Button class="button-temperature" Color="Color.Primary" @onclick="@OnTemperatureChanged">Set temperature</Button>
+        </div>
+
+        <br />
+        <div class="form-section">
+            <h4>Upload temperature file</h4>
+            <TempFileUpload />
+        </div>
+
+        <br/>
+        <div class="form-section">
+            <h4>Obstruct Windows</h4>
+            <div>
+                @foreach (var window in selectedRoomWindows)
+                {
+                    @if (window.isBlocked)
+                    {
+                        <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>(Blocked) @window.Name</Button>
+                    }
+                    else
+                    {
+                        <Button class="obstruct-window-button" Color="Color.Primary" @onclick=@(() => ToggleObstruct(window))>@window.Name</Button>
+                    }
+                }
+                @if (selectedRoomWindows == null || selectedRoomWindows.Count == 0)
+                {
+                    <p>There are no windows at this location.</p>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+
+<Modal @ref="AddUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add user</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <UserCreation />
+        </ModalBody>
+        <ModalFooter>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="DeleteUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Are you sure you want to delete @selectedUser.FirstName @selectedUser.LastName ?</ModalTitle>
+                <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Button Color="Color.Danger" onclick="@(async () => { await DeleteUser(); })">Confirm</Button>
+            <Button Color="Color.Dark" onclick="@(async () => { await HideModal("DeleteUserModal"); })">Close</Button>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="EditUserModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Edit Profile</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>First name</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.FirstName"></TextEdit>
+                <FieldLabel>Last name</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.LastName"></TextEdit>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit @bind-Text="@selectedUser.Email"></TextEdit>
+            </Field>
+            <Label>Location:</Label>
+            <Dropdown Class="select">
+                <DropdownToggle Color="Color.Primary">@(selectedUser.CurrentLocation != null ? selectedUser.CurrentLocation.Name : "Outside")</DropdownToggle>
+                    <DropdownMenu MaxMenuHeight="200px">
+                        @foreach (var room in simulationContext.RenderRooms)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedRoomChanged(room.Item1);})">@room.Item1.Name</DropdownItem>
+                    }
+                    @if (selectedUser.CurrentLocation != null)
+                    {
+                        <DropdownItem Clicked="@(() => {OnSelectedRoomChanged(null);})">Outside</DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        </ModalBody>
+        <ModalFooter>
+             <Button Color="Color.Primary" onclick="@(async () => { await EditUser();})">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="UserLoginModal" Closing="OnClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Login as @selectedLoginUser.FirstName @selectedLoginUser.LastName</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Text="@(selectedLoginUser.Email)" Disabled></TextEdit>
+                <FieldLabel>Password</FieldLabel>
+                <TextEdit Role="TextRole.Password" @bind-Text="request.Password">
+                    @if (incorrectPassword)
+                    {
+                        <FieldHelp><Text TextColor="TextColor.Danger">Incorrect password.</Text></FieldHelp>
+                    }
+                </TextEdit>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+             <Button Color="Color.Primary" onclick="@(async () => { await SubmitLogin();})">Log in</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    UserController userController;
+    DateTime selectedDate;
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
+    VirtualUser? currentUser;
+    VirtualUser? selectedUser;
+    (IRoom, (double x, double y)) selectedRoom;
+    VirtualUser? selectedLoginUser;
+    private Modal AddUserModal;
+    private Modal DeleteUserModal;
+    private Modal EditUserModal;
+    //private Modal SetLocationModal;
+    private Modal UserLoginModal;
+    private LoginRequest request;
+    private string inputPassword = "";
+    private bool incorrectPassword = false;
+    double outsideTemperature;
+    List<SmartWindow> selectedRoomWindows = new List<SmartWindow>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        request = new LoginRequest();
+        userController = new UserController(UserService);
+        PageRefresher.SHSTabRefreshRequested += RefreshSHSTab;
+
+        selectedDate = simulationContext.CurrentDateTime;
+        currentUser = simulationContext.CurrentUser;
+        selectedUser = currentUser;
+        selectedLoginUser = currentUser;
+
+        selectedRoom = simulationContext.RenderRooms.FirstOrDefault();
+        selectedRoom.Item1 = selectedUser.CurrentLocation;
+
+        outsideTemperature = simulationContext.OutsideTemperature;
+    }
+
+    private void RefreshSHSTab()
+    {
+        StateHasChanged();
+        OnInitializedAsync();
+    }
+
+    private async Task SetCurrentUserWindows()
+    {
+        selectedRoomWindows = new List<SmartWindow>();
+        if (selectedUser.CurrentLocation is null) {return;}
+
+        if (selectedUser.CurrentLocation.LeftWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.LeftWall.Window);
+        if (selectedUser.CurrentLocation.RightWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.RightWall.Window);
+        if (selectedUser.CurrentLocation.TopWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.TopWall.Window);
+        if (selectedUser.CurrentLocation.BottomWall.Window != null)
+            selectedRoomWindows.Add((SmartWindow)selectedUser.CurrentLocation.BottomWall.Window);
+    }
+
+    private void ToggleObstruct(IWindow window)
+    {
+        window.isBlocked = !window.isBlocked;
+        RefreshSHSTab();
+
+        outputConsole.Log(
+            deviceId: $"{window.ToString()}",
+            eventType: "WindowObstruct",
+            eventDesc: $"Window was {(window.isBlocked ? "" : "un") } obstructed by user",
+            details: ""
+        );
+        outputConsole.writeToFile($"{window.ToString()}", "WindowObstruct", $"Window was {(window.isBlocked ? "" : "un")} obstructed by user", "");
+    }
+
+    public void OnTemperatureChanged()
+    {
+        simulationContext.OutsideTemperature = outsideTemperature;
+        PageRefresher.CallSimulationInfoRefresh();
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "TemperatureChange",
+            eventDesc: $"Outside Temperature was changed by user",
+            details: $"new temperature: {outsideTemperature}"
+        );
+        outputConsole.writeToFile("SHH Module", "TemperatureChange", "Outside Temperature was changed by user", $"new temperature: {outsideTemperature}");
+    }
+
+    public void OnDateChanged()
+    {
+        simulationContext.CurrentDateTime = selectedDate;
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "DateChange",
+            eventDesc: $"Date was changed by user",
+            details: $"new date: {selectedDate}"
+        );
+        outputConsole.writeToFile("SHH Module", "DateChange", $"Date was changed by user", $"new date: {selectedDate}");
+    }
+
+    public async void OnSelectedUserChanged(VirtualUser user)
+    {
+        selectedUser = user;
+        await SetCurrentUserWindows();
+        PageRefresher.CallSHSTabRefreshRequested();
+        outputConsole.Log(
+            deviceId: $"SHH Module",
+            eventType: "UserChange",
+            eventDesc: $"Selected User changed",
+            details: $"new user: {user}"
+        );
+        outputConsole.writeToFile("SHH Module", "UserChange", $"Selected User changed", $"new user: {user}");
+    }
+
+    public async void OnSelectedRoomChanged(IRoom? room)
+    {
+        selectedUser.CurrentLocation = room;
+        await SetCurrentUserWindows();
+        outputConsole.Log(
+        deviceId: $"SHH Module",
+        eventType: "RoomChange",
+        eventDesc: $"Selected Room changed",
+        details: $"new room: {room}"
+        );
+        outputConsole.writeToFile("SHH Module", "RoomChange", $"Selected Room changed", $"new room: {room}");
+    }
+
+    public void OnSelectedLoginUserChanged(VirtualUser user)
+    {
+        selectedLoginUser = user;
+        outputConsole.Log(
+        deviceId: $"SHH Module",
+        eventType: "LoginUserChange",
+        eventDesc: $"Logged in user has changed",
+        details: $"new user: {user}"
+        );
+        outputConsole.writeToFile("SHH Module", "LoginUserChange", $"Logged in user has changed", $"new user: {user}");
+    }
+
+    private void ShowModal(string modalName)
+    {
+        switch (modalName)
+        {
+            case "AddUserModal":
+                AddUserModal.Show();
+                break;
+            case "DeleteUserModal":
+                DeleteUserModal.Show();
+                break;
+            case "EditUserModal":
+                EditUserModal.Show();
+                break;
+            case "SetLocationModal":
+                //SetLocationModal.Show();
+                break;
+            case "UserLoginModal":
+                request.Email = selectedLoginUser.Email;
+                UserLoginModal.Show();
+                break;
+        }
+    }
+
+    private async Task HideModal(string modalName)
+    {
+        switch (modalName)
+        {
+            case "AddUserModal":
+                AddUserModal.Hide();
+                break;
+            case "DeleteUserModal":
+                DeleteUserModal.Hide();
+                break;
+            case "EditUserModal":
+                EditUserModal.Hide();
+                break;
+            case "SetLocationModal":
+                //SetLocationModal.Hide();
+                break;
+            case "UserLoginModal":
+                UserLoginModal.Hide();
+                break;
+        }
+    }
+
+    private async Task OnClosing(ModalClosingEventArgs e)
+    {
+        simulationContext.Users = (List<VirtualUser>) await UserService.GetAllUsers();
+        PageRefresher.CallSHCTabRefreshRequested();
+        PageRefresher.CallSimulationInfoRefresh();
+        PageRefresher.CallSHSTabRefreshRequested();
+    }
+
+    private async Task DeleteUser()
+    {
+        await userController.DeleteUser(selectedUser.Id);
+        await HideModal("DeleteUserModal");
+    }
+
+    private async Task SubmitLogin()
+    {
+        var response = await userController.Login(request);
+        if (response.Item2 is not null)
+        {
+            simulationContext.CurrentUser = response.Item2;
+            await HideModal("UserLoginModal");
+        }
+        else
+        {
+            incorrectPassword = true;
+        }
+    }
+
+    private async Task EditUser()
+    {
+        await userController.EditUser(selectedUser);
+        // turn on the lights in the room the user moved to
+        UpdateAutoLights();
+        await HideModal("EditUserModal");
+    }
+
+    private void UpdateAutoLights()
+    {
+        var users = simulationContext.Users;
+        List<IRoom> occupiedRooms = new List<IRoom>();
+        foreach (var user in users)
+        {
+            occupiedRooms.Add(user.CurrentLocation);
+        }
+        foreach(var room in simulationContext.RenderRooms)
+        {
+            IRoom room2 = room.Item1;
+            if (occupiedRooms.Contains(room2))
+            {
+                TurnOnAutoLights(room2);
+            }
+            else
+            {
+                TurnOffAutoLights(room2);
+            }
+        }
+    }
+
+    private void TurnOffAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = false; }
+        }
+    }
+
+    private void TurnOnAutoLights(IRoom room)
+    {
+        foreach (SmartLight light in room.Lights)
+        {
+            if (light.autoMode) { light.isOn = true; }
+        }
+    }
+}

@@ -132,7 +132,7 @@
             details: $""
         );
 
-        outputConsole.writeToFile(window.ToString(), "ToggleWindow", $"{(window.isOpen ? "Opened window" : "Closed window")}");
+        outputConsole.writeToFile(window.ToString(), "ToggleWindow", $"{(window.isOpen ? "Opened window" : "Closed window")}", " ");
         PageRefresher.CallOutputConsoleRefresh();
     }
 
@@ -146,7 +146,7 @@
             eventDesc: $"{(door.IsLocked ? "Unlocked door" : "Locked door")}",
             details: $""
         );
-        outputConsole.writeToFile(door.ToString(), "ToggleDoor", $"{(door.IsLocked ? "Unlocked door" : "Locked door")}");
+        outputConsole.writeToFile(door.ToString(), "ToggleDoor", $"{(door.IsLocked ? "Unlocked door" : "Locked door")}", " ");
         PageRefresher.CallOutputConsoleRefresh();
     }
 
@@ -160,7 +160,7 @@
             eventDesc: $"{(light.isOn ? "Turned on light" : "Turned off light")}",
             details: $""
         );
-        outputConsole.writeToFile(light.ToString(), "ToggleLight", $"{(light.isOn ? "Turned on Light" : "Turned off light")}");
+        outputConsole.writeToFile(light.ToString(), "ToggleLight", $"{(light.isOn ? "Turned on Light" : "Turned off light")}", " ");
         PageRefresher.CallOutputConsoleRefresh();
     }
 
@@ -173,7 +173,7 @@
             eventDesc: $"{(light.autoMode ? "Turned on automode" : "Turned off automode")}",
             details: $""
         );
-        outputConsole.writeToFile(light.ToString(), "ToggleAutoModeLight", $"{(light.autoMode ? "Turned on automode" : "Turned off automode")}");
+        outputConsole.writeToFile(light.ToString(), "ToggleAutoModeLight", $"{(light.autoMode ? "Turned on automode" : "Turned off automode")}", " ");
 
 
     }
