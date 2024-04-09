@@ -1,0 +1,2 @@
+SHC.Entities.Window.SmartWindow ToggleWindow Opened window
+SHC.Entities.Window.SmartWindow ToggleWindow Closed window

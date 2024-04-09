@@ -19,7 +19,7 @@
                     <AccordionToggle>@log.datetime: @log.eventType</AccordionToggle>
                 </Heading>
             </CollapseHeader>
-            <CollapseBody>
+            <CollapseBody >
                 Timestamp: @log.datetime<br />
                 Device Id: @log.deviceId<br />
                 Event type: @log.eventType<br />
@@ -44,4 +44,6 @@
         StateHasChanged();
         OnInitializedAsync();
     }
+
+  
 }
