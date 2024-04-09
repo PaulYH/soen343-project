@@ -424,3 +424,6 @@ FodyWeavers.xsd
 /server/CMS/appsettings.json
 /server/CMS/appsettings.Development.json
 
+/HomeSHS/Components/SettingsTabs/SHSTab.razor
+/SHC/Entities/OutputConsole.cs
+/.gitignore
