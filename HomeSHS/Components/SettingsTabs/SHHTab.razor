@@ -150,6 +150,11 @@
             eventDesc: $"User turned the heating {(simulationContext.SHHListener.isOn? "on" : "off")}",
             details: $"");
 
+        outputConsole.writeToFile("SHHTab", "ToggleHeating", $"User turned the heating {(simulationContext.SHHListener.isOn ? "on" : "off")}"," ");
+
+
+           
+
         return Task.CompletedTask;
     }
 
@@ -205,6 +210,8 @@
         eventType: $"RemoveZone",
         eventDesc: $"User deleted a zone",
         details: $"Deleted zone had {toDeleteZone.rooms} rooms");
+
+
 
     }
 

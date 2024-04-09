@@ -2,17 +2,17 @@
 
 ## Team Members
 * ***Hicham Kitaz (40188246)***
-  * Username: hisham-kitaz.
+  * Username: hisham-kitaz
 * ***Nour Hassoun (40233077)***
-  * Username: NourHadieHassoun.
+  * Username: NourHadieHassoun
 * ***Paul Humennyj (40209588)***
-  * Username: PaulYH.
+  * Username: PaulYH
 * ***Valeria Dolgaliova (40212218)***
-  * Username: valeriad0l.
+  * Username: valeriad0l
 * ***Etienne Paquet (40208596)***
-  * Username: etiennepaquet1.
+  * Username: etiennepaquet1
 * ***Ziad-Tarik Taufeek (40205732)***
-  * Username: Ziad-Tari.
+  * Username: Ziad-Tari
  
 ## Description
 Our project, titled HomeWiz, is designed to tackle the challenges faced by homeowners and IoT system developers in managing and programming smart home systems. It addresses issues such as modularity, feature interaction, and system understanding, as well as enhances user satisfaction and promotes the adoption of smart home technology. Through a user-friendly graphical interface, it simplifies the programming and management of smart home systems, offering a visual representation of household device interactions. 
@@ -35,6 +35,8 @@ Chosen for its solid performance and compatibility with Entity Framework Core, e
 
 ***Coding Language*** <br/>
 The application is developed in C#, which aligns with .NET's supported languages for consistent coding practices.
+
+## HomeWiz's Logo
 
 ![image](https://github.com/PaulYH/soen343-project/assets/111257875/3041c250-0e3c-49ba-91c7-6a61902ef746)
 

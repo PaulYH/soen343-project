@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -32,5 +33,48 @@ namespace SHC.Entities
             outputLog.Add((DateTime.Now, deviceId, eventType, eventDesc, details));
 
         }
+       public void writeToFile(string caller, string even, string status, string details)
+    {
+            // Get the current date and time
+            DateTime currentTime = DateTime.Now;
+
+            // Convert it to a string
+            string currentTimeString = currentTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string sentence = currentTimeString + ": "+caller + " " + even + " " + status+ " " + details;
+        string fileName = "OutputConsoleFile.txt";
+
+
+        try
+        {
+            // Check if the file exists
+            bool fileExists = File.Exists(fileName);
+
+            // If the file doesn't exist, create it
+            if (!fileExists)
+            {
+                using (StreamWriter sw = File.CreateText(fileName))
+                {
+                    sw.WriteLine(sentence);
+                }
+}
+            else
+{
+    // If the file exists, append data to it
+    using (StreamWriter sw = File.AppendText(fileName))
+    {
+        sw.WriteLine(sentence);
     }
+}
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+    }
+
+
+    }
+
+    
+
 }

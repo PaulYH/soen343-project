@@ -253,6 +253,7 @@
             eventDesc: $"Window was {(window.isBlocked ? "" : "un") } obstructed by user",
             details: ""
         );
+        outputConsole.writeToFile($"{window.ToString()}", "WindowObstruct", $"Window was {(window.isBlocked ? "" : "un")} obstructed by user", "");
     }
 
     public void OnTemperatureChanged()
@@ -265,6 +266,7 @@
             eventDesc: $"Outside Temperature was changed by user",
             details: $"new temperature: {outsideTemperature}"
         );
+        outputConsole.writeToFile("SHH Module", "TemperatureChange", "Outside Temperature was changed by user", $"new temperature: {outsideTemperature}");
     }
 
     public void OnDateChanged()
@@ -276,6 +278,7 @@
             eventDesc: $"Date was changed by user",
             details: $"new date: {selectedDate}"
         );
+        outputConsole.writeToFile("SHH Module", "DateChange", $"Date was changed by user", $"new date: {selectedDate}");
     }
 
     public async void OnSelectedUserChanged(VirtualUser user)
@@ -288,6 +291,7 @@
             eventDesc: $"Selected User changed",
             details: $"new user: {user}"
         );
+        outputConsole.writeToFile("SHH Module", "UserChange", $"Selected User changed", $"new user: {user}");
     }
 
     public async void OnSelectedRoomChanged(IRoom? room)
@@ -311,6 +315,7 @@
         eventDesc: $"Selected Room changed",
         details: $"new room: {room}"
         );
+        outputConsole.writeToFile("SHH Module", "RoomChange", $"Selected Room changed", $"new room: {room}");
     }
 
     public void OnSelectedLoginUserChanged(VirtualUser user)
@@ -322,6 +327,7 @@
         eventDesc: $"Logged in user has changed",
         details: $"new user: {user}"
         );
+        outputConsole.writeToFile("SHH Module", "LoginUserChange", $"Logged in user has changed", $"new user: {user}");
     }
 
     private void ShowModal(string modalName)
