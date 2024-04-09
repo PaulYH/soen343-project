@@ -427,3 +427,4 @@ FodyWeavers.xsd
 /HomeSHS/Components/SettingsTabs/SHSTab.razor
 /SHC/Entities/OutputConsole.cs
 /.gitignore
+/HomeSHS/OutputConsoleFile.txt
