@@ -35,3 +35,7 @@ Chosen for its solid performance and compatibility with Entity Framework Core, e
 
 ***Coding Language*** <br/>
 The application is developed in C#, which aligns with .NET's supported languages for consistent coding practices.
+
+![image](https://github.com/PaulYH/soen343-project/assets/111257875/3041c250-0e3c-49ba-91c7-6a61902ef746)
+
+
