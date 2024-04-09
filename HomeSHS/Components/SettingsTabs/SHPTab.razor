@@ -1,0 +1,82 @@
+﻿@using HomeSHS.Components.Helpers
+@using SHC.Entities
+@using SHC.Entities.Door
+@using SHC.Entities.Light
+@using SHC.Entities.Window
+@using SHC.Enums
+@using SHC.Utilities.State
+@inject IPageRefresher PageRefresher
+
+<body>
+    <br/>
+    <h3>Away Mode</h3>
+    <Button Clicked="@(() => ToggleOnSwitch())"
+            Disabled="!simulationContext.IsOn"
+            Color="@(isAwayOn ? Color.Success : Color.Danger)">
+        @(isAwayOn ? "ON" : "OFF")
+    </Button>
+    <br/>
+    <br/>
+    <div class="container">
+        <div class="form-section">
+            <SelectedRoomSHPInfo />
+            <br/>
+            <h3>Police Timer</h3>
+            <Label>Minutes</Label>
+            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerMinutes" ValueChanged="@(x => timerMinutes = x)" />
+            <Label>Seconds</Label>
+            <NumericEdit TValue="int" Disabled="isAwayOn" Value="timerSeconds" ValueChanged="@(x => timerSeconds = x)" />
+            <Button Color="Color.Primary" Disabled="isAwayOn" Clicked="@(() => SetTimerTime())">Set timer</Button>
+        </div>
+    </div>
+
+</body>
+
+@code {
+    SimulationContext simulationContext = SimulationContext.GetInstance();
+    OutputConsole outputConsole = OutputConsole.GetInstance();
+    VirtualUser currentUser;
+    int timerMinutes;
+    int timerSeconds;
+    bool isAwayOn = false;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        PageRefresher.SHPTabRefreshRequested += RefreshSHPTab;
+
+        isAwayOn = simulationContext.IsAwayOn;
+        currentUser = simulationContext.CurrentUser;
+
+        timerMinutes = simulationContext.SHPContext.GetTimerMinutes();
+        timerSeconds = simulationContext.SHPContext.GetTimerSeconds();
+    }
+
+    private void RefreshSHPTab()
+    {
+        PageRefresher.CallSelectedRoomSHPInfoRefresh();
+        StateHasChanged();
+    }
+
+    private void ToggleOnSwitch()
+    {
+        isAwayOn = !isAwayOn;
+        simulationContext.IsAwayOn = isAwayOn;
+
+        if (simulationContext.IsAwayOn)
+        {
+            simulationContext.SHPContext.ChangeState(new AwayState(simulationContext.SHPContext));
+        }
+        else
+        {
+            simulationContext.SHPContext.ChangeState(new RegularState(simulationContext.SHPContext));
+        }
+    }
+
+    private void SetTimerTime()
+    {
+        simulationContext.SHPContext.SetTimerMinutes(timerMinutes);
+        simulationContext.SHPContext.SetTimerSeconds(timerSeconds);
+        RefreshSHPTab();
+    }
+}

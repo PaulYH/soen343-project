@@ -129,6 +129,63 @@
                           @onclick=@(() => SetSelectedRoom(r.Item1))>
                         @(String.Format("{0:0.0}", r.Item1.Temperature)) °C
                     </text>
+                    @if (r.Item1.HasMotionDetector)
+                    {
+                        @if (r.Item1.Occupants.Count() > 0 && simulationContext.IsAwayOn)
+                        {
+                            <foreignObject x="@(r.Item2.x + 84)" y="@(r.Item2.y + 7)" width="20" height="20">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: red;">
+                                    <i class="fas fa-rss"></i>
+                                </div>
+                            </foreignObject>
+                        }
+                        else
+                        {
+                            <foreignObject x="@(r.Item2.x + 84)" y="@(r.Item2.y + 7)" width="20" height="20">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: black;">
+                                    <i class="fas fa-rss"></i>
+                                </div>
+                            </foreignObject>
+                        }
+                    }
+
+                    @if (r.Item1.Occupants.Count() > 0)
+                    {
+                        @if (r.Item1.Occupants.Count() == 1)
+                        {
+                            <g>
+                                <foreignObject x="@(r.Item2.x + 84)" y="@(r.Item2.y + 73)" width="20" height="20">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: black;">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </foreignObject>
+                                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-user-qty")"
+                                      x="@(r.Item2.x + 86)"
+                                      y="@(r.Item2.y + 95)"
+                                      font-size="8px">
+                                    @r.Item1.Occupants.Count()
+                                </text>
+                            </g>
+                        }
+                        else
+                        {
+                            <g>
+                                <foreignObject x="@(r.Item2.x + 82)" y="@(r.Item2.y + 73)" width="20" height="20">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size: 10px; color: black;">
+                                        <i class="fas fa-user-friends"></i>
+                                    </div>
+                                </foreignObject>
+                                <text id="@(r.Item1.Name + "-" + r.Item1.Id + "-user-qty")"
+                                      x="@(r.Item2.x + 86)"
+                                      y="@(r.Item2.y + 95)"
+                                      font-size="8px">
+                                    @r.Item1.Occupants.Count()
+                                </text>
+                            </g>
+                        }
+                    }
+
+
                 </g>
             }
         </svg>

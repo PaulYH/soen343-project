@@ -282,7 +282,6 @@
     {
         selectedUser = user;
         await SetCurrentUserWindows();
-        PageRefresher.CallSHSTabRefreshRequested();
         outputConsole.Log(
             deviceId: $"SHH Module",
             eventType: "UserChange",
@@ -293,7 +292,18 @@
 
     public async void OnSelectedRoomChanged(IRoom? room)
     {
+        if (selectedUser.CurrentLocation != null)
+        {
+            simulationContext.RenderRooms.Where(x => x.Item1.Id == selectedUser.CurrentLocation.Id).First().Item1.Occupants.Remove(selectedUser);            
+        }
+
         selectedUser.CurrentLocation = room;
+
+        if (room != null)
+        {
+            simulationContext.RenderRooms.Where(x => x.Item1.Id == selectedUser.CurrentLocation.Id).First().Item1.Occupants.Add(selectedUser);
+        }
+
         await SetCurrentUserWindows();
         outputConsole.Log(
         deviceId: $"SHH Module",

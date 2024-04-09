@@ -382,7 +382,8 @@ namespace HomeSHS.Components.Helpers
             {
                 (0, zoneRooms, startTemp, startTemp, startTemp)
             };
-            
+
+            simulationContext.RenderRooms = renderRooms;
 
             simulationContext.SHHListener = new SHHListener(zoneStartList);
             simulationContext.SHHListener.AddSubscriber(new SmartHomeHeating());

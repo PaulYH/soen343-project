@@ -2,14 +2,18 @@
 @using SHC.Entities
 @using SHC.Entities.Room
 @using SHC.Enums
+@using SHC.Utilities.Observer
 @inject IPageRefresher PageRefresher
 
 <body>
+    <br/>
+    <h3>HAVC System</h3>
     <Button Clicked="@(() => ToggleOnSwitch())"
             Disabled="isZoneEditDisabled"
             Color="@(isOn ? Color.Success : Color.Danger)">
         @(isOn ? "ON" : "OFF")
     </Button>
+    <br/>
     <br/>
     <div class="container">
         <div class="form-section">

@@ -1,5 +1,6 @@
 ﻿using SHC.Entities.Room;
 using SHC.Utilities.Observer;
+using SHC.Utilities.State;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace SHC.Entities
     {
         private static SimulationContext? _instance;
         public bool IsOn { get; set; } = false;
+        public bool IsAwayOn { get; set; } = false;
         public bool hasRenderLoaded { get; set; } = false;
         public double OutsideTemperature { get; set; } = 7.1;
         public List<(DateTime date, double temperature)> UploadedOutsideTemperatures = new List<(DateTime date, double temperature)>();
@@ -24,7 +26,8 @@ namespace SHC.Entities
         public string? SelectedGroup { get; set; }
         public House? House { get; set; }
         public SHHListener? SHHListener { get; set; }
-
+        public SmartHomeSecurity SHPContext { get; private set; } = new SmartHomeSecurity();
+        public string UserMessage { get; set; } = "";
 
         private SimulationContext() { }
         public static SimulationContext GetInstance()

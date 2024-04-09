@@ -1,20 +1,36 @@
-﻿using SHC.Entities.Room;
-using SHC.Utilities.Observer;
+﻿using SHC.Entities;
+using SHC.Entities.Room;
+using SHC.Utilities.State;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SHC.Entities
+namespace SHC.Utilities.Observer
 {
     public class SmartHomeHeating : IObserver
     {
         public List<(int zoneNum, List<IRoom> rooms, double temp1, double temp2, double temp3)> ZoneManagement;
+        public List<(int roomId, List<double> roomTemps)> OldRoomTemps = new List<(int roomId, List<double> roomTemps)>();
+        private int minuteTickCounter = 0;
+
+        public SmartHomeHeating() 
+        {
+            var simContext = SimulationContext.GetInstance();
+            foreach (var room in simContext.RenderRooms)
+            {
+                
+                OldRoomTemps.Add((room.Item1.Id, new List<double>() { room.Item1.Temperature }));
+            }
+        }
+
         public void Update(IEventListener eventListener)
         {
-            ZoneManagement = ((SHHListener) eventListener).state;
+            ZoneManagement = ((SHHListener)eventListener).state;
         }
+
+
 
         public async Task UpdateRoomTemperaturesHAVCOn(string timeOfDay)
         {
@@ -179,7 +195,7 @@ namespace SHC.Entities
                                 room.Item1.Temperature -= 0.05;
                                 continue;
                             }
-                        }
+                        }                    
                     }
                     break;
                 case "time3":
@@ -259,11 +275,33 @@ namespace SHC.Entities
                                 room.Item1.Temperature -= 0.05;
                                 continue;
                             }
-                        }  
+                        }
                     }
                     break;
             }
 
+            foreach (var room in simulationContext.RenderRooms)
+            {
+                CheckTempHistoryForJump(room.Item1);
+
+                if (room.Item1.Temperature > 135)
+                {
+                    simulationContext.SHPContext.ChangeState(new RegularState(simulationContext.SHPContext));
+
+                    var msg = $"Temperature over 135 °C in {room.Item1.Name}. Turning off Away mode.";
+
+                    if (simulationContext.UserMessage != msg)
+                    {
+                        simulationContext.UserMessage = $"Temperature over 135 °C in {room.Item1.Name}. Turning off Away mode.";
+                        OutputConsole.GetInstance().Log($"Room-{room.Item1.Id}", "SHP module", "Emergency Away mode shut off.", $"Temperature over 135 °C in {room.Item1.Name}.");
+                    }
+                }
+            }
+
+            if (minuteTickCounter < 59)
+            {
+                minuteTickCounter++;
+            }
         }
 
         public async Task UpdateRoomTemperaturesHAVCOff()
@@ -292,6 +330,40 @@ namespace SHC.Entities
                     room.Item1.TempStatus = "off";
                     room.Item1.Temperature -= 0.05;
                     continue;
+                }
+
+                CheckTempHistoryForJump(room.Item1);
+            }
+
+            if (minuteTickCounter < 59)
+            {
+                minuteTickCounter++;
+            }
+        }
+
+        private void CheckTempHistoryForJump(IRoom room)
+        {
+            if (minuteTickCounter < 59)
+            {
+                OldRoomTemps.Where(x => x.roomId == room.Id).First().roomTemps.Add(room.Temperature);
+            }
+            else
+            {
+                OldRoomTemps.Where(x => x.roomId == room.Id).First().roomTemps.Add(room.Temperature);
+                OldRoomTemps.Where(x => x.roomId == room.Id).First().roomTemps.RemoveAt(0);
+
+                var roomTemps = OldRoomTemps.Where(x => x.roomId == room.Id).First().roomTemps;
+
+                var difference = roomTemps.Last() - roomTemps.First();
+
+                if (difference >= 15)
+                {
+                    // turn off away mode and notify owners
+                    var simContext = SimulationContext.GetInstance();
+                    simContext.SHPContext.ChangeState(new RegularState(simContext.SHPContext));
+
+                    simContext.UserMessage = $"Sudden jump of {difference} °C in {room.Name} detected. Turning off Away mode.";
+                    OutputConsole.GetInstance().Log($"Room-{room.Id}", "SHP module", "Emergency Away mode shut off.", $"Sudden jump of {difference} °C in {room.Name} detected.");
                 }
             }
         }

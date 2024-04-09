@@ -2,6 +2,7 @@
 @using SHC.Entities
 @using SHC.Enums
 @using System.Timers;
+@using SHC.Utilities.Observer;
 @implements IDisposable
 @inject IPageRefresher PageRefresher
 
@@ -25,14 +26,6 @@ else
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <p>
     <h4>@currentTime.ToString("D")</h4>
     <h4>@currentTime.ToString("T")</h4>
@@ -41,10 +34,20 @@ else
 <Slider @bind-Value="@timeSpeed" Step="1" Min="1" Max="10"/>
 <br />
 <br />
-<br />
 <p><b>Outside Temperature:</b> @simulationContext.OutsideTemperature °C</p>
+<br />
+
 
 <div class="form-section">
+    @if (!(simulationContext.UserMessage == ""))
+    {
+        <h4 style="color:red">ALERT</h4>
+        <p style="color:red">@simulationContext.UserMessage</p>
+        <Button Clicked="@(() => {simulationContext.UserMessage = "";})" style="width:98px">Clear alert</Button>  
+
+        <br />
+    }
+
     <h4>Permissions</h4>
     <ul>
         @if (currentUser.UserType == UserType.Parent)
@@ -137,7 +140,20 @@ else
             else
                 await ((SmartHomeHeating)simulationContext.SHHListener.observers.First()).UpdateRoomTemperaturesHAVCOff();
 
+            var motionDetected = simulationContext.SHPContext.CheckForPresenceInRooms();
+
+            if (motionDetected != -1)
+            {
+                var ticksUntilPoliceCalled = simulationContext.SHPContext.GetTimerTicks();
+                if (ticksUntilPoliceCalled > 0)
+                    simulationContext.SHPContext.SetTimerTicks(ticksUntilPoliceCalled - 1);
+                else
+                    simulationContext.UserMessage = "Police have been called in response to motion detected in home.";
+
+            }
+
             PageRefresher.CallSelectedRoomSHHInfoRefresh();
+            PageRefresher.CallSelectedRoomSHPInfoRefresh();
             PageRefresher.CallHomeRenderRefresh();
 
             InvokeAsync(() =>
