@@ -54,7 +54,14 @@ namespace Tests
             _listener = new SHHListener(state);
         }
 
+        [Fact]
+        public async void AddSubscriber_ShouldReturnVoid_WhenValidInput()
+        {
+            _listener.AddSubscriber(new SmartHomeHeating());
+            var result = _listener.observers;
+            result.Should().NotBeNull().And.HaveCount(1);
+            result.First().Should().BeAssignableTo<SmartHomeHeating>();
+        }
 
-        
     }
 }
