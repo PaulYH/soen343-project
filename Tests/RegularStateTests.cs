@@ -23,5 +23,15 @@ namespace Tests
             shh = new SmartHomeSecurity();
             RegularState state = new RegularState(shh);
         }
+
+
+        [Fact]
+        public async void CheckForPresenceInRooms_ShouldReturnInt()
+        {
+            int result = shh.CheckForPresenceInRooms();
+            result.Should().Be(-1);
+        }
+
+
     }
 }
