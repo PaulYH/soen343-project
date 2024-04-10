@@ -51,5 +51,13 @@ namespace Tests
             int result = shh.GetTimerSeconds();
             result.Should().Be(seconds);
         }
+        [Fact]
+        public async void SetTimerTicks_ShouldReturnInt()
+        {
+            int ticks = fixture.Create<int>() % 60;
+            shh.SetTimerTicks(ticks);
+            int result = shh.GetTimerTicks();
+            result.Should().Be(ticks);
+        }
     }
 }
