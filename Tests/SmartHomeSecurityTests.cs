@@ -35,5 +35,13 @@ namespace Tests
             int result = shh.CheckForPresenceInRooms();
             result.Should().Be(-1);
         }
+        [Fact]
+        public async void SetTimerMinutes_ShouldReturnInt()
+        {
+            int minutes = fixture.Create<int>() % 60;
+            shh.SetTimerMinutes(minutes);
+            int result = shh.GetTimerMinutes();
+            result.Should().Be(minutes);
+        }
     }
 }
