@@ -23,6 +23,12 @@ namespace Tests
             shh = new SmartHomeSecurity();
         }
 
+        [Fact]
+        public async void ChangeState_ShouldReturnVoid()
+        {
+            RegularState newState = fixture.Create<RegularState>();
+            shh.ChangeState(newState);
+        }
 
     }
 }
