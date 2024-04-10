@@ -45,21 +45,41 @@ namespace Tests
         }
 
 
-    }
-}
+        [Fact]
+        public async void CloseWindowsAndDoors_ShouldReturnNull()
+        {
+            AwayState state = new AwayState(shh);
+            SimulationContext context = SimulationContext.GetInstance();
 
+            foreach (var room in context.RenderRooms)
+            {
+                var topWall = room.Item1.TopWall;
+                var bottomWall = room.Item1.BottomWall;
+                var rightWall = room.Item1.RightWall;
+                var leftWall = room.Item1.LeftWall;
 
-
-
-
-
-
-
-
-
-
-
-
+                if (topWall is not null)
+                {
+                    topWall.Window.Should().BeAssignableTo<IWindow>();
+                    topWall.Door.Should().BeAssignableTo<IDoor>();
+                }
+                if (bottomWall is not null)
+                {
+                    bottomWall.Window.Should().BeAssignableTo<IWindow>();
+                    bottomWall.Door.Should().BeAssignableTo<IDoor>();
+                }
+                if (rightWall is not null)
+                {
+                    rightWall.Window.Should().BeAssignableTo<IWindow>();
+                    rightWall.Door.Should().BeAssignableTo<IDoor>();
+                }
+                if (leftWall is not null)
+                {
+                    leftWall.Window.Should().BeAssignableTo<IWindow>();
+                    leftWall.Door.Should().BeAssignableTo<IDoor>();
+                }
+            }
+        }
     }
 
 }
