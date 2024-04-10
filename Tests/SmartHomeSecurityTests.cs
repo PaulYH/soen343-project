@@ -71,5 +71,11 @@ namespace Tests
             int result = shh.GetTimerSeconds();
             result.Should().Be(0);
         }
+        [Fact]
+        public async void GetTimerTicks_ShouldReturnInt()
+        {
+            int result = shh.GetTimerTicks();
+            result.Should().Be(-1);
+        }
     }
 }
