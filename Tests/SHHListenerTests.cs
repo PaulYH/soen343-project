@@ -63,5 +63,29 @@ namespace Tests
             result.First().Should().BeAssignableTo<SmartHomeHeating>();
         }
 
+        [Fact]
+        public async void RemoveSubscriber_ShouldReturnVoid_WhenValidInput()
+        {
+            SmartHomeHeating shh = new SmartHomeHeating();
+            _listener.observers = new List<IObserver> { shh };
+
+            _listener.RemoveSubscriber(shh);
+
+            var result = _listener.observers;
+            result.Should().NotBeNull().And.HaveCount(0);
+        }
+
+        [Fact]
+        public async void Notify_ShouldReturnVoid_WhenValidInput()
+        {
+            SmartHomeHeating shh = new SmartHomeHeating();
+            _listener.observers = new List<IObserver> { shh };
+
+            _listener.Notify();
+
+            var result = _listener.observers;
+            result.Should().NotBeNull().And.HaveCount(1);
+            result.First().Should().BeAssignableTo<SmartHomeHeating>();
+        }
     }
 }
