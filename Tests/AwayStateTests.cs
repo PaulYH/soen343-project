@@ -27,6 +27,24 @@ namespace Tests
             shh = new SmartHomeSecurity();
             AwayState state = new AwayState(shh);
         }
+
+
+        [Fact]
+        public async void CheckForPresenceInRooms_ShouldReturnInt()
+        {
+            AwayState state = new AwayState(shh);
+            SimulationContext context = SimulationContext.GetInstance();
+            Entrance entrance = new Entrance();
+            entrance.Id = 12;
+            entrance.HasMotionDetector = true;
+            entrance.Occupants.Add(new VirtualUser());
+            context.RenderRooms.Add((entrance, (1, 1)));
+
+            int result = state.CheckForPresenceInRooms();
+            result.Should().Be(12);
+        }
+
+
     }
 }
 
@@ -42,3 +60,6 @@ namespace Tests
 
 
 
+    }
+
+}
