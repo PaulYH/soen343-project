@@ -29,6 +29,11 @@ namespace Tests
             RegularState newState = fixture.Create<RegularState>();
             shh.ChangeState(newState);
         }
-
+        [Fact]
+        public async void CheckForPresenceInRooms_ShouldReturnVoid()
+        {
+            int result = shh.CheckForPresenceInRooms();
+            result.Should().Be(-1);
+        }
     }
 }
