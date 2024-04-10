@@ -22,6 +22,15 @@ namespace Tests
             director = new Director(new SHC.Models.FileHomeReader(), new HomeBuilder());
         }
 
+        [Fact]
+        public async void ConstructHouse_WhenValidInput_ShouldReturnVoid()
+        {
+            var result = "success";
+
+
+
+
+        }
 
     }
 }
