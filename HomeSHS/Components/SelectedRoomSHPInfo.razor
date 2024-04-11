@@ -28,7 +28,7 @@
                 StateHasChanged();
                 currentUser = simulationContext.CurrentUser;
                 hasMotionSensor = simulationContext.SelectedRoom.HasMotionDetector;
-                
+
                 // SetAllPermissions();
             });
     }
@@ -37,5 +37,17 @@
     {
         hasMotionSensor = !hasMotionSensor;
         simulationContext.SelectedRoom.HasMotionDetector = hasMotionSensor;
+
+        if (hasMotionSensor)
+        {
+            OutputConsole.GetInstance().Log("SHP", "Motion Sensor", "Motion sensor enabled", $"Motion sensor turned on in {simulationContext.SelectedRoom.Name}");
+            OutputConsole.GetInstance().writeToFile("SHP", "Motion Sensor", "Motion sensor enabled", $"Motion sensor turned on in {simulationContext.SelectedRoom.Name}");
+        }
+        else
+        {
+            OutputConsole.GetInstance().Log("SHP", "Motion Sensor", "Motion sensor disabled", $"Motion sensor turned off in {simulationContext.SelectedRoom.Name}");
+            OutputConsole.GetInstance().writeToFile("SHP", "Motion Sensor", "Motion sensor disabled", $"Motion sensor turned off in {simulationContext.SelectedRoom.Name}");
+
+        }
     }
 }

@@ -32,6 +32,10 @@ namespace SHC.Utilities.State
                 if (room.Item1.HasMotionDetector && room.Item1.Occupants.Count > 0)
                 {
                     simulationContext.UserMessage = "Motion detected in " + room.Item1.Name +". Police will be called in " + (context.GetTimerTicks()) + " seconds.";
+
+                    OutputConsole.GetInstance().Log("SHP", "Motion detected", "Detected motion in room", simulationContext.UserMessage);
+                    OutputConsole.GetInstance().writeToFile("SHP", "Motion detected", "Detected motion in room", simulationContext.UserMessage);
+
                     return room.Item1.Id;
                 }
             }

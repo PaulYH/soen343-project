@@ -63,6 +63,17 @@
         isAwayOn = !isAwayOn;
         simulationContext.IsAwayOn = isAwayOn;
 
+        if (isAwayOn)
+        {
+            outputConsole.Log("SHP", "Away Mode", "Away Mode enabled", "Away Mode turned on by Parent user.");
+            outputConsole.writeToFile("SHP", "Away Mode", "Away Mode enabled.", "Away Mode turned on by Parent user.");
+        }
+        else
+        {
+            outputConsole.Log("SHP", "Away Mode", "Away Mode disabled", "Away Mode turned off by Parent user.");
+            outputConsole.writeToFile("SHP", "Away Mode", "Away Mode disabled.", "Away Mode turned off by Parent user.");
+        }
+
         if (simulationContext.IsAwayOn)
         {
             simulationContext.SHPContext.ChangeState(new AwayState(simulationContext.SHPContext));

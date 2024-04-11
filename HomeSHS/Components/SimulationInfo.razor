@@ -56,18 +56,21 @@ else
             <li>Lock/unlock doors from anywhere</li>
             <li>On/off lights from anywhere</li>
             <li>Full operation of SHH from home or remotely</li>
+            <li>Full operation of SHP from home or remotely</li>
         }
         @if (currentUser.UserType == UserType.Child)
         {
             <li>Open/close windows in current room only</li>
             <li>On/off lights in current room only</li>
             <li>Increase/decreate room temperature in current room only</li>
+            <li>No access to SHP controls</li>
         }
         @if (currentUser.UserType == UserType.Guest)
         {
             <li>Open/close windows in current room only</li>
             <li>On/off lights in current room only</li>
             <li>Increase/decreate room temperature in current room only</li>
+            <li>No access to SHP controls</li>
         }
         @if (currentUser.UserType == UserType.Stranger)
         {
